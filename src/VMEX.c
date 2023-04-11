@@ -1,9 +1,9 @@
 /* Copyright (C) 2022, 2023 Petr Antos, AP-ware servis (mixworx.net) antos.petr@gmail.com - ALL RIGHTS RESERVED */
 
-#define RUN_TESTS
-#define EMB_TESTS
+#define RUN_TESTS //compile and run tests in engine (/test arg or monitor t command)
+//#define EMB_TESTS //launch tests (selectivelly enabled by TEST_ #defines) immediatelly in main
 #define PAGE_SIZE (4*32) //16 at least for tests (16 instructions test scripts)
-//#define PAGE_SIZE (4 * 8) //8 for hypotetical tests on smallest 512byte RAM an 4kb FLASH PIC16F 
+//#define PAGE_SIZE (4 * 8) //8 for hypotetical tests on smallest 512byte RAM an 4kb FLASH PIC16F (doesnt fit anymore)
 
 //console
 //#define LOADER              // absolute minimal loader part of monitor (load hex, flash, run, break, debug)

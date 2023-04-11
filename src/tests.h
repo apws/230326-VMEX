@@ -1,17 +1,17 @@
 /* Copyright (C) 2022, 2023 Petr Antos, AP-ware servis (mixworx.net) antos.petr@gmail.com - ALL RIGHTS RESERVED */
 
-#define TEST_IMMEDIATE
-#define TEST_LUI_AUIPC_JAL
-//#define TEST_REGISTERS
-#define TEST_MULDIV
-//#define TEST_COMPARE_MOV_UNARY
-//#define TEST_MEMORY_16
-//#define TEST_BRANCHES
-//#define TEST_BRANCHES_ZERO
-//#define TEST_SYS_JR_JALR
-//#define TEST_MEMORY_32
+#define TEST_IMMEDIATE          //!!!
+#define TEST_LUI_AUIPC_JAL      //!!!
+#define TEST_REGISTERS
+#define TEST_MULDIV             //!!!
+#define TEST_COMPARE_MOV_UNARY
+#define TEST_MEMORY_16
+#define TEST_BRANCHES
+#define TEST_BRANCHES_ZERO
+#define TEST_SYS_JR_JALR
+#define TEST_MEMORY_32
 
-
+#define RUN_TESTS
 
 #ifdef RUN_TESTS
 
@@ -29,17 +29,17 @@ int runtests()
 
     fails+= test(OP00_NOP,     "nop");
 
-#ifdef TEST_IMMEDIATE    
+#ifdef TEST_IMMEDIATE
     fails+= test(OPI11_ADDI,   "addi 16");
     fails+= test(OPI12_SUBI,   "subi 16"); //pseudo
     fails+= test(OPI13_XORI,   "xori 16");
     fails+= test(OPI14_ANDI,   "andi 16");
     fails+= test(OPI15_ORI,    "ori 16");
     fails+= test(OPI16_SLLI,   "slli srli");
-    fails+= test(OPI18_SRAI,   "srai"); 
+    fails+= test(OPI18_SRAI,   "srai");
     fails+= test(OPI1A_CLTI,   "clti 16");
     fails+= test(OPI1B_CLTIU,  "cltiu 16");
-    
+
     fails+= test(OPI1E_LI,     "li 16"); //pseudo
 
     fails+= test(OPI1F_LI,     "li - fusion"); //TODO //pseudo fusion
@@ -60,13 +60,13 @@ int runtests()
     fails+= test(OPR34_AND,    "and 16");
     fails+= test(OPR35_OR,     "or 16");
     fails+= test(OPR36_SLL,    "sll srl");
-    fails+= test(OPR38_SRA,    "sra"); 
+    fails+= test(OPR38_SRA,    "sra");
     fails+= test(OPR3A_CLT,    "clt 16");
     fails+= test(OPR3B_CLTU,   "cltu 16");
 #endif
 
 #ifdef TEST_MULDIV
-    fails+= test(OPR21_MUL,    "mul mulh"); 
+    fails+= test(OPR21_MUL,    "mul mulh");
     fails+= test(OPR23_MULHU,  "mulhu");
     fails+= test(OPR24_MULHSU, "mulshu");
     fails+= test(OPR25_DIV,    "div");
@@ -74,19 +74,19 @@ int runtests()
     fails+= test(OPR27_REM,    "rem");
     fails+= test(OPR28_REMU,   "remu");
 #endif
-    
+
 #ifdef TEST_COMPARE_MOV_UNARY
     fails+= test(OPIC1_CLTZ,   "cltz 16"); //pseudo
     fails+= test(OPIC3_CNEZ,   "cnez 16"); //pseudo
     fails+= test(OPIC4_CEQZ,   "ceqz 16"); //pseudo
     fails+= test(OPIC6_CGTZ,   "cgtz 16"); //pseudo
-    
+
     fails+= test(OPIDD_MOV,    "mov 16"); //pseudo
     fails+= test(OPID0_INI,    "ini 16"); //pseudo //??????????????????
-    fails+= test(OPIDE_NEG,    "neg 16"); //pseudo    
+    fails+= test(OPIDE_NEG,    "neg 16"); //pseudo
     fails+= test(OPIDF_NOT,    "not 16"); //pseudo
 #endif
-    
+
 #ifdef TEST_MEMORY_16
     fails+= test(OPS51_WB,     "wb lb");
     fails+= test(OPS52_WH,     "wh lh");
@@ -94,7 +94,7 @@ int runtests()
     fails+= test(OPIAB_LBU,    "lbu");
     fails+= test(OPIAD_LHU,    "lhu");
 #endif
-    
+
 #ifdef TEST_BRANCHES
     fails+= test(OPSB1_BLT,    "blt");
     fails+= test(OPSB2_BLE,    "ble"); //pseudo
@@ -108,7 +108,7 @@ int runtests()
     fails+= test(OPSBC_BGEU,   "bgeu");
     fails+= test(OPSBD_BGTU,   "bgtu"); //pseudo
 #endif
-    
+
 #ifdef TEST_BRANCHES_ZERO
     fails+= test(OPS81_BLTZ,   "bltz"); //pseudo
     fails+= test(OPS82_BLEZ,   "blez"); //pseudo
@@ -119,8 +119,8 @@ int runtests()
 #endif
 
 #ifdef TEST_SYS_JR_JALR
-    fails+= test(OPI42_ECALL,  "ecall");  //TODO 
-    fails+= test(OPI48_EBREAK, "ebreak"); //TODO 
+    fails+= test(OPI42_ECALL,  "ecall");  //TODO
+    fails+= test(OPI48_EBREAK, "ebreak"); //TODO
 
     fails+= test(OPI40_FENCE,  "fence");
 
@@ -144,16 +144,16 @@ int runtests()
 //TODO #define OPSF1_WB      0xF1 //pseudo
 //TODO #define OPSF2_WH      0xF2 //pseudo
 //TODO #define OPSF4_WW      0xF4 //pseudo
- 
+
     fails+= test(OPSF1_WB,     "wb lb - fusion");
     fails+= test(OPSF2_WH,     "wh lh - fusion");
     fails+= test(OPSF4_WW,     "ww lw - fusion");
 #endif
-    
+
     printf("\nTest fails: %d\n", fails);
-    
+
     return fails;
-    
+
 }
 
 
@@ -166,20 +166,20 @@ int test(TU8 opcode, const char* testname)
 
         case OP00_NOP:
         {
-            TU8 testprog[] =
+            const TU8 tpOP00_NOP[] =
             {
                 0x00,0x00,0x00,0x00, //nop
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOP00_NOP, sizeof(tpOP00_NOP));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-#ifdef TEST_IMMEDIATE    
+#ifdef TEST_IMMEDIATE
         case OPI11_ADDI:
         {
-            TU8 testprog[] =
+            const TU8 tpOPI11_ADDI[] =
             {
                 0x11,0xAA,0x00,0x08, //addi r10 r10 $8
                 0x11,0xAA,0x00,0x02, //addi r10 r10 $2
@@ -196,7 +196,7 @@ int test(TU8 opcode, const char* testname)
                 0x11,0xAA,0x10,0x00, //addi r10 r10 $1000 (4096)
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPI11_ADDI, sizeof(tpOPI11_ADDI));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -204,7 +204,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPI12_SUBI:
         {
-            TU8 testprog[] =
+            const TU8 tpOPI12_SUBI[] =
             {
                 0x11,0xA0,0x00,0x08, //addi r10 r0 $8
                 0x11,0xAA,0x00,0x02, //addi r10 r10 $2
@@ -217,7 +217,7 @@ int test(TU8 opcode, const char* testname)
                 0x11,0xAA,0x10,0x00, //addi r10 r10 $1000 (4096)
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPI12_SUBI, sizeof(tpOPI12_SUBI));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -225,79 +225,79 @@ int test(TU8 opcode, const char* testname)
 
         case OPI13_XORI:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPI13_XORI[] = {
                 0x11,0xAA,0x56,0x78, //addi r10 r10 0x5678
                 0x13,0xAA,0x0F,0x0F, //xori r10 r10 0x0F0F0 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x13,0xAA,0x59,0x77, //xori r10 r10 0x05977 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPI13_XORI, sizeof(tpOPI13_XORI));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPI14_ANDI:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPI14_ANDI[] = {
                 0x11,0xAA,0x56,0x78, //addi r10 r10 0x5678
                 0x14,0xAA,0x0F,0x0F, //andi r10 r10 0x0F0F0 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xAA,0xF9,0xF8, //addi r10 r10 0xF9F8
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPI14_ANDI, sizeof(tpOPI14_ANDI));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPI15_ORI:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPI15_ORI[] = {
                 0x11,0xAA,0x56,0x78, //addi r10 r10 0x5678
                 0x15,0xAA,0x0F,0x0F, //ori r10 r10 0x0F0F0 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xAA,0xA0,0x81, //addi r10 r10 0xA081
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPI15_ORI, sizeof(tpOPI15_ORI));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPI16_SLLI: // + SRLI
         {
-            TU8 testprog[] = {
+            const TU8 tpOPI16_SLLI[] = {
                 0x11,0xAA,0x56,0x78, //addi r10 r10 0x5678
                 0x16,0xAA,0x00,0x08, //slli r10 r10 8 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x17,0xAA,0x00,0x08, //srli r10 r10 8 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xAA,0xA9,0x88, //addi r10 r10 0xA988
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPI16_SLLI, sizeof(tpOPI16_SLLI));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPI18_SRAI:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPI18_SRAI[] = {
                 0x11,0xAA,0x88,0x88, //addi r10 r10 0x8888
                 0x16,0xAA,0x00,0x10, //slli r10 r10 16
                 0x18,0xAA,0x00,0x10, //srai r10 r10 16 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xAA,0x77,0x78, //addi r10 r10 0x7778
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPI18_SRAI, sizeof(tpOPI18_SRAI));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPI1A_CLTI:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPI1A_CLTI[] = {
                 0x11,0xAA,0x88,0x88, //addi r10 r10 0x8888
                 0x1A,0xAA,0x99,0x99, //clti r10 r10 0x9999   //r10 < $9999 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x12,0xAA,0x00,0x01, //subi r10 r10 0x0001
@@ -312,29 +312,29 @@ int test(TU8 opcode, const char* testname)
 
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPI1A_CLTI, sizeof(tpOPI1A_CLTI));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPI1B_CLTIU:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPI1B_CLTIU[] = {
                 0x11,0xA0,0x66,0x66, //addi r10 r0 0x6666
                 0x1B,0xA0,0x99,0x99, //cltiu r10 r0 0x9999    //r10 <+ $9999 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xAA,0xFF,0xFF, //addi r10 r10 0xFFFF
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPI1B_CLTIU, sizeof(tpOPI1B_CLTIU));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPI1E_LI:
         {
-            TU8 testprog[] =
+            const TU8 tpOPI1E_LI[] =
             {
                 0x1E,0xA0,0x00,0x08, //li r10 $8
                 0x11,0xAA,0x00,0x02, //addi r10 r10 $2
@@ -351,7 +351,7 @@ int test(TU8 opcode, const char* testname)
                 0x11,0xAA,0x10,0x00, //addi r10 r10 $1000 (4096)
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPI1E_LI, sizeof(tpOPI1E_LI));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -359,25 +359,25 @@ int test(TU8 opcode, const char* testname)
         //TODO
         //LI 32 bit- probably LI fused with ORI !!!
 #endif
-     
-#ifdef TEST_LUI_AUIPC_JAL        
+
+#ifdef TEST_LUI_AUIPC_JAL
         case OPU71_LUI:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPU71_LUI[] = {
                 0x71,0xA0,0x66,0x66, //lui r10 0x6666 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x17,0xAA,0x00,0x10, //srli r10 r10 16
                 0x11,0xAA,0x99,0x9A, //addi r10 r10 0x999A
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPU71_LUI, sizeof(tpOPU71_LUI));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPU7A_AUIPC:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPU7A_AUIPC[] = {
                 0x11,0xAA,0x00,0x00, //addi r10 r10 0
                 0x11,0xAA,0x00,0x00, //addi r10 r10 0
                 0x11,0xAA,0x00,0x00, //addi r10 r10 0
@@ -388,7 +388,7 @@ int test(TU8 opcode, const char* testname)
                 0x11,0xAA,0xFF,0xF0, //addi r10 r10 -16
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPU7A_AUIPC, sizeof(tpOPU7A_AUIPC));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -396,13 +396,13 @@ int test(TU8 opcode, const char* testname)
 
         case OPU7F_JAL: //JALR
         {
-            TU8 testprog[] = {
-                0x11,0xAA,0x11,0x11, //00  //addi r10 r10 0x1111  //  r10    += $1111   
+            const TU8 tpOPU7F_JAL[] = {
+                0x11,0xAA,0x11,0x11, //00  //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x10,0x00, //04  //addi r11 r0 0x1000   //  r11     = $1000
                 0x11,0xC0,0x20,0x00, //08  //addi r12 r0 0x2000   //  r12     = $2000
                 0x7F,0x00,0x00,0x01, //0C  //jal r0, +1           //  jal r0 +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xA0,0x11,0x11, //10  //addi r10 r0 0x1111   //  r10     = $1111
-  
+
                 0x11,0xD0,0x00,0x04, //14  //addi r13 r0 4        //  r13     = 4
                 0x11,0xE0,0x00,0x07, //18  //addi r17 r0 7        //  r14     = 7
                 // ??? some markup instruction ???          // repeat:
@@ -413,21 +413,21 @@ int test(TU8 opcode, const char* testname)
 
                 //call sub
                 0x7F,0x10,0x00,0x01, //30 //jal r1, +1            //  jal r1 +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                
+
                 //skip sub
                 0x7F,0x00,0x00,0x02, //34  //jal r0, +2           //  jal r0 +2 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
                 //sub
                 0x11,0xAA,0x22,0x22, //38  //addi r10 r10 0x2222  //  r10    += $2222
                 0x4F,0x01,0x00,0x00, //3C  //jalr r0 r1 0         //  ret //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                
+
                 //end
                 0x12,0xAA,0x66,0x66, //40  //subi r10 r10 $6666   //  r10    -= $6666
                 0x00,0x00,0x00,0x00, //44  //nop                  //  nop
 
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPU7F_JAL, sizeof(tpOPU7F_JAL));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -435,13 +435,13 @@ int test(TU8 opcode, const char* testname)
 
         case OPU66_GOTO: //CALL //RET
         {
-            TU8 testprog[] = {
-                0x11,0xAA,0x11,0x11, //00  //addi r10 r10 0x1111  //  r10    += $1111   
+            const TU8 tpOPU66_GOTO[] = {
+                0x11,0xAA,0x11,0x11, //00  //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x10,0x00, //04  //addi r11 r0 0x1000   //  r11     = $1000
                 0x11,0xC0,0x20,0x00, //08  //addi r12 r0 0x2000   //  r12     = $2000
                 0x66,0x00,0x00,0x01, //0C  //goto +1              //  goto +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xA0,0x11,0x11, //10  //addi r10 r0 0x1111   //  r10     = $1111
-  
+
                 0x11,0xD0,0x00,0x04, //14  //addi r13 r0 4        //  r13     = 4
                 0x11,0xE0,0x00,0x07, //18  //addi r17 r0 7        //  r14     = 7
                 // ??? some markup instruction ???          // repeat:
@@ -452,30 +452,30 @@ int test(TU8 opcode, const char* testname)
 
                 //call sub
                 0x6C,0x10,0x00,0x01, //30 //call +1               //  call +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                
+
                 //skip sub
                 0x66,0x00,0x00,0x02, //34  //goto +2              //  goto +2 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
                 //sub
                 0x11,0xAA,0x22,0x22, //38  //addi r10 r10 0x2222  //  r10    += $2222
                 0x44,0x00,0x00,0x00, //3C  //ret                  //  ret //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                
+
                 //end
                 0x12,0xAA,0x66,0x66, //40  //subi r10 r10 $6666   //  r10    -= $6666
                 0x00,0x00,0x00,0x00, //44  //nop                  //  nop
 
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPU66_GOTO, sizeof(tpOPU66_GOTO));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 #endif
-        
-#ifdef TEST_REGISTERS        
+
+#ifdef TEST_REGISTERS
         case OPR31_ADD:
         {
-            TU8 testprog[] =
+            const TU8 tpOPR31_ADD[] =
             {
                 0x11,0xA0,0xFF,0xFF, //addi r10 r0 -1
                 0x11,0xB0,0x00,0x03, //addi r11 r0 3
@@ -488,117 +488,117 @@ int test(TU8 opcode, const char* testname)
                 0x71,0xB0,0x00,0x00, //lui r11 0x0000
                 0x11,0xBB,0xD8,0xEE, //addi r11 r11 -10002
                 0x31,0xA0,0xA0,0xB0, //add r10 r10 r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-               
+
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPR31_ADD, sizeof(tpOPR31_ADD));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPR32_SUB:
         {
-            TU8 testprog[] =
+            const TU8 tpOPR32_SUB[] =
             {
                 0x11,0xA0,0x27,0x10, //addi r10 r0 10000
                 0x11,0xB0,0x17,0x70, //addi r11 r0 6000
                 0x32,0xA0,0xA0,0xB0, //sub r10 r10 11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x32,0xA0,0xA0,0xB0, //sub r10 r10 11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xAA,0x07,0xD0, //addi r10 r10 2000
-               
+
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPR32_SUB, sizeof(tpOPR32_SUB));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
-        
-        
+
+
         case OPR33_XOR:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPR33_XOR[] = {
                 0x11,0xA0,0x56,0x78, //addi r10 r0 0x5678  //r10=  $5678
                 0x11,0xB0,0x0F,0xF0, //addi r11 r0 0x0FF0  //r11=  $0FF0
                 0x33,0xA0,0xA0,0xB0, //xor r10 r10 r11     //r10^= r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xB0,0x59,0x88, //addi r11 r0 0x5988  //r11=  $5988
-                0x32,0xA0,0xA0,0xB0, //sub r10 r10 r11     //r10-= r11  
+                0x32,0xA0,0xA0,0xB0, //sub r10 r10 r11     //r10-= r11
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPR33_XOR, sizeof(tpOPR33_XOR));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
-            
-        
+
+
         case OPR34_AND:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPR34_AND[] = {
                 0x11,0xA0,0x56,0x78, //addi r10 r0 0x5678  //r10=  $5678
                 0x11,0xB0,0x0F,0xF0, //addi r11 r0 0x0FF0  //r11=  $0FF0
                 0x34,0xA0,0xA0,0xB0, //and r10 r10 r11     //r10&= r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xB0,0x06,0x70, //addi r11 r0 0x0670  //r11=  $0670
-                0x32,0xA0,0xA0,0xB0, //sub r10 r10 r11     //r10-= r11  
+                0x32,0xA0,0xA0,0xB0, //sub r10 r10 r11     //r10-= r11
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPR34_AND, sizeof(tpOPR34_AND));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPR35_OR:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPR35_OR[] = {
                 0x11,0xA0,0x56,0x78, //addi r10 r0 0x5678  //r10=  $5678
                 0x11,0xB0,0x0F,0xF0, //addi r11 r0 0x0FF0  //r11=  $0FF0
                 0x35,0xA0,0xA0,0xB0, //or r10 r10 r11      //r10!= r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xB0,0x5F,0xF8, //addi r11 r0 0x5FF8  //r11=  $5FF8
-                0x32,0xA0,0xA0,0xB0, //sub r10 r10 r11     //r10-= r11  
+                0x32,0xA0,0xA0,0xB0, //sub r10 r10 r11     //r10-= r11
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPR35_OR, sizeof(tpOPR35_OR));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPR36_SLL: // + SRL
         {
-            TU8 testprog[] = {
+            const TU8 tpOPR36_SLL[] = {
                 0x11,0xA0,0x56,0x78, //addi r10 r0 0x5678
                 0x11,0xB0,0x00,0x08, //addi r11 r0 0x8
                 0x36,0xA0,0xA0,0xB0, //sll r10 r10 r11    //r0<<=  r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x37,0xA0,0xA0,0xB0, //srl r10 r10 r11    //r0>>>= r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xB0,0x56,0x78, //addi r11 r0 0x5678
-                0x32,0xA0,0xA0,0xB0, //sub r10 r10 r11     //r10-=  r11  
+                0x32,0xA0,0xA0,0xB0, //sub r10 r10 r11     //r10-=  r11
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPR36_SLL, sizeof(tpOPR36_SLL));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPR38_SRA:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPR38_SRA[] = {
                 0x11,0xAA,0x88,0x88, //addi r10 r10 0x8888
                 0x11,0xB0,0x00,0x10, //addi r11 r0 0x10
                 0x36,0xA0,0xA0,0xB0, //sll r10 r10 r11     //r0<<=  r11
                 0x38,0xA0,0xA0,0xB0, //sra r10 r10 r11     //r0>>=  r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                0x11,0xAA,0x77,0x78, //addi r10 r10 30584  //r0+= 30584 
+                0x11,0xAA,0x77,0x78, //addi r10 r10 30584  //r0+= 30584
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPR38_SRA, sizeof(tpOPR38_SRA));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPR3A_CLT:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPR3A_CLT[] = {
                 0x11,0xA0,0x88,0x88, //addi r10 r0 0x8888
                 0x11,0xB0,0x99,0x99, //addi r10 r0 0x9999
                 0x3A,0xA0,0xA0,0xB0, //clt r10 r10 r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -615,31 +615,31 @@ int test(TU8 opcode, const char* testname)
                 0x11,0xAA,0xFF,0xFF, //addi r10 r10 -1
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPR3A_CLT, sizeof(tpOPR3A_CLT));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
-        
-        
+
+
         case OPR3B_CLTU:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPR3B_CLTU[] = {
                 0x11,0xA0,0x66,0x66, //addi r10 r0 0x6666
                 0x11,0xB0,0x99,0x99, //addi r11 r0 0x9999
                 0x3B,0xA0,0xA0,0xB0, //cltu r10 r10 r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xAA,0xFF,0xFF, //addi r10 r10 0xFFFF
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPR3B_CLTU, sizeof(tpOPR3B_CLTU));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 #endif
-        
+
 #ifdef TEST_MULDIV
         case OPR21_MUL: //MULH
         {
-            TU8 testprog[] = {
+            const TU8 tpOPR21_MUL[] = {
                 0x71,0xA0,0x77,0x77, //lui  r10  0x7777
                 0x11,0xAA,0x77,0x77, //addi r10 r10 0x7777
                 0x71,0xB0,0x66,0x66, //lui  r11  0x6666
@@ -652,15 +652,15 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x5F,0x92, //subi r10 r10 $5F92
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPR21_MUL, sizeof(tpOPR21_MUL));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
 
-        case OPR23_MULHU: 
+        case OPR23_MULHU:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPR23_MULHU[] = {
                 0x71,0xA0,0x99,0x99, //lui  r10  0x9999
                 0x13,0xAA,0x99,0x99, //ori r10 r10 0x9999 //ORI here used for clash free large unsigned init
                 0x71,0xB0,0x88,0x88, //lui  r11  0x8888
@@ -673,15 +673,15 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x5C,0x2A, //subi r10 r10 $5C2A
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPR23_MULHU, sizeof(tpOPR23_MULHU));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
 
-        case OPR24_MULHSU: 
+        case OPR24_MULHSU:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPR24_MULHSU[] = {
                 0x71,0xA0,0x99,0x99, //lui  r10  0x9999
                 0x13,0xAA,0x99,0x99, //ori r10 r10 0x9999 //ORI here used for clash free large unsigned init
                 0x71,0xB0,0x88,0x88, //lui  r11  0x8888
@@ -694,7 +694,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x7E,0x4B, //subi r10 r10 $7E4B
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPR24_MULHSU, sizeof(tpOPR24_MULHSU));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -702,7 +702,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPR25_DIV:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPR25_DIV[] = {
                 0x71,0xA0,0x77,0x77, //lui  r10  0x7777
                 0x13,0xAA,0x77,0x77, //ori r10 r10 0x7777 //ORI here used for clash free large unsigned init
                 0x71,0xB0,0x00,0x00, //lui  r11  0x0000
@@ -712,7 +712,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAC,0x66,0x67, //subi r10 r12 $6667
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPR25_DIV, sizeof(tpOPR25_DIV));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -720,7 +720,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPR26_DIVU:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPR26_DIVU[] = {
                 0x71,0xA0,0xCC,0xCC, //lui  r10  0xCCCC
                 0x13,0xAA,0xCC,0xCC, //ori r10 r10 0xCCCC //ORI here used for clash free large unsigned init
                 0x71,0xB0,0x00,0x00, //lui  r11  0x0000
@@ -731,7 +731,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAC,0x50,0x01, //subi r10 r12 $5001
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPR26_DIVU, sizeof(tpOPR26_DIVU));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -739,7 +739,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPR27_REM:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPR27_REM[] = {
                 0x71,0xA0,0x77,0x77, //lui  r10  0x7777
                 0x13,0xAA,0x77,0x77, //ori r10 r10 0x7777 //ORI here used for clash free large unsigned init
                 0x71,0xB0,0x00,0x00, //lui  r11  0x0000
@@ -749,7 +749,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAC,0x44,0x44, //subi r10 r12 $4444
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPR27_REM, sizeof(tpOPR27_REM));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -757,7 +757,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPR28_REMU:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPR28_REMU[] = {
                 0x71,0xA0,0xCC,0xCC, //lui  r10  0xCCCC
                 0x13,0xAA,0xCC,0xCC, //ori r10 r10 0xCCCC //ORI here used for clash free large unsigned init
                 0x71,0xB0,0x00,0x00, //lui  r11  0x0000
@@ -767,16 +767,16 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAC,0x44,0x44, //subi r10 r12 $4444
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPR28_REMU, sizeof(tpOPR28_REMU));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 #endif
-        
+
 #ifdef TEST_COMPARE_MOV_UNARY
         case OPIC1_CLTZ:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPIC1_CLTZ[] = {
                 0x11,0xA0,0x88,0x88, //addi r10 r0 0x8888
                 0xC1,0xAA,0x00,0x00, //cltz r10 r10        // r10 < 0 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xAA,0xFF,0xFF, //addi r10 r10 -1
@@ -785,7 +785,7 @@ int test(TU8 opcode, const char* testname)
                 0xC1,0xAA,0x00,0x00, //cltz r10 r10        // r10 < 0 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPIC1_CLTZ, sizeof(tpOPIC1_CLTZ));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -793,7 +793,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPIC3_CNEZ:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPIC3_CNEZ[] = {
                 0x11,0xA0,0x88,0x88, //addi r10 r0 0x8888
                 0xC3,0xAA,0x00,0x00, //cnez r10 r10        // r10 != 0 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xAA,0xFF,0xFF, //addi r10 r10 -1
@@ -803,7 +803,7 @@ int test(TU8 opcode, const char* testname)
                 0x11,0xAA,0xFF,0xFF, //addi r10 r10 -1
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPIC3_CNEZ, sizeof(tpOPIC3_CNEZ));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -811,7 +811,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPIC4_CEQZ:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPIC4_CEQZ[] = {
                 0x11,0xA0,0x00,0x00, //addi r10 r0 0x0
                 0xC4,0xAA,0x00,0x00, //ceqz r10 r10        // r10 == 0 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xAA,0xFF,0xFF, //addi r10 r10 -1
@@ -820,15 +820,15 @@ int test(TU8 opcode, const char* testname)
                 0xC4,0xAA,0x00,0x00, //ceqz r10 r10        // r10 == 0 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPIC4_CEQZ, sizeof(tpOPIC4_CEQZ));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
-        
+
 
         case OPIC6_CGTZ:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPIC6_CGTZ[] = {
                 0x11,0xA0,0x88,0x88, //addi r10 r0 0x8888
                 0xC6,0xAA,0x00,0x00, //cgtz r10 r10        // r10 < 0 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -837,7 +837,7 @@ int test(TU8 opcode, const char* testname)
                 0x11,0xAA,0xFF,0xFF, //addi r10 r10 -1
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPIC6_CGTZ, sizeof(tpOPIC6_CGTZ));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -845,15 +845,15 @@ int test(TU8 opcode, const char* testname)
 
         case OPIDD_MOV:
         {
-            TU8 testprog[] =
+            const TU8 tpOPIDD_MOV[] =
             {
                 0x1E,0xA0,0x27,0x10, //li r10 10000
                 0xDD,0xBA,0x00,0x00, //mov r11, r10      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                0x32,0xA0,0xA0,0xB0, //sub r10 r10 r11 
-               
+                0x32,0xA0,0xA0,0xB0, //sub r10 r10 r11
+
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPIDD_MOV, sizeof(tpOPIDD_MOV));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -861,16 +861,16 @@ int test(TU8 opcode, const char* testname)
 
         case OPID0_INI:
         {
-            TU8 testprog[] =
+            const TU8 tpOPID0_INI[] =
             {
                 0x1E,0xA0,0x27,0x10, //li r10 10000
                 0xDD,0xBA,0x00,0x00, //mov r11, r10
-                0x32,0xA0,0xA0,0xB0, //sub r10 r10 r11 
+                0x32,0xA0,0xA0,0xB0, //sub r10 r10 r11
                 0xD0,0xB0,0x00,0x00, //ini r11           //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                0x32,0xA0,0xA0,0xB0, //sub r10 r10 r11 
+                0x32,0xA0,0xA0,0xB0, //sub r10 r10 r11
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPID0_INI, sizeof(tpOPID0_INI));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -878,16 +878,16 @@ int test(TU8 opcode, const char* testname)
 
         case OPIDE_NEG:
         {
-            TU8 testprog[] =
+            const TU8 tpOPIDE_NEG[] =
             {
                 0x11,0xA0,0x27,0x10, //addi r10 r0 10000
                 0xDE,0xAA,0x00,0x00, //neg r10 r10      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0xDE,0xAA,0x00,0x00, //neg r10 r10      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x12,0xAA,0x27,0x10, //subi r10 r10 10000
-               
+
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPIDE_NEG, sizeof(tpOPIDE_NEG));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -895,23 +895,23 @@ int test(TU8 opcode, const char* testname)
 
         case OPIDF_NOT:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPIDF_NOT[] = {
                 0x11,0xAA,0x56,0x78, //addi r10 r10 0x5678
                 0xDF,0xAA,0x00,0x00, //not r10 r10       //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0xDF,0xAA,0x00,0x00, //not r10 r10       //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x12,0xAA,0x56,0x78, //subi r10 r10 0x5678
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPIDF_NOT, sizeof(tpOPIDF_NOT));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 #endif
-        
-#ifdef TEST_MEMORY_16        
+
+#ifdef TEST_MEMORY_16
         case OPS51_WB: // + LB
         {
-            TU8 testprog[] = {
+            const TU8 tpOPS51_WB[] = {
                 0x11,0xA0,0x00,0x66, //addi r10 r0 0x0066   //  r10     = $66
                 0x51,0xA0,0x00,0x00, //wb r10 (r0+0)        //  [r0+0] b= r10  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0xA1,0xB0,0x00,0x00, //lb r11 (r0+0)        //  r11    b= [r0+0] //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -927,15 +927,15 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x0F,0xEE, //subi r10 r10 $0FEE   //  r10    -= $0FEE
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPS51_WB, sizeof(tpOPS51_WB));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPS52_WH: // + LH
         {
-            TU8 testprog[] = {
+            const TU8 tpOPS52_WH[] = {
                 0x11,0xA0,0x66,0x66, //addi r10 r0 0x6666   //  r10     = $6666
                 0x52,0xA0,0x00,0x00, //wh r10 (r0+0)        //  [r0+0] h= r10 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0xA2,0xB0,0x00,0x00, //lh r11 (r0+0)        //  r11    h= [r0+0] //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -951,15 +951,15 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x5E,0xEE, //subi r10 r10 $5EEE   //  r10    -= $5EEE
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPS52_WH, sizeof(tpOPS52_WH));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPS54_WW: // + LW
         {
-            TU8 testprog[] = {
+            const TU8 tpOPS54_WW[] = {
                 0x11,0xA0,0x66,0x66, //addi r10 r0 0x6666   //  r10      = $6666
                 0x16,0xAA,0x00,0x08, //slli r10 r10 8       //  r10    <<= 8
                 0x54,0xA0,0x00,0x00, //ww r10 (r0+0)        //  [r0+0]   = r10 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -978,15 +978,15 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x5C,0xEE, //subi r10 r10 $5CEE   //  r10 -= $5CEE
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPS54_WW, sizeof(tpOPS54_WW));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPIAB_LBU:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPIAB_LBU[] = {
                 0x11,0xA0,0x00,0x66, //addi r10 r0 0x0066   //  r10      = $66
                 0x51,0xA0,0x00,0x00, //wb r10 (r0+0)        //  [r0+0]  b= r10
                 0xAB,0xB0,0x00,0x00, //lbu r11 (r0+0)       //  r11    ub= [r0+0] //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1002,15 +1002,15 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x10,0xEE, //subi r10 r10 $10EE   //  r10    -= $10EE
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPIAB_LBU, sizeof(tpOPIAB_LBU));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-        
+
         case OPIAD_LHU:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPIAD_LHU[] = {
                 0x11,0xA0,0x66,0x66, //addi r10 r0 0x6666   //  r10     = $6666
                 0x52,0xA0,0x00,0x00, //wh r10 (r0+0)        //  [r0+0] h= r10
                 0xAD,0xB0,0x00,0x00, //lhu r11 (r0+0)       //  r11   uh= [r0+0] //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1026,17 +1026,17 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x7E,0xEE, //subi r10 r10 $7EEE   //  r10    -= $7EEE
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPIAD_LHU, sizeof(tpOPIAD_LHU));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 #endif
-        
-#ifdef TEST_BRANCHES        
+
+#ifdef TEST_BRANCHES
         case OPSB1_BLT:
         {
-            TU8 testprog[] = {
-                0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111   
+            const TU8 tpOPSB1_BLT[] = {
+                0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x10,0x00, //addi r11 r0 0x1000   //  r11     = $1000
                 0x11,0xC0,0x20,0x00, //addi r12 r0 0x2000   //  r12     = $2000
                 0xB1,0xBC,0x00,0x01, //blt r11 r12 1        //  if (r11 < r12) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1057,7 +1057,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x66,0x66, //subi r10 r10 $6666   //  r10    -= $6666
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPSB1_BLT, sizeof(tpOPSB1_BLT));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -1065,7 +1065,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPSB2_BLE:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPSB2_BLE[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x10,0x00, //addi r11 r0 0x1000   //  r11     = $1000
                 0x11,0xC0,0x20,0x00, //addi r12 r0 0x2000   //  r12     = $2000
@@ -1087,7 +1087,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x55,0x55, //subi r10 r10 $5555   //  r10    -= $5555
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPSB2_BLE, sizeof(tpOPSB2_BLE));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -1095,7 +1095,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPSB3_BNE:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPSB3_BNE[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x10,0x00, //addi r11 r0 0x1000   //  r11     = $1000
                 0x11,0xC0,0x20,0x00, //addi r12 r0 0x2000   //  r12     = $2000
@@ -1112,7 +1112,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x44,0x44, //subi r10 r10 $4444   //  r10    -= $4444
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPSB3_BNE, sizeof(tpOPSB3_BNE));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -1120,7 +1120,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPSB4_BEQ:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPSB4_BEQ[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x20,0x00, //addi r11 r0 0x2000   //  r11     = $2000
                 0x11,0xC0,0x20,0x00, //addi r12 r0 0x2000   //  r12     = $2000
@@ -1135,7 +1135,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x22,0x22, //subi r10 r10 $2222   //  r10    -= $2222
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPSB4_BEQ, sizeof(tpOPSB4_BEQ));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -1143,7 +1143,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPSB5_BGE:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPSB5_BGE[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x20,0x00, //addi r11 r0 0x2000   //  r11     = $2000
                 0x11,0xC0,0x10,0x00, //addi r12 r0 0x1000   //  r12     = $1000
@@ -1165,7 +1165,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x55,0x55, //subi r10 r10 $5555   //  r10    -= $5555
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPSB5_BGE, sizeof(tpOPSB5_BGE));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -1173,7 +1173,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPSB6_BGT:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPSB6_BGT[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x20,0x00, //addi r11 r0 0x2000   //  r11     = $2000
                 0x11,0xC0,0x10,0x00, //addi r12 r0 0x1000   //  r12     = $1000
@@ -1195,7 +1195,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x66,0x66, //subi r10 r10 $6666   //  r10    -= $6666
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPSB6_BGT, sizeof(tpOPSB6_BGT));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -1203,8 +1203,8 @@ int test(TU8 opcode, const char* testname)
 
         case OPSBA_BLTU:
         {
-            TU8 testprog[] = {
-                0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111   
+            const TU8 tpOPSBA_BLTU[] = {
+                0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x10,0x00, //addi r11 r0 0x1000   //  r11     = $1000
                 0x11,0xC0,0x90,0x00, //addi r12 r0 0x9000   //  r12     = $9000
                 0xBA,0xBC,0x00,0x01, //bltu r11 r12 1       //  if (r11 U< r12) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1225,7 +1225,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x66,0x66, //subi r10 r10 $6666   //  r10    -= $6666
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPSBA_BLTU, sizeof(tpOPSBA_BLTU));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -1233,7 +1233,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPSBB_BLEU:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPSBB_BLEU[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x10,0x00, //addi r11 r0 0x1000   //  r11     = $1000
                 0x11,0xC0,0x90,0x00, //addi r12 r0 0x9000   //  r12     = $9000
@@ -1255,7 +1255,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x77,0x77, //subi r10 r10 $7777   //  r10    -= $7777
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPSBB_BLEU, sizeof(tpOPSBB_BLEU));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -1263,7 +1263,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPSBC_BGEU:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPSBC_BGEU[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x90,0x00, //addi r11 r0 0x2000   //  r11     = $9000
                 0x11,0xC0,0x10,0x00, //addi r12 r0 0x1000   //  r12     = $1000
@@ -1285,7 +1285,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x77,0x77, //subi r10 r10 $7777   //  r10    -= $7777
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPSBC_BGEU, sizeof(tpOPSBC_BGEU));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -1293,7 +1293,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPSBD_BGTU:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPSBD_BGTU[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x90,0x00, //addi r11 r0 0x2000   //  r11     = $9000
                 0x11,0xC0,0x10,0x00, //addi r12 r0 0x1000   //  r12     = $1000
@@ -1315,16 +1315,16 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x66,0x66, //subi r10 r10 $6666   //  r10    -= $6666
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPSBD_BGTU, sizeof(tpOPSBD_BGTU));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 #endif
-        
+
 #ifdef TEST_BRANCHES_ZERO
         case OPS81_BLTZ:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPS81_BLTZ[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x90,0x00, //addi r11 r0 0x9000   //  r11     = $9000
                 0x81,0xB0,0x00,0x01, //bltz r11             //  if (r11 < 0) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1343,7 +1343,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x77,0x77, //subi r10 r10 $7777   //  r10    -= $7777
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPS81_BLTZ, sizeof(tpOPS81_BLTZ));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -1351,7 +1351,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPS82_BLEZ:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPS82_BLEZ[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x90,0x00, //addi r11 r0 0x9000   //  r11     = $9000
                 0x82,0xB0,0x00,0x01, //blez r11             //  if (r11 <= 0) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1370,7 +1370,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x66,0x66, //subi r10 r10 $6666   //  r10    -= $6666
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPS82_BLEZ, sizeof(tpOPS82_BLEZ));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -1378,7 +1378,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPS83_BNEZ:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPS83_BNEZ[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x10,0x00, //addi r11 r0 0x1000   //  r11     = $1000
                 0x83,0xB0,0x00,0x01, //bnez r11 1           //  if (r11 != 0) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1393,7 +1393,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x55,0x55, //subi r10 r10 $5555   //  r10    -= $5555
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPS83_BNEZ, sizeof(tpOPS83_BNEZ));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -1401,7 +1401,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPS84_BEQZ:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPS84_BEQZ[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x00,0x00, //addi r11 r0 0x0      //  r11     = $0
                 0x84,0xB0,0x00,0x01, //beqz r11 1           //  if (r11 == 0) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1414,7 +1414,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x33,0x33, //subi r10 r10 $3333   //  r10    -= $3333
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPS84_BEQZ, sizeof(tpOPS84_BEQZ));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -1422,7 +1422,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPS85_BGEZ:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPS85_BGEZ[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x20,0x00, //addi r11 r0 0x2000   //  r11     = $2000
                 0x85,0xB0,0x00,0x01, //bgez r11 1           //  if (r11 >= 0) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1441,7 +1441,7 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x66,0x66, //subi r10 r10 $6666   //  r10    -= $6666
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPS85_BGEZ, sizeof(tpOPS85_BGEZ));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
@@ -1449,7 +1449,7 @@ int test(TU8 opcode, const char* testname)
 
         case OPS86_BGTZ:
         {
-            TU8 testprog[] = {
+            const TU8 tpOPS86_BGTZ[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x20,0x00, //addi r11 r0 0x2000   //  r11     = $2000
                 0x86,0xB0,0x00,0x01, //bgtz r11 1           //  if (r11 > 0) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1468,12 +1468,12 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x55,0x55, //subi r10 r10 $5555   //  r10    -= $5555
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPS86_BGTZ, sizeof(tpOPS86_BGTZ));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 #endif
-        
+
 #ifdef TEST_SYS_JR_JALR
         //TODO
         //ecall
@@ -1485,17 +1485,17 @@ int test(TU8 opcode, const char* testname)
 
         case OPI40_FENCE:
         {
-            TU8 testprog[] =
+            const TU8 tpOPI40_FENCE[] =
             {
                 0x40,0x00,0x00,0x00, //fence = nop
             };
             memset(&core, 0, sizeof(core));
-            testresult = vmex(testprog, sizeof(testprog));
+            testresult = vmex(tpOPI40_FENCE, sizeof(tpOPI40_FENCE));
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
         }
         break;
 
-    
+
         //TODO
         //xgoto
 
@@ -1511,10 +1511,10 @@ int test(TU8 opcode, const char* testname)
         //TODO
         //ftail
 #endif
-        
+
 #ifdef TEST_MEMORY_32
-#endif        
-        
+#endif
+
         default:
             testresult = 1;
             printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
