@@ -2,16 +2,15 @@
 
 #define TEST_IMMEDIATE          //!!!
 #define TEST_LUI_AUIPC_JAL      //!!!
-//#define TEST_REGISTERS
+#define TEST_REGISTERS
 #define TEST_MULDIV             //!!!
-//#define TEST_COMPARE_MOV_UNARY
-//#define TEST_MEMORY_16
-//#define TEST_BRANCHES
-//#define TEST_BRANCHES_ZERO
-//#define TEST_SYS_JR_JALR
-//#define TEST_MEMORY_32
+#define TEST_COMPARE_MOV_UNARY
+#define TEST_MEMORY_16
+#define TEST_BRANCHES
+#define TEST_BRANCHES_ZERO
+#define TEST_SYS_JR_JALR
+#define TEST_MEMORY_32
 
-#define RUN_TESTS
 
 #ifdef RUN_TESTS
 
@@ -172,7 +171,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOP00_NOP, sizeof(tpOP00_NOP));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -197,7 +196,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPI11_ADDI, sizeof(tpOPI11_ADDI));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -211,6 +210,10 @@ int test(TU8 opcode, const char* testname)
                 0x12,0xAA,0x00,0x0C, //subi r10 r10 12
                 0x11,0xAA,0x00,0x02, //addi r10 r10 2
 
+                0x12,0xAA,0xFF,0xE8, //subi r10 r10 -24
+                0x12,0xAA,0x00,0x30, //subi r10 r10 48
+                0x12,0xAA,0xFF,0xE8, //subi r10 r10 -24
+                
                 0x11,0xAA,0x30,0x00, //addi r10 r10 $3000 (12288)
                 0x11,0xAA,0x30,0x00, //addi r10 r10 $3000 (12288)
                 0x12,0xAA,0x70,0x00, //subi r10 r10 $7000 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -218,7 +221,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPI12_SUBI, sizeof(tpOPI12_SUBI));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -232,7 +235,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPI13_XORI, sizeof(tpOPI13_XORI));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -246,7 +249,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPI14_ANDI, sizeof(tpOPI14_ANDI));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -260,7 +263,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPI15_ORI, sizeof(tpOPI15_ORI));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -275,7 +278,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPI16_SLLI, sizeof(tpOPI16_SLLI));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -290,7 +293,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPI18_SRAI, sizeof(tpOPI18_SRAI));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -313,7 +316,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPI1A_CLTI, sizeof(tpOPI1A_CLTI));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -327,7 +330,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPI1B_CLTIU, sizeof(tpOPI1B_CLTIU));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -352,7 +355,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPI1E_LI, sizeof(tpOPI1E_LI));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -370,7 +373,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPU71_LUI, sizeof(tpOPU71_LUI));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -389,7 +392,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPU7A_AUIPC, sizeof(tpOPU7A_AUIPC));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -428,7 +431,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPU7F_JAL, sizeof(tpOPU7F_JAL));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -467,7 +470,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPU66_GOTO, sizeof(tpOPU66_GOTO));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 #endif
@@ -492,7 +495,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPR31_ADD, sizeof(tpOPR31_ADD));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -510,7 +513,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPR32_SUB, sizeof(tpOPR32_SUB));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -526,7 +529,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPR33_XOR, sizeof(tpOPR33_XOR));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -542,7 +545,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPR34_AND, sizeof(tpOPR34_AND));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -558,7 +561,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPR35_OR, sizeof(tpOPR35_OR));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -575,7 +578,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPR36_SLL, sizeof(tpOPR36_SLL));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -591,7 +594,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPR38_SRA, sizeof(tpOPR38_SRA));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -616,7 +619,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPR3A_CLT, sizeof(tpOPR3A_CLT));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -631,7 +634,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPR3B_CLTU, sizeof(tpOPR3B_CLTU));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 #endif
@@ -653,7 +656,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPR21_MUL, sizeof(tpOPR21_MUL));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -674,7 +677,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPR23_MULHU, sizeof(tpOPR23_MULHU));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -695,7 +698,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPR24_MULHSU, sizeof(tpOPR24_MULHSU));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -713,7 +716,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPR25_DIV, sizeof(tpOPR25_DIV));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -732,7 +735,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPR26_DIVU, sizeof(tpOPR26_DIVU));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -750,7 +753,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPR27_REM, sizeof(tpOPR27_REM));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -768,7 +771,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPR28_REMU, sizeof(tpOPR28_REMU));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 #endif
@@ -786,7 +789,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPIC1_CLTZ, sizeof(tpOPIC1_CLTZ));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -804,7 +807,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPIC3_CNEZ, sizeof(tpOPIC3_CNEZ));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -821,7 +824,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPIC4_CEQZ, sizeof(tpOPIC4_CEQZ));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -838,7 +841,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPIC6_CGTZ, sizeof(tpOPIC6_CGTZ));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -854,7 +857,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPIDD_MOV, sizeof(tpOPIDD_MOV));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -871,7 +874,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPID0_INI, sizeof(tpOPID0_INI));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -888,7 +891,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPIDE_NEG, sizeof(tpOPIDE_NEG));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -903,7 +906,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPIDF_NOT, sizeof(tpOPIDF_NOT));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 #endif
@@ -928,7 +931,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPS51_WB, sizeof(tpOPS51_WB));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -952,7 +955,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPS52_WH, sizeof(tpOPS52_WH));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -979,7 +982,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPS54_WW, sizeof(tpOPS54_WW));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1003,7 +1006,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPIAB_LBU, sizeof(tpOPIAB_LBU));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1027,7 +1030,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPIAD_LHU, sizeof(tpOPIAD_LHU));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 #endif
@@ -1058,7 +1061,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPSB1_BLT, sizeof(tpOPSB1_BLT));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1088,7 +1091,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPSB2_BLE, sizeof(tpOPSB2_BLE));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1113,7 +1116,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPSB3_BNE, sizeof(tpOPSB3_BNE));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1136,7 +1139,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPSB4_BEQ, sizeof(tpOPSB4_BEQ));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1166,7 +1169,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPSB5_BGE, sizeof(tpOPSB5_BGE));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1196,7 +1199,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPSB6_BGT, sizeof(tpOPSB6_BGT));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1226,7 +1229,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPSBA_BLTU, sizeof(tpOPSBA_BLTU));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1256,7 +1259,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPSBB_BLEU, sizeof(tpOPSBB_BLEU));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1286,7 +1289,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPSBC_BGEU, sizeof(tpOPSBC_BGEU));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1316,7 +1319,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPSBD_BGTU, sizeof(tpOPSBD_BGTU));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 #endif
@@ -1327,11 +1330,11 @@ int test(TU8 opcode, const char* testname)
             const TU8 tpOPS81_BLTZ[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x90,0x00, //addi r11 r0 0x9000   //  r11     = $9000
-                0x81,0xB0,0x00,0x01, //bltz r11             //  if (r11 < 0) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                0x81,0xB0,0x00,0x01, //bltz r11 +1          //  if (r11 < 0) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xAA,0x11,0x11, //addi r10 r0 0x1111   //  r10    += $1111
 
                 0x11,0xB0,0x20,0x00, //addi r11 r0 0x2000   //  r11     = $2000
-                0x81,0xB0,0x00,0x01, //bltz r11             //  if (r11 < 0) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                0x81,0xB0,0x00,0x01, //bltz r11 +1          //  if (r11 < 0) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xAA,0x22,0x22, //addi r10 r10 0x2222  //  r10    += $2222
 
                 0x12,0xD0,0x00,0x04, //subi r13 r0 4        //  r13     = -4
@@ -1344,7 +1347,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPS81_BLTZ, sizeof(tpOPS81_BLTZ));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1354,11 +1357,11 @@ int test(TU8 opcode, const char* testname)
             const TU8 tpOPS82_BLEZ[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
                 0x11,0xB0,0x90,0x00, //addi r11 r0 0x9000   //  r11     = $9000
-                0x82,0xB0,0x00,0x01, //blez r11             //  if (r11 <= 0) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!
+                0x82,0xB0,0x00,0x01, //blez r11 +1          //  if (r11 <= 0) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xAA,0x11,0x11, //addi r10 r0 0x1111   //  r10    += $1111
 
                 0x11,0xB0,0x00,0x00, //addi r11 r0 0x0      //  r11     = $0
-                0x82,0xB0,0x00,0x01, //blez r11             //  if (r11 <= 0) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!
+                0x82,0xB0,0x00,0x01, //blez r11 +1          //  if (r11 <= 0) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xAA,0x22,0x22, //addi r10 r10 0x2222  //  r10    += $2222
 
                 0x12,0xD0,0x00,0x04, //subi r13 r0 4        //  r13     = -4
@@ -1371,7 +1374,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPS82_BLEZ, sizeof(tpOPS82_BLEZ));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1394,7 +1397,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPS83_BNEZ, sizeof(tpOPS83_BNEZ));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1415,7 +1418,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPS84_BEQZ, sizeof(tpOPS84_BEQZ));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1442,7 +1445,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPS85_BGEZ, sizeof(tpOPS85_BGEZ));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1469,7 +1472,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPS86_BGTZ, sizeof(tpOPS86_BGTZ));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 #endif
@@ -1491,7 +1494,7 @@ int test(TU8 opcode, const char* testname)
             };
             memset(&core, 0, sizeof(core));
             testresult = vmex(tpOPI40_FENCE, sizeof(tpOPI40_FENCE));
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
         }
         break;
 
@@ -1517,7 +1520,7 @@ int test(TU8 opcode, const char* testname)
 
         default:
             testresult = 1;
-            printf("%s: %d\n", testname, testresult); if (testresult!=0) return 1;
+            printf("%d : %s\n", testresult, testname); if (testresult!=0) return 1;
 
     }
 
