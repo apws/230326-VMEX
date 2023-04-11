@@ -7,7 +7,7 @@
 
 //console
 //#define LOADER              // absolute minimal loader part of monitor (load hex, flash, run, break, debug)
-#define MONITOR             // complete monitor including diassebly, assembly    
+#define MONITOR             // complete monitor including diassebly, assembly
 //#define ASLIX               // high level C-like/Python-like ASLIX assembler (symbols, C-operators, loop/again, comments)
 
 #define CONSOLE       //not yet supported but will be part of the small/classic/aslix monitor
@@ -17,7 +17,7 @@
                       //on home computers its screen terminal module, linked to the VMEX (getch/putch only)
                       //bigger VMEX/ASLIX application can use full terminal interface, still the same way
                       //there will be NO spacial screen/keyboard access, only this unified terminal way
-                      //so, effectivelly this means need to develop UNIFIED TERMINAL for all HC around... 
+                      //so, effectivelly this means need to develop UNIFIED TERMINAL for all HC around...
                       //
                       //truth is, that OUR support will be probably 2 color/mono (fore/back, inverse) + cursor controls ONLY
                       //and standardized around basic ASCII subset, with probably custom loaded FONT to be exact everywhere
@@ -73,14 +73,11 @@ Core core = {
 int main(int argc, char *argv[])
 {
     char command[32];
-    
+
     #ifdef EMB_TESTS
     return runtests();
     #endif
-//    println("  Test of cc65.");
-//    return 0;
-    
-    // Check for "/test" argument
+
     if (argc > 1 && strcmp(argv[1], "/test") == 0)
     {
         #ifdef RUN_TESTS
@@ -90,7 +87,7 @@ int main(int argc, char *argv[])
         println("  Tests are not compiled in this package.");
         #endif
     }
-    // Check for "/test" argument
+
     else if (argc > 1 && strcmp(argv[1], "/?") == 0)
     {
         println("");
@@ -99,16 +96,16 @@ int main(int argc, char *argv[])
         println("  /test - tests");
         println("");
         println("  Without arguments is executed interactive VMEX monitor.");
-        
-    }    
+
+    }
     else
     {
         #ifdef MONITOR
-        
+
         println("");
         cmd_version(&core);
         println("  ? for help");
-        
+
         while (1)
         {
             print("> ");
@@ -117,7 +114,7 @@ int main(int argc, char *argv[])
             // Remove the newline character from the input
             command[strcspn(command, "\n")] = 0;
 
-            
+
             if (strcmp(command, "t") == 0)
             {
                 #ifdef RUN_TESTS
@@ -152,12 +149,12 @@ int main(int argc, char *argv[])
             {
                 cmd_memory(&core, 0, 14);
             }
-            
+
             if (strcmp(command, "g") == 0)
             {
                 cmd_go(&core);
             }
-            
+
         }
 
         #else
@@ -168,21 +165,21 @@ int main(int argc, char *argv[])
             0x11, 0xBB, 0x00, 0x0B, // addi r11 r0 5
             0x11, 0xCC, 0x00, 0x0C, // addi r12 r0 5
             0x11, 0xDD, 0x00, 0x0D, // addi r13 r0 5
-            
+
             0x51, 0xD0, 0x00, 0x00, // wb r13 r0 0
             0x11, 0xDD, 0x00, 0x01, // addi r13 r13 1
             0x51, 0xD0, 0x00, 0x01, // wb r13 r0 1
             0x42, 0x00, 0x00, 0x00, // ecall
-            0x48, 0x00, 0x00, 0x00, // ebreak                
+            0x48, 0x00, 0x00, 0x00, // ebreak
         };
-    
+
         int result = vmex(testprog, sizeof(testprog));
-        
+
         println("");
         print("  exit code: "); println(itoh(result,2));
-        
-        #endif  
-       
+
+        #endif
+
     }
 }
 #endif
@@ -199,7 +196,7 @@ int vmex(const TU8 testprog[], int progsize)
     TU8 rd = 0;
     IMMS_TYPE imm = 0;
 
-    PC_TYPE pc = 0; 
+    PC_TYPE pc = 0;
 
     //temp debug
     TS32 r10i = 0;
@@ -216,7 +213,6 @@ int vmex(const TU8 testprog[], int progsize)
     REGS_TYPE* _rs1_;
     REGS_TYPE* _rs2_;
 
-
     //fill program
     memcpy(_prog_, testprog, progsize);
     core.pc = 0;
@@ -224,11 +220,11 @@ int vmex(const TU8 testprog[], int progsize)
     while (core.pc < progsize)
     {
         pc = core.pc;
-        
+
         //parameters parsing
         _op_ = (TU8*)&_prog_[pc];
-        opcode = *_op_; 
-                      
+        opcode = *_op_;
+
         switch (opcode & 0xF0)
         {
             case R3_TYPE:
@@ -239,7 +235,7 @@ int vmex(const TU8 testprog[], int progsize)
                 rs2 = _op_[3] >> 4;
                 break;
             }
-            
+
             case I1_TYPE:
             case IC_TYPE: //pseudo
             case ID_TYPE: //pseudo
@@ -252,7 +248,7 @@ int vmex(const TU8 testprog[], int progsize)
                 imm = (_op_[2] << 8) | _op_[3];
                 break;
             }
-            
+
             case S5_TYPE:
             case SF_TYPE:
             case SB_TYPE:
@@ -263,7 +259,7 @@ int vmex(const TU8 testprog[], int progsize)
                 imm = (_op_[2] << 8) | _op_[3];
                 break;
             }
-            
+
             case U7_TYPE:
             case U6_TYPE: //pseudo
             {
@@ -271,7 +267,7 @@ int vmex(const TU8 testprog[], int progsize)
                 imm = (_op_[2] << 8) | _op_[3];
                 break;
             }
-            
+
             case X9_TYPE:
             case X0_TYPE:
                 //NOP + ASLIX HLL
@@ -371,15 +367,17 @@ int vmex(const TU8 testprog[], int progsize)
                 *_rd_ = (TU32)*_rs1_ % (TU32)*_rs2_;
                 break;
             #endif
-                
+
 
             //I-TYPE ----------------------------------------------------------------------------
             case OPI11_ADDI:
-                *_rd_ = (REGS_TYPE) *_rs1_ + (IMMS_TYPE) imm; //& 0xFFFF ?? cc65 ... or REGS_TYPE ???
+                //*_rd_ = (REGS_TYPE) *_rs1_ + (IMMS_TYPE) imm;
+                *_rd_ = (REGS_TYPE) (*_rs1_ + (REGS_TYPE) imm); //FIXED !!!
                 break;
 
             case OPI12_SUBI: //pseudo
-                *_rd_ = (REGS_TYPE) *_rs1_ - (IMMS_TYPE) imm; //& 0xFFFF ?? cc65 ... or REGS_TYPE ???
+                //*_rd_ = (REGS_TYPE) *_rs1_ - (IMMS_TYPE) imm;
+                *_rd_ = (REGS_TYPE) (*_rs1_ - (REGS_TYPE) imm); //POOR TEST?, FIXED !!!
                 break;
 
             case OPI13_XORI:
@@ -407,6 +405,10 @@ int vmex(const TU8 testprog[], int progsize)
                 break;
 
             case OPI1A_CLTI: //SLTI
+//                //TODO //DEBUG //CC65 //root cause => ADDI
+//                x3 = (REGS_TYPE) *_rs1_; x4 = (IMMS_TYPE) imm;
+//                printf("   rs1: %s ", itoh(x3,8)); printf("imm: %s", itoh(x4,8)); printf("\n");
+
                 *_rd_ = (REGS_TYPE) *_rs1_ < (IMMS_TYPE) imm; //& 0xFFFF !! cc65 !! SOLVED???? IMMS_TYPE vs REGS_TYPE
                 break;
 
@@ -415,7 +417,7 @@ int vmex(const TU8 testprog[], int progsize)
                 break;
 
 
-            //LOAD IMMEDIATE 
+            //LOAD IMMEDIATE
             case OPI1E_LI: //pseudo //16bit //or 1F ??
                 *_rd_ = (IMMS_TYPE) imm;
                 break;
@@ -482,7 +484,7 @@ int vmex(const TU8 testprog[], int progsize)
             case OPIAB_LBU:
                 { TU8* mem_ptr = (TU8*)&_data_[*_rs1_ + imm]; *_rd_ = *(TU8*)mem_ptr; }
                 break;
-            
+
             case OPIAD_LHU:
                 { TU8* mem_ptr = (TU8*)&_data_[*_rs1_ + imm]; *_rd_ = *(TU16*)mem_ptr; }
                 break;
@@ -496,13 +498,13 @@ int vmex(const TU8 testprog[], int progsize)
 
             //SYSTEM
             case OPI42_ECALL: //SYS imm = 0
-                #ifdef CONSOLE  
+                #ifdef CONSOLE
                 println("  system call");
                 #endif
                 break;
 
             case OPI48_EBREAK: //SYS imm = 1
-                #ifdef CONSOLE    
+                #ifdef CONSOLE
                 println("  breakpoint");
                 #endif
                 break;
@@ -588,15 +590,15 @@ int vmex(const TU8 testprog[], int progsize)
             case OPSB1_BLT:
                 if ((REGS_TYPE) *_rs1_ < (REGS_TYPE) *_rs2_) { core.pc += imm << LSHIFT; }
                 break;
-            
+
             case OPSB2_BLE: //pseudo
                 if ((REGS_TYPE) *_rs1_ <= (REGS_TYPE) *_rs2_) { core.pc += imm << LSHIFT; }
                 break;
-            
+
             case OPSB3_BNE:
                 if (*_rs1_ != *_rs2_) { core.pc += imm << LSHIFT; }
                 break;
-            
+
             case OPSB4_BEQ:
                 if (*_rs1_ == *_rs2_) { core.pc += imm << LSHIFT; }
                 break;
@@ -613,11 +615,11 @@ int vmex(const TU8 testprog[], int progsize)
             case OPSBA_BLTU:
                 if ((REGU_TYPE) *_rs1_ < (REGU_TYPE) *_rs2_) { core.pc += imm << LSHIFT; }
                 break;
-            
+
             case OPSBB_BLEU: //pseudo
                 if ((REGU_TYPE) *_rs1_ <= (REGU_TYPE) *_rs2_) { core.pc += imm << LSHIFT; }
                 break;
-            
+
             case OPSBC_BGEU:
                 if ((REGU_TYPE) *_rs1_ >= (REGU_TYPE) *_rs2_) { core.pc += imm << LSHIFT; }
                 break;
@@ -625,7 +627,7 @@ int vmex(const TU8 testprog[], int progsize)
             case OPSBD_BGTU: //pseudo
                 if ((REGU_TYPE) *_rs1_ > (REGU_TYPE) *_rs2_) { core.pc += imm << LSHIFT; }
                 break;
-           
+
 
             case OPS81_BLTZ: //pseudo
                 if ((REGS_TYPE) *_rs1_ < 0) { core.pc += imm << LSHIFT; }
@@ -654,24 +656,24 @@ int vmex(const TU8 testprog[], int progsize)
 
             // LUI, AUIPC, JAL ---------------------------------------------------------------
             case OPU71_LUI:
-                *_rd_ = (REGU_TYPE) (imm << IMM_BITS); 
+                *_rd_ = ((REGU_TYPE)imm << IMM_BITS); //TODO //TEST
                 break;
 
             case OPU7A_AUIPC:
-                *_rd_ = ((REGU_TYPE) (imm << IMM_BITS)) + pc;
+                *_rd_ = ((REGU_TYPE)imm << IMM_BITS) + pc; //TODO //TEST
                 break;
 
-            case OPU7F_JAL: // !!!! IMMEDIATE HERE POSSIBLY 20 BITS !!!!
+            case OPU7F_JAL: // !!!! IMMEDIATE HERE POSSIBLY 20 BITS, NOT NOW, WE USE STRICT 16bit FIELD !!!!
                 *_rd_ = pc + 4; core.pc += imm << LSHIFT; //& ~0x1; in RISCV !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 break;
 
 
             //GOTO, CALL
-            case OPU66_GOTO: //pseudo // !!!! IMMEDIATE HERE POSSIBLY 20 BITS !!!!
+            case OPU66_GOTO: //pseudo // !!!! IMMEDIATE HERE POSSIBLY 20 BITS, NOT NOW, WE USE STRICT 16bit FIELD !!!!
                 core.pc += imm << LSHIFT; //& ~0x1; in RISCV !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 break;
 
-            case OPU6C_CALL: //pseudo // !!!! IMMEDIATE HERE POSSIBLY 20 BITS !!!!
+            case OPU6C_CALL: //pseudo // !!!! IMMEDIATE HERE POSSIBLY 20 BITS, NOT NOW, WE USE STRICT 16bit FIELD !!!!
                 _reg_[1] = pc + 4; core.pc += imm << LSHIFT; //& ~0x1; in RISCV !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 break;
 
@@ -685,12 +687,12 @@ int vmex(const TU8 testprog[], int progsize)
         }
 
         r10i = _reg_[10];
-        
+
         core.pc+=4;   //in absolute register jumps its corrected by - 4
-        
+
         #ifdef CONSOLE
         //print("PC: "); println(itoh(core.pc, 4)); //TODO DEBUG
-        #endif        
+        #endif
     }
 
     return r10i;

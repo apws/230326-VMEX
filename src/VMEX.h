@@ -30,7 +30,7 @@
 #define REGS_TYPE     TS32  // RV32=TS32
 #define REGU_TYPE     TU32  //
 #define LSHIFT           2  // VMEX=2 RV32E=1 (Bxx only - JAL JALR use masking of bit 0 to 0)
-#define IMM_SIGMAG          // signed-magnitude immediates (16bit = flag, 15:0 = abs value)
+//#define IMM_SIGMAG          // signed-magnitude immediates (16bit = flag, 15:0 = abs value)
 
 #define MULDIV              // "M" extension, takes 20-40% (now combined, using TU64X, TS64X structs, 8bit C compatible)
 
