@@ -288,11 +288,8 @@ int vmex(const TU8 testprog[], int progsize)
             case OP00_NOP:
                 break;
 
-
-
             //R-TYPE ----------------------------------------------------------------------------
             case OPR31_ADD:
-                //_reg_[rd] = (REGS_TYPE) _reg_[rs1] + (REGS_TYPE) _reg_[rs2];
                 *_rd_ = (REGS_TYPE) *_rs1_ + (REGS_TYPE) *_rs2_;
                 break;
 
@@ -372,7 +369,7 @@ int vmex(const TU8 testprog[], int progsize)
             //I-TYPE ----------------------------------------------------------------------------
             case OPI11_ADDI:
                 //*_rd_ = (REGS_TYPE) *_rs1_ + (IMMS_TYPE) imm;
-                *_rd_ = (REGS_TYPE) (*_rs1_ + (REGS_TYPE) imm); //FIXED !!!
+                *_rd_ = (REGS_TYPE) (*_rs1_ + (REGS_TYPE) imm); //FIXED !!! (root cause of tests failing on cc65/6502)
                 break;
 
             case OPI12_SUBI: //pseudo
