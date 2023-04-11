@@ -18,6 +18,7 @@ Features are still subject to change, including ISA encoding and mnemonics tweak
 
 Build is tested using latest Dev-Cpp, MPLAB X (XC8,XC16,XC32), Segger Embedded Studio for RISC-V, cc65, z88dk.
 Engine itself has under 4kB for now, but planned full-featured size is 8kB max.
+This is only reference implementation in portable C (after bugfixing, ya:) which will be adapted also to "unsafe" C#.
 Planned high-level assembler targeting VMEX (but also native targets) is inteded to be used for reimplementing engine in it.
 
 Some tests are failing now in 8bit environment, mostly multiply routines - things related to typecasting/sign-extensions.
