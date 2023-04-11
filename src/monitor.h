@@ -21,19 +21,19 @@ void cmd_version(Core *core)
 void cmd_help(Core *core)
 {
     println("  ? - help");
-    println("  q - exit");
+    println("  q - quit");
     println("  v - version");
     println("  t - tests");
     println("  g - go");
     println("  r - registers");
     println("  m - read memory");
-    println("  M - read memory with CRC");
-    println("  w - write memory");
-    println("  W - write memory with CRC");
-    println("  d - disassembly");
-    println("  D - ASLIX disassembly");
-    println("  a - assembly");
-    println("  A - ASLIX assembly");
+    println("  .M - read memory with CRC");
+    println("  .w - write memory");
+    println("  .W - write memory with CRC");
+    println("  .d - disassembly");
+    println("  .D - ASLIX disassembly");
+    println("  .a - assembly");
+    println("  .A - ASLIX assembly");
     
     println("");
 }
