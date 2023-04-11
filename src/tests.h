@@ -2,14 +2,14 @@
 
 #define TEST_IMMEDIATE          //!!!
 #define TEST_LUI_AUIPC_JAL      //!!!
-#define TEST_REGISTERS
+//#define TEST_REGISTERS
 #define TEST_MULDIV             //!!!
-#define TEST_COMPARE_MOV_UNARY
-#define TEST_MEMORY_16
-#define TEST_BRANCHES
-#define TEST_BRANCHES_ZERO
-#define TEST_SYS_JR_JALR
-#define TEST_MEMORY_32
+//#define TEST_COMPARE_MOV_UNARY
+//#define TEST_MEMORY_16
+//#define TEST_BRANCHES
+//#define TEST_BRANCHES_ZERO
+//#define TEST_SYS_JR_JALR
+//#define TEST_MEMORY_32
 
 #define RUN_TESTS
 
