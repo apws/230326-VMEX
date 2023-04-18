@@ -1,9 +1,13 @@
 /* Copyright (C) 2022, 2023 Petr Antos, AP-ware servis (mixworx.net) antos.petr@gmail.com - ALL RIGHTS RESERVED */
 
-#define RUN_TESTS //compile and run tests in engine (/test arg or monitor t command)
-//#define EMB_TESTS //launch tests (selectivelly enabled by TEST_ #defines) immediatelly in main
+// !!! CHECK tests.h for list of errors !!!
+
+#define RUN_TESTS     //compile and run tests in engine (/test arg or monitor t command)
+//#define EMB_TESTS   //launch tests (selectivelly enabled by TEST_ #defines) immediatelly in main
+//#define EMB_MAIN    //launch as vmexmain() from main.c/main() with MCU init
+#define DESKTOP       //instead od auto-detection, we explicitly define here compilation for desktops (QL)
 #define PAGE_SIZE (4*32) //16 at least for tests (16 instructions test scripts)
-//#define PAGE_SIZE (4 * 8) //8 for hypotetical tests on smallest 512byte RAM an 4kb FLASH PIC16F (doesnt fit anymore)
+//#define PAGE_SIZE (4*8) //8 for hypotetical tests on smallest 512byte RAM an 4kb FLASH PIC16F (doesnt fit anymore)
 
 //console
 //#define LOADER              // absolute minimal loader part of monitor (load hex, flash, run, break, debug)
@@ -42,6 +46,13 @@
 #include "console.h"
 #include "arduino.h"
 
+//try to follow things here... Modern C (as far as older compilers allow, ya)
+//https://www.youtube.com/watch?v=QpAhX-gsHMs
+
+// current core struct is only naive and not ready for multicore (but vmex code is transpaent by pointers)
+// we need in core regs, pc and POINTERS to prog / data
+// we need ability to allocate prog/data in RAM and map prog to flash
+// cores in RAM (developemnt) and RAM/FLASH (deployment) 
 
 #define PROG_SIZE (PAGE_SIZE * 1)
 #define DATA_SIZE (PAGE_SIZE * 1)
@@ -50,7 +61,7 @@
 typedef struct
 {
     REGS_TYPE regs[16];
-    TU8 rsvd[42 << 2]; //reserved (msg in/out buffers, breakpoints)
+    //TU8 rsvd[42 << 2]; //reserved (msg in/out buffers, breakpoints)
     PC_TYPE pc;
     TU8 data[DATA_SIZE];
     TU8 prog[PROG_SIZE];
@@ -58,7 +69,7 @@ typedef struct
 
 Core core = {
     {0}, // initialize regs to all zeroes
-    {0}, // initialize rsvd to all zeroes
+    //{0}, // initialize rsvd to all zeroes //found bug here by z88dk +zx !!!
     0,   // initialize pc to zero
     {0}, // initialize data to all zeroes
     {0}  // initialize prog to all zeroes
@@ -70,11 +81,25 @@ Core core = {
 
 
 #ifndef ARDUINO
+
+#ifdef EMB_MAIN
+int vmexmain(int argc, char *argv[])
+#else
 int main(int argc, char *argv[])
+#endif
 {
     char command[32];
 
     #ifdef EMB_TESTS
+
+    int size_short = sizeof(short);
+    int size_int   = sizeof(int);
+    int size_long  = sizeof(long);
+    
+    printf("Size of short: %zu bytes\n", size_short);
+    printf("Size of int: %zu bytes\n", size_int);
+    printf("Size of long: %zu bytes\n", size_long);
+
     return runtests();
     #endif
 
@@ -87,7 +112,6 @@ int main(int argc, char *argv[])
         println("  Tests are not compiled in this package.");
         #endif
     }
-
     else if (argc > 1 && strcmp(argv[1], "/?") == 0)
     {
         println("");
@@ -288,8 +312,11 @@ int vmex(const TU8 testprog[], int progsize)
             case OP00_NOP:
                 break;
 
+
+
             //R-TYPE ----------------------------------------------------------------------------
             case OPR31_ADD:
+                //_reg_[rd] = (REGS_TYPE) _reg_[rs1] + (REGS_TYPE) _reg_[rs2];
                 *_rd_ = (REGS_TYPE) *_rs1_ + (REGS_TYPE) *_rs2_;
                 break;
 
@@ -369,7 +396,7 @@ int vmex(const TU8 testprog[], int progsize)
             //I-TYPE ----------------------------------------------------------------------------
             case OPI11_ADDI:
                 //*_rd_ = (REGS_TYPE) *_rs1_ + (IMMS_TYPE) imm;
-                *_rd_ = (REGS_TYPE) (*_rs1_ + (REGS_TYPE) imm); //FIXED !!! (root cause of tests failing on cc65/6502)
+                *_rd_ = (REGS_TYPE) (*_rs1_ + (REGS_TYPE) imm); //FIXED !!!
                 break;
 
             case OPI12_SUBI: //pseudo
