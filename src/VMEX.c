@@ -4,15 +4,14 @@
 
 #define RUN_TESTS     //compile and run tests in engine (/test arg or monitor t command)
 //#define EMB_TESTS   //launch tests (selectivelly enabled by TEST_ #defines) immediatelly in main
-//#define EMB_MAIN    //launch as vmexmain() from main.c/main() with MCU init
+//#define EMB_MAIN    //launch as vmexmain() from main.c/main() with MCU init - it is OK, no issues!!
 #define DESKTOP       //instead od auto-detection, we explicitly define here compilation for desktops (QL)
 #define PAGE_SIZE (4*32) //16 at least for tests (16 instructions test scripts)
-//#define PAGE_SIZE (4*8) //8 for hypotetical tests on smallest 512byte RAM an 4kb FLASH PIC16F (doesnt fit anymore)
 
 //console
-//#define LOADER              // absolute minimal loader part of monitor (load hex, flash, run, break, debug)
-#define MONITOR             // complete monitor including diassebly, assembly
-//#define ASLIX               // high level C-like/Python-like ASLIX assembler (symbols, C-operators, loop/again, comments)
+//#define LOADER      // absolute minimal loader part of monitor (load hex, flash, run, break, debug)
+#define MONITOR       // complete monitor including diassebly, assembly
+//#define ASLIX       // high level C-like/Python-like ASLIX assembler (symbols, C-operators, loop/again, comments)
 
 #define CONSOLE       //not yet supported but will be part of the small/classic/aslix monitor
                       //goal is to support tiniest serial terminal but also allow larger ANSI/VT100-like
