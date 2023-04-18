@@ -20,6 +20,8 @@
 //          4) Python-like space-defined structure, no semicolons
 
 
+//old compilers
+//#define STDINT              //undef for old non-ANSI 
 
 //vmex
 #define PC_TYPE       TU32  // RV32=TU32
@@ -35,20 +37,28 @@
 #define MULDIV              // "M" extension, takes 20-40% (now combined, using TU64X, TS64X structs, 8bit C compatible)
 
 
-#include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
 
+#ifdef STDINT
+#include <stdint.h>
 
 //mixworx types
-//typedef uint64_t  TU64; //not cc65/8bits - muldiv solved in 32bits with custom TU64X !!!
-//typedef int64_t   TS64; //not cc65/8bits - muldiv solved in 32bits with custom TS64X !!!
 typedef uint32_t  TU32;
 typedef int32_t   TS32;
 typedef uint16_t  TU16;
 typedef int16_t   TS16;
 typedef uint8_t   TU8;
 typedef int8_t    TS8;
+#else
+typedef unsigned long   TU32;
+typedef signed long     TS32;
+typedef unsigned short  TU16;
+typedef signed short    TS16;
+typedef unsigned char   TU8;
+typedef signed char     TS8;
+#endif
+
 //typedef bool      TBOOL;
 typedef char      TCHAR; //??
 
@@ -141,7 +151,7 @@ typedef enum {
     U6_TYPE = 0x60,
 
     X9_TYPE = 0x90, //reserved
-    X0_TYPE = 0x00, //reserved (NOP)
+    X0_TYPE = 0x00 //reserved (NOP)
 
 } InstructionFormatType;
 
