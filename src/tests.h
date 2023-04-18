@@ -6,7 +6,7 @@
 #define TEST_MULDIV             //!!!
 #define TEST_COMPARE_MOV_UNARY
 #define TEST_MEMORY_16
-#define TEST_BRANCHES         //z88dk fails on all six signed branches, weird as hell; also msp430 issues
+//#define TEST_BRANCHES         //z88dk/sdcc fails on all six signed branches, weird as hell; also msp430 issues
 #define TEST_BRANCHES_ZERO
 #define TEST_SYS_JR_JALR
 #define TEST_MEMORY_32
@@ -203,8 +203,8 @@ int test(TU8 opcode, const char* testname)
 #ifdef TEST_IMMEDIATE
         case OPI11_ADDI:
         {
-            const TU8 tpOPI11_ADDI[] =
-            {
+            const TU8 tpOPI11_ADDI[] = //TODO z88dk/sccz80: error: duplicate definition: _auto_test_testprog 
+            {                          //z88dk/sdcc is okay with this 
                 0x11,0xAA,0x00,0x08, //addi r10 r10 $8
                 0x11,0xAA,0x00,0x02, //addi r10 r10 $2
                 0x11,0xAA,0xFF,0xF4, //addi r10 r10 -12
@@ -227,8 +227,8 @@ int test(TU8 opcode, const char* testname)
 
         case OPI12_SUBI:
         {
-            const TU8 tpOPI12_SUBI[] =
-            {
+            const TU8 tpOPI12_SUBI[] = //TODO z88dk/sccz80: error: duplicate definition: _auto_test_testprog 
+            {                          //z88dk/sdcc is okay with this 
                 0x11,0xA0,0x00,0x08, //addi r10 r0 $8
                 0x11,0xAA,0x00,0x02, //addi r10 r10 $2
                 0x12,0xAA,0x00,0x0C, //subi r10 r10 12
