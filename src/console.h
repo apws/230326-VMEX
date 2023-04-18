@@ -2,9 +2,9 @@
 
 #ifdef CONSOLE
 
-#if defined(_WIN32) || defined(_WIN64) || defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__)) || defined(__C64__) || defined(__C128__) || defined(__PLUS4__) || defined(__ATARI__) || defined(__APPLE2__)
-    #define DESKTOP
-    
+//#if defined(_WIN32) || defined(_WIN64) || defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__)) || defined(__C64__) || defined(__C128__) || defined(__PLUS4__) || defined(__ATARI__) || defined(__APPLE2__) || defined(__SPECTRUM)
+#ifdef DESKTOP  
+   
     #include <stdio.h>
     
 #endif
