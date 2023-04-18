@@ -2,7 +2,8 @@
 
 void cmd_version(Core *core)
 {
-    println("  VMEX 0.30-230408a (c)2022 mixworx.net");
+    println("  VMEX 0.30-230408a");
+    println("  (c)2022 mixworx.net");
     println("");
 }
 
