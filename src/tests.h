@@ -1,16 +1,5 @@
 /* Copyright (C) 2022, 2023 Petr Antos, AP-ware servis (mixworx.net) antos.petr@gmail.com - ALL RIGHTS RESERVED */
 
-#define TEST_IMMEDIATE          //!!!
-#define TEST_LUI_AUIPC_JAL      //!!!
-#define TEST_REGISTERS
-#define TEST_MULDIV             //!!!
-#define TEST_COMPARE_MOV_UNARY
-#define TEST_MEMORY_16
-//#define TEST_BRANCHES         //z88dk/sdcc fails on all six signed branches, weird as hell; also msp430 issues
-#define TEST_BRANCHES_ZERO
-#define TEST_SYS_JR_JALR
-#define TEST_MEMORY_32
-
 
 //BUGS IN TESTING
 //sinclair ZX Spectrum z88dk    - muldiv math test failing !!!

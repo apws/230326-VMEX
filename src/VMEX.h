@@ -20,9 +20,6 @@
 //          4) Python-like space-defined structure, no semicolons
 
 
-//old compilers
-//#define STDINT              //undef for old non-ANSI 
-
 //vmex
 #define PC_TYPE       TU32  // RV32=TU32
 #define IMM_BITS        16  // VMEX=16 //RV32=12
@@ -34,16 +31,14 @@
 #define LSHIFT           2  // VMEX=2 RV32E=1 (Bxx only - JAL JALR use masking of bit 0 to 0)
 //#define IMM_SIGMAG          // signed-magnitude immediates (16bit = flag, 15:0 = abs value)
 
-#define MULDIV              // "M" extension, takes 20-40% (now combined, using TU64X, TS64X structs, 8bit C compatible)
 
 
 #include <stdbool.h>
 #include <string.h>
 
+//mixworx types
 #ifdef STDINT
 #include <stdint.h>
-
-//mixworx types
 typedef uint32_t  TU32;
 typedef int32_t   TS32;
 typedef uint16_t  TU16;
@@ -79,23 +74,23 @@ int vmex(const TU8 testprog[], int progsize);
 
 
 
-// R3-TYPE (16)
-// R2-TYPE (16)
+// R3-TYPE
+// R2-TYPE
 //   = ADD=31, SUB=32, XOR=33, AND=34, OR=35, SLL=36, SRL=37, SRA=38,
 //   = MUL=21, MULH=22, MULHU=23, MULHSU=24, DIV=25, DIVU=26, REM=27, REMU=28, - is "M" extension
 //   = CLT=3A, CLTU=3B
 // 31                              0
 //  -------+-------+-------+-------+
-//  rs2|000|rs1|000|-rd|000|0010cccc
+//  rs2|000|rs1|000|-rd|000|ttttcccc
 //  -------+-------+-------+-------+
 
 
-// I1-TYPE (16)
-// IA-TYPE (16)
-// IC-TYPE (16) ?? only 16 or more registers to encode ?? R-TYPE ??
-// ID-TYPE (16) ?? only 16 or more registers to encode ?? R-TYPE ??
-// I4-TYPE (16)
-// IE-TYPE (16)
+// I1-TYPE
+// IA-TYPE
+// IC-TYPE ?? only 16 or more registers to encode ?? R-TYPE ??
+// ID-TYPE ?? only 16 or more registers to encode ?? R-TYPE ??
+// I4-TYPE
+// IE-TYPE
 //   = ADDI=11, (SUBI=12) XORI=13, ANDI=14, ORI=15, SLLI=16, SRLI=17, SRAI=18
 //   = CLTI=1A, CLTIU=1B
 //   = LB=A1, LH=A2, LW=A4, LBU=AB, LHU=AD
@@ -104,28 +99,28 @@ int vmex(const TU8 testprog[], int progsize);
 //   = FENCE=40 (NOP, ignored)
 // 31                              0
 //  -------+-------+-------+-------+
-//  -L-immediate-H-|-rd|rs1|0011cccc
+//  -L-immediate-H-|-rd|rs1|ttttcccc
 //  -------+-------+-------+-------+
 
 
-// S5-TYPE (16)
-// SF-TYPE (16)
-// SB-TYPE (16)
-// S8-TYPE (16)
+// S5-TYPE
+// SF-TYPE
+// SB-TYPE
+// S8-TYPE
 //   = SB=F1, SH=F2, SW=F4
 //   = BEQ=B1, BNE=B2, BLT=B3, BGE=B4, BLTU=B5, BGEU=B6 (13 bits encoded as SRRed 12 bits !!!) ... +/- 4kB
 // 31                              0
 //  -------+-------+-------+-------+
-//  -L-immediate-H-|rs1|rs2|0101cccc
+//  -L-immediate-H-|rs1|rs2|ttttcccc
 //  -------+-------+-------+-------+
 
 
-// U7-TYPE (16)
-// U6-TYPE (16)
+// U7-TYPE
+// U6-TYPE
 //   = LUI=71, AUIPC=7A, JAL=7F (both wraps around 24bit, JAL x0 +/-2kB) !!!! IMMEDIATE HERE POSSIBLY 20 BITS !!!!
 // 31                              0
 //  -------+-------+-------+-------+
-//  -L-immediate-H-|-rd|___|0111cccc
+//  -L-immediate-H-|-rd|___|ttttcccc
 //  -------+-------+-------+-------+
 
 
@@ -143,7 +138,7 @@ typedef enum {
     IE_TYPE = 0xE0,
 
     S5_TYPE = 0x50,
-    SF_TYPE = 0xF0,
+    SF_TYPE = 0xF0, //$FF for invalid instruction (empty flash)
     SB_TYPE = 0xB0,
     S8_TYPE = 0x80,
 
@@ -256,6 +251,7 @@ typedef enum {
 #define OPSF1_WB      0xF1 //TODO pseudo //auipc combined (fusion)???      // -- FAR MEM writes/flushes
 #define OPSF2_WH      0xF2 //TODO pseudo //auipc combined (fusion)???
 #define OPSF4_WW      0xF4 //TODO pseudo //auipc combined (fusion)???
+#define OPSFF_INVALID 0xFF //TODO invalid instruction in empty flash ??? or NOP ???
 
 //OP SB-TYPE
 #define OPSB1_BLT     0xB1                                                 // -- branches

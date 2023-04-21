@@ -3,10 +3,27 @@
 // !!! CHECK tests.h for list of errors !!!
 
 #define RUN_TESTS     //compile and run tests in engine (/test arg or monitor t command)
-//#define EMB_TESTS   //launch tests (selectivelly enabled by TEST_ #defines) immediatelly in main
+#define EMB_TESTS   //launch tests (selectivelly enabled by TEST_ #defines) immediatelly in main
 //#define EMB_MAIN    //launch as vmexmain() from main.c/main() with MCU init - it is OK, no issues!!
 #define DESKTOP       //instead od auto-detection, we explicitly define here compilation for desktops (QL)
 #define PAGE_SIZE (4*32) //16 at least for tests (16 instructions test scripts)
+
+#define TEST_IMMEDIATE          //!!!
+#define TEST_LUI_AUIPC_JAL      //!!!
+#define TEST_REGISTERS
+#define TEST_MULDIV             //!!!
+#define TEST_COMPARE_MOV_UNARY
+#define TEST_MEMORY_16
+//#define TEST_BRANCHES         //z88dk/sdcc fails on all six signed branches, weird as hell; also msp430 issues
+#define TEST_BRANCHES_ZERO
+#define TEST_SYS_JR_JALR
+#define TEST_MEMORY_32
+
+//old compilers (maybe types will be completelly placed in target.h)
+//#define STDINT      //undef for old non-ANSI 
+
+//tiniest core without multiplier ??
+#define MULDIV        // "M" extension, takes 20-40% (now combined, using TU64X, TS64X structs, 8bit C compatible)
 
 //console
 //#define LOADER      // absolute minimal loader part of monitor (load hex, flash, run, break, debug)
@@ -30,6 +47,12 @@
                       //
                       //in fact, minimal monitor will serve as bootloader too (Unlock,Lock,* set pc,Mem,Go)
                       //there will be built-in basic security - PIN to unlock monitor (10 tries counting down, then permanent lock)
+
+
+//defines above will be moved into target specific header, linked to code transparently from target folder
+//the same will be true for MMU macros/inlines which will inject handling larger memory on 8/16 bits
+//generally, simple MMU code is very important to be effective, based on 2^n byte pages, 256 at least
+//-------------------------------------------------------------------------------------------------------
 
 
 //microchip XC8 license monthly ?41
