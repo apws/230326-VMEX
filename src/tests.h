@@ -2,8 +2,7 @@
 
 
 //BUGS IN TESTING
-//sinclair ZX Spectrum z88dk    - muldiv math test failing !!!
-//sinclari QL (docker qdos-gcc) - muldiv "mulshu" fails !!!! + interactive monitor doesnt work !!!
+//sinclari QL (docker qdos-gcc) - muldiv "mulshu" fails !!!
 //msp430G2553 IAR EW            - replace memset as clear, but still fails with illegal opcode !!!
 //8051 IAR EW                   - returning weird value from test() accumulating fails !!!
 
@@ -12,7 +11,8 @@
 // - tests expect return 0 in R10, in case of total failure, testprog is zero so NOP, it will return 0 !!!
 // - as memcopy to 0 progmem, will be good to to fill by memcopy the registers by some nonzero value !!!
 // - some test use subtests, but only last one is result, may be enhanced to accumulate all subtests
-
+//some tests were bad, combining lui+xori instead of lui+ori
+//there was typecasting bug in andi/xori/ori causing fails for z88dk/spectrum - fixed
 
 
 
@@ -161,7 +161,7 @@ int runtests()
     fails+= test(OPSF4_WW,     "ww lw - fusion");
 #endif
 
-    printf("\nTest fails: %d\n", fails);
+    printf("\nTest fails: %d\n\n", fails);
 
     return fails;
 
@@ -268,7 +268,7 @@ int test(TU8 opcode, const char* testname)
         {
             const TU8 tpOPI15_ORI[] = {
                 0x11,0xAA,0x56,0x78, //addi r10 r10 0x5678
-                0x15,0xAA,0x0F,0x0F, //ori r10 r10 0x0F0F0 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                0x15,0xAA,0x0F,0x0F, //ori r10 r10 0x0F0F //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xAA,0xA0,0x81, //addi r10 r10 0xA081
             };
             testresult = vmex(tpOPI15_ORI, sizeof(tpOPI15_ORI));
@@ -655,9 +655,9 @@ int test(TU8 opcode, const char* testname)
         {
             const TU8 tpOPR23_MULHU[] = {
                 0x71,0xA0,0x99,0x99, //lui  r10  0x9999
-                0x13,0xAA,0x99,0x99, //ori r10 r10 0x9999 //ORI here used for clash free large unsigned init
+                0x15,0xAA,0x99,0x99, //ori r10 r10 0x9999 //ORI here used for clash free large unsigned init
                 0x71,0xB0,0x88,0x88, //lui  r11  0x8888
-                0x13,0xBB,0x88,0x88, //ori r11 r0 0x8888
+                0x15,0xBB,0x88,0x88, //ori r11 r0 0x8888
                 0x21,0xC0,0xA0,0xB0, //mul r12 r10 r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x23,0xD0,0xA0,0xB0, //mulhu r13 r10 r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x14,0xCC,0xFF,0xFF, //andi r12 r12 0xFFFF
@@ -675,9 +675,9 @@ int test(TU8 opcode, const char* testname)
         {
             const TU8 tpOPR24_MULHSU[] = {
                 0x71,0xA0,0x99,0x99, //lui  r10  0x9999
-                0x13,0xAA,0x99,0x99, //ori r10 r10 0x9999 //ORI here used for clash free large unsigned init
+                0x15,0xAA,0x99,0x99, //ori r10 r10 0x9999 //ORI here used for clash free large unsigned init
                 0x71,0xB0,0x88,0x88, //lui  r11  0x8888
-                0x13,0xBB,0x88,0x88, //ori r11 r0 0x8888
+                0x15,0xBB,0x88,0x88, //ori r11 r0 0x8888
                 0x21,0xC0,0xA0,0xB0, //mul r12 r10 r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x24,0xD0,0xA0,0xB0, //mulhsu r13 r10 r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x14,0xCC,0xFF,0xFF, //andi r12 r12 0xFFFF
@@ -695,9 +695,9 @@ int test(TU8 opcode, const char* testname)
         {
             const TU8 tpOPR25_DIV[] = {
                 0x71,0xA0,0x77,0x77, //lui  r10  0x7777
-                0x13,0xAA,0x77,0x77, //ori r10 r10 0x7777 //ORI here used for clash free large unsigned init
+                0x15,0xAA,0x77,0x77, //ori r10 r10 0x7777 //ORI here used for clash free large unsigned init
                 0x71,0xB0,0x00,0x00, //lui  r11  0x0000
-                0x13,0xBB,0x55,0x55, //ori r11 r0 0x5555
+                0x15,0xBB,0x55,0x55, //ori r11 r0 0x5555
                 0x25,0xC0,0xA0,0xB0, //div r12 r10 r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x14,0xCC,0xFF,0xFF, //andi r12 r12 0xFFFF
                 0x12,0xAC,0x66,0x67, //subi r10 r12 $6667
@@ -712,9 +712,9 @@ int test(TU8 opcode, const char* testname)
         {
             const TU8 tpOPR26_DIVU[] = {
                 0x71,0xA0,0xCC,0xCC, //lui  r10  0xCCCC
-                0x13,0xAA,0xCC,0xCC, //ori r10 r10 0xCCCC //ORI here used for clash free large unsigned init
+                0x15,0xAA,0xCC,0xCC, //ori r10 r10 0xCCCC //ORI here used for clash free large unsigned init
                 0x71,0xB0,0x00,0x00, //lui  r11  0x0000
-                0x13,0xBB,0x88,0x88, //ori r11 r0 0x8888
+                0x15,0xBB,0x88,0x88, //ori r11 r0 0x8888
                 0x26,0xC0,0xA0,0xB0, //div r12 r10 r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x14,0xCC,0xFF,0xFF, //andi r12 r12 0xFFFF
                 0x12,0xCC,0x30,0x00, //subi r12 r12 0x3000
@@ -730,9 +730,9 @@ int test(TU8 opcode, const char* testname)
         {
             const TU8 tpOPR27_REM[] = {
                 0x71,0xA0,0x77,0x77, //lui  r10  0x7777
-                0x13,0xAA,0x77,0x77, //ori r10 r10 0x7777 //ORI here used for clash free large unsigned init
+                0x15,0xAA,0x77,0x77, //ori r10 r10 0x7777 //ORI here used for clash free large unsigned init
                 0x71,0xB0,0x00,0x00, //lui  r11  0x0000
-                0x13,0xBB,0x55,0x55, //ori r11 r0 0x5555
+                0x15,0xBB,0x55,0x55, //ori r11 r0 0x5555
                 0x27,0xC0,0xA0,0xB0, //rem r12 r10 r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x14,0xCC,0xFF,0xFF, //andi r12 r12 0xFFFF
                 0x12,0xAC,0x44,0x44, //subi r10 r12 $4444
@@ -747,9 +747,9 @@ int test(TU8 opcode, const char* testname)
         {
             const TU8 tpOPR28_REMU[] = {
                 0x71,0xA0,0xCC,0xCC, //lui  r10  0xCCCC
-                0x13,0xAA,0xCC,0xCC, //ori r10 r10 0xCCCC //ORI here used for clash free large unsigned init
+                0x15,0xAA,0xCC,0xCC, //ori r10 r10 0xCCCC //ORI here used for clash free large unsigned init
                 0x71,0xB0,0x00,0x00, //lui  r11  0x0000
-                0x13,0xBB,0x88,0x88, //ori r11 r0 0x8888
+                0x15,0xBB,0x88,0x88, //ori r11 r0 0x8888
                 0x28,0xC0,0xA0,0xB0, //remu r12 r10 r11 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 0x14,0xCC,0xFF,0xFF, //andi r12 r12 0xFFFF
                 0x12,0xAC,0x44,0x44, //subi r10 r12 $4444
