@@ -12,7 +12,7 @@ typedef struct {
 } TU64X;
 
 typedef struct {
-    TU32 low;
+    TU32 low; 
     TS32 high;
 } TS64X;
 
@@ -54,19 +54,29 @@ void mul_TU32(TU64X* result, TU32 a, TU32 b) {
 
 // Function to multiply two signed 32-bit integers and return a 64-bit result
 void mul_TS32(TS64X* result, TS32 a, TS32 b) {
+    TU64X mul_unsigned;
     TU32 a_unsigned = (TU32)a;
     TU32 b_unsigned = (TU32)b;
 
-//    print("a:  "); println(itoh(a,8));
-//    print("au: "); println(itoh(a_unsigned,8));
-//    print("b:  "); println(itoh(b,8));
-//    print("bu: "); println(itoh(b_unsigned,8));
+#ifdef HOTFIX_QL_WEIRD_BEHAVIOR
+    println("mul_TU32 before");
+    //this is not reliable fix at all, mulhsu result is affected by content of println !!!
+#endif    
+    //!!! dont work - QL freezes while printlning printbuffer !!!
+    //print("a:  "); println(itoh(a,8));
+    //print("au: "); println(itoh(a_unsigned,8));
+    //print("b:  "); println(itoh(b,8));
+    //print("bu: "); println(itoh(b_unsigned,8));
 
-    TU64X mul_unsigned;
     mul_TU32(&mul_unsigned, a_unsigned, b_unsigned);
     result->low = mul_unsigned.low;
     result->high = mul_unsigned.high;
 
+#ifdef HOTFIX_QL_WEIRD_BEHAVIOR
+    println("mul_TU32 after"); 
+    //this is not reliable fix at all, mulhsu result is affected by content of println !!!
+#endif
+    
     // Adjust the sign
     if (a < 0) {
         result->high -= b_unsigned;
