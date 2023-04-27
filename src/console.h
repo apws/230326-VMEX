@@ -10,7 +10,7 @@
 #endif
 
 
-TCHAR printbuffer[40];
+static TCHAR printbuffer[40];
 
 //TODO problem with STDIO is that its input functions require HEAP !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -57,6 +57,22 @@ void println(const TCHAR* str)
         #endif
     #endif
 }
+
+void println_num(TU32 num)
+{
+    // implement console log output (serial uart)
+    #ifdef ARDUINO
+        Serial.println(num);
+    #else
+        #ifdef DESKTOP
+            printf("%d",num); printf("\n");
+        #else
+            //DEVICE UART PRINT
+        #endif
+    #endif
+    
+}
+
 
 //TODO probably remove and use snprintf standard way
 TCHAR* itoh(TU32 num, TU8 pos) 
