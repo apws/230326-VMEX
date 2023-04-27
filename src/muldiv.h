@@ -2,6 +2,10 @@
 
 #ifdef MULDIV
 
+void print(const TCHAR* str);
+void println(const TCHAR* str);
+TCHAR* itoh(TU32 num, TU8 pos); 
+
 typedef struct {
     TU32 low;
     TU32 high;
@@ -52,6 +56,12 @@ void mul_TU32(TU64X* result, TU32 a, TU32 b) {
 void mul_TS32(TS64X* result, TS32 a, TS32 b) {
     TU32 a_unsigned = (TU32)a;
     TU32 b_unsigned = (TU32)b;
+
+//    print("a:  "); println(itoh(a,8));
+//    print("au: "); println(itoh(a_unsigned,8));
+//    print("b:  "); println(itoh(b,8));
+//    print("bu: "); println(itoh(b_unsigned,8));
+
     TU64X mul_unsigned;
     mul_TU32(&mul_unsigned, a_unsigned, b_unsigned);
     result->low = mul_unsigned.low;
