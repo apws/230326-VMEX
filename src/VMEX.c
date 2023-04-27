@@ -14,7 +14,7 @@
 #define TEST_MULDIV             //!!!
 #define TEST_COMPARE_MOV_UNARY
 #define TEST_MEMORY_16
-//#define TEST_BRANCHES         //z88dk/sdcc fails on all six signed branches, weird as hell; also msp430 issues
+#define TEST_BRANCHES         //z88dk/sdcc fails on all six signed branches, weird as hell; also msp430 issues
 #define TEST_BRANCHES_ZERO
 #define TEST_SYS_JR_JALR
 #define TEST_MEMORY_32
@@ -75,6 +75,12 @@
 // we need in core regs, pc and POINTERS to prog / data
 // we need ability to allocate prog/data in RAM and map prog to flash
 // cores in RAM (developemnt) and RAM/FLASH (deployment) 
+
+
+//we needd to introduce some MMU code for memory access, ano on 8/16bits solve the banking of memory,
+//here it is naturally leading to separate cores for separate banks, at least; to achieve simplest switching
+//even having vmex engine duplicated in each bank too; of course separate cores neeeds separate RAM pages
+
 
 #define PROG_SIZE (PAGE_SIZE * 1)
 #define DATA_SIZE (PAGE_SIZE * 1)
@@ -382,7 +388,14 @@ int vmex(const TU8 testprog[], int progsize)
             #ifdef MULDIV
             //OP R2-TYPE // "M" extension = takes 20-40% (now combined, using TU64X, TS64X structs, 8bit C compatible)
             case OPR21_MUL:
+                
+//                print("mrs1:  "); println(itoh(*_rs1_,8));                
+//                print("mrs2:  "); println(itoh(*_rs2_,8));                
+                
                 *_rd_ = mul(*_rs1_, *_rs2_);
+                
+//                print("mrd:  "); println(itoh(*_rd_,8));
+                
                 break;
 
             case OPR22_MULH:
@@ -427,27 +440,34 @@ int vmex(const TU8 testprog[], int progsize)
                 break;
 
             case OPI13_XORI:
-                *_rd_ = *_rs1_ ^ ((IMMS_TYPE) imm & 0xFFFF);
+                *_rd_ = *_rs1_ ^ ((REGS_TYPE) imm & 0xFFFF);
                 break;
 
             case OPI14_ANDI:
-                *_rd_ = *_rs1_ & ((IMMS_TYPE) imm & 0xFFFF);
+                *_rd_ = *_rs1_ & ((REGS_TYPE) imm & 0xFFFF);
                 break;
 
             case OPI15_ORI:
-                *_rd_ = *_rs1_ | ((IMMS_TYPE) imm & 0xFFFF);
+                
+                //print("irs1:  "); println(itoh(*_rs1_,8));
+                
+                *_rd_ = *_rs1_ | ((REGS_TYPE) imm & 0xFFFF);
+                
+                //print("mrs2:  "); println(itoh(*_rs2_,8));
+                //print("ird:  "); println(itoh(*_rd_,8));
+                
                 break;
 
             case OPI16_SLLI:
-                *_rd_ = *_rs1_ << ((IMMS_TYPE) imm & 0x1F);
+                *_rd_ = *_rs1_ << ((TU8) imm & 0x1F);
                 break;
 
             case OPI17_SRLI:
-                *_rd_ = *_rs1_ >> ((IMMS_TYPE) imm & 0x1F);
+                *_rd_ = *_rs1_ >> ((TU8) imm & 0x1F);
                 break;
 
             case OPI18_SRAI:
-                *_rd_ = (REGS_TYPE) *_rs1_ >> ((IMMS_TYPE) imm & 0x1F);
+                *_rd_ = (REGS_TYPE) *_rs1_ >> ((TU8) imm & 0x1F);
                 break;
 
             case OPI1A_CLTI: //SLTI
@@ -703,6 +723,9 @@ int vmex(const TU8 testprog[], int progsize)
             // LUI, AUIPC, JAL ---------------------------------------------------------------
             case OPU71_LUI:
                 *_rd_ = ((REGU_TYPE)imm << IMM_BITS); //TODO //TEST
+                
+//                print("rd:  "); println(itoh(*_rd_,8));
+                
                 break;
 
             case OPU7A_AUIPC:
