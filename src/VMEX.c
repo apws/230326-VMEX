@@ -3,7 +3,7 @@
 // !!! CHECK tests.h for list of errors !!!
 
 #define RUN_TESTS     //compile and run tests in engine (/test arg or monitor t command)
-#define EMB_TESTS   //launch tests (selectivelly enabled by TEST_ #defines) immediatelly in main
+//#define EMB_TESTS   //launch tests (selectivelly enabled by TEST_ #defines) immediatelly in main
 //#define EMB_MAIN    //launch as vmexmain() from main.c/main() with MCU init - it is OK, no issues!!
 #define DESKTOP       //instead od auto-detection, we explicitly define here compilation for desktops (QL)
 #define PAGE_SIZE (4*32) //16 at least for tests (16 instructions test scripts)
