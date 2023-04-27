@@ -37,7 +37,7 @@
 #include <string.h>
 
 //mixworx types
-#ifdef STDINT
+#ifdef TYPES_STDINT
 #include <stdint.h>
 typedef uint32_t  TU32;
 typedef int32_t   TS32;
@@ -45,7 +45,9 @@ typedef uint16_t  TU16;
 typedef int16_t   TS16;
 typedef uint8_t   TU8;
 typedef int8_t    TS8;
-#else
+#endif
+
+#ifdef TYPES_8
 typedef unsigned long   TU32;
 typedef signed long     TS32;
 typedef unsigned short  TU16;
@@ -53,6 +55,16 @@ typedef signed short    TS16;
 typedef unsigned char   TU8;
 typedef signed char     TS8;
 #endif
+
+#ifdef TYPES_32
+typedef unsigned int    TU32;
+typedef signed int      TS32;
+typedef unsigned short  TU16;
+typedef signed short    TS16;
+typedef unsigned char   TU8;
+typedef signed char     TS8;
+#endif
+
 
 //typedef bool      TBOOL;
 typedef char      TCHAR; //??

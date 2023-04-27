@@ -8,6 +8,8 @@
 #define DESKTOP       //instead od auto-detection, we explicitly define here compilation for desktops (QL)
 #define PAGE_SIZE (4*32) //16 at least for tests (16 instructions test scripts)
 
+//#define HOTFIX_QL_WEIRD_BEHAVIOR //totally weird behavior in MULDIV on QL - needs println !!!
+
 #define TEST_IMMEDIATE          //!!!
 #define TEST_LUI_AUIPC_JAL      //!!!
 #define TEST_REGISTERS
@@ -20,7 +22,9 @@
 #define TEST_MEMORY_32
 
 //old compilers (maybe types will be completelly placed in target.h)
-//#define STDINT      //undef for old non-ANSI 
+//#define TYPES_STDINT      
+//#define TYPES_8
+#define TYPES_32
 
 //tiniest core without multiplier ??
 #define MULDIV        // "M" extension, takes 20-40% (now combined, using TU64X, TS64X structs, 8bit C compatible)
@@ -124,9 +128,9 @@ int main(int argc, char *argv[])
     int size_int   = sizeof(int);
     int size_long  = sizeof(long);
     
-    printf("Size of short: %zu bytes\n", size_short);
-    printf("Size of int: %zu bytes\n", size_int);
-    printf("Size of long: %zu bytes\n", size_long);
+    print("Size of short: "); println_num(size_short);
+    print("Size of int: ");   println_num(size_int);
+    print("Size of long: ");  println_num(size_long);
 
     return runtests();
     #endif
@@ -388,14 +392,7 @@ int vmex(const TU8 testprog[], int progsize)
             #ifdef MULDIV
             //OP R2-TYPE // "M" extension = takes 20-40% (now combined, using TU64X, TS64X structs, 8bit C compatible)
             case OPR21_MUL:
-                
-//                print("mrs1:  "); println(itoh(*_rs1_,8));                
-//                print("mrs2:  "); println(itoh(*_rs2_,8));                
-                
                 *_rd_ = mul(*_rs1_, *_rs2_);
-                
-//                print("mrd:  "); println(itoh(*_rd_,8));
-                
                 break;
 
             case OPR22_MULH:
@@ -407,7 +404,13 @@ int vmex(const TU8 testprog[], int progsize)
                 break;
 
             case OPR24_MULHSU:
+//                print("mrs1:  "); println(itoh(*_rs1_,8));                
+//                print("mrs2:  "); println(itoh(*_rs2_,8));                
+
                 *_rd_ = mulhsu(*_rs1_, *_rs2_);
+                
+//                print("mrd:  "); println(itoh(*_rd_,8));
+               
                 break;
 
             case OPR25_DIV:
