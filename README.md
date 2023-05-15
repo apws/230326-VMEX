@@ -21,13 +21,37 @@ Engine itself has under 4kB for now, but planned full-featured size is 8kB max.
 This is only reference implementation in portable C which will be adapted also to "unsafe" C#.
 Planned high-level assembler targeting VMEX (but also native MCUs) is inteded to be used for reimplementing engine in it.
 
-All implemented tests are now passing down to cc65. For z88dk (SDCC) multiplier bugs are fixed. The same is true for qdos-gcc targeting Sinclair QL (M68000), but here compiler is wilder. Currently this template compiles and is running on windows
-(Dev-Cpp), in RISC-V simulator (Segger), for 6502 (cc65) on AtariXL, C64, C128, Plus/4, for Z80 (z88dk/sdcc) on Sinclair ZX Spectrum, for M68000 on Sinclair QL (qdoc-gcc), or various MPLAB X supported MCUs (AVR, PIC16/18/24/C32, ARM Cortex M) in simulator and devkits, for MSP430 in simulator and devkits, and compiles for Z80/8085 (z88dk/sccz80) for CP/M, MSX, SordM5, Tandy100/Olivetti M10 (8085), Ondra, PMD-85 ... Simple windows build scripts will be provided here too soon.
-Biggest challenge was till now docker/wsl2 powered build for Sinclair QL :-). Now is the time of fixing bugs found by tests and specification of multicore operation which will differ from RISC-V. There will be no CSR, no shared memory, no locks. All is targeted to specify primitives for structured concurrency basics. VMEX is following KISS.
+All implemented tests are now passing down to cc65. For z88dk (SDCC) multiplier bugs are fixed.
+The same is true for qdos-gcc targeting Sinclair QL (M68000), but here compiler is wilder.
+Currently this template compiles and is running on windows (Dev-Cpp), in RISC-V simulator (Segger),
+for 6502 (cc65) on AtariXL, C64, C128, Plus/4, for Z80 (z88dk/sdcc) on Sinclair ZX Spectrum,
+for M68000 on Sinclair QL (qdoc-gcc), or various MPLAB X supported MCUs (AVR, PIC16/18/24/C32, ARM Cortex M)
+in simulator and devkits, for MSP430 in simulator and devkits, and compiles for Z80/8085 (z88dk/sccz80)
+for CP/M, MSX, SordM5, Tandy100/Olivetti M10 (8085), Ondra, PMD-85 ...
+After several initial unsuccessfull attempts to build this using WDCTools for 65816, now it compiles without errors too.
+And it seems that WDCTools C compiler is FASTEST available, so may be further development will be done using WDC65c256sxb board.
 
-All CP/M Z80 issues/testfails were in fact caused by misconfigured TYPES_ as TYPES_32 instead of TYPES_8 for older compilers not supporting TYPES_STDINT. We introduced this to be placed together with all target specifics into "target.h" local file. Must be implemented ASAP !!
-Till now, even muldiv issues was causing in fact by inproper typecasting in immediate instructions interpreted differently by older 8/16bit compilers, but bugs found were important to solve. Differences in old/new C compiler is also primary motivation to build "HL ASM" on top of VMEX, using C-operators instead of instruction mnemonics - result is more lines than C, but almost C-like readability of code; differences in C compilers is real evil :-)
+Simple windows build scripts will be provided here too soon.
 
-Yes, it is experimental, not trying to push new ISA/language into the current existing wild at all cost. Its proof of concept of further simplification of things, which are often too complex enough these days. And it is intended for unified portable debuggable application code accros the MCUs, having native low level things present too. Even the native parts CAN be finally codede in that HL assembly syntax, having native transformations using simplified subset of MCU ISA and 6502-like "zeropage" concept implemented everywhere. But this is all basic research in the wild, still :-)
+Biggest challenge was till now docker/wsl2 powered build for Sinclair QL :-).
+Now is the time of fixing bugs found by tests and specification of multicore operation which will differ from RISC-V.
+There will be no CSR, no shared memory, no locks. All is targeted to specify primitives for structured concurrency basics.
+VMEX is following KISS.
+
+All CP/M Z80 issues/testfails were in fact caused by misconfigured TYPES_ as TYPES_32 instead of TYPES_8 for older compilers
+not supporting TYPES_STDINT. We introduced this to be placed together with all target specifics into "target.h" local file.
+Must be implemented ASAP !!
+Till now, even muldiv issues was causing in fact by inproper typecasting in immediate instructions interpreted differently
+by older 8/16bit compilers, but bugs found were important to solve.
+Differences in old/new C compiler is also primary motivation to build "HL ASM" on top of VMEX, using C-operators
+instead of instruction mnemonics - result is more lines than C, but almost C-like readability of code;
+differences in C compilers are real evil :-)
+
+Yes, it is experimental, not trying to push new ISA/language into the current existing wild at all cost.
+Its proof of concept of further simplification of things, which are often too complex enough these days.
+And it is intended for unified portable debuggable application code accros the MCUs,
+having native low level things present too. Even the native parts CAN be finally codede in that HL assembly syntax,
+having native transformations using simplified subset of MCU ISA and 6502-like "zeropage" concept implemented everywhere.
+But this is all basic research in the wild, still :-)
 
 More docs to come here too, sure.
