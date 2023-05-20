@@ -30,6 +30,7 @@ in simulator and devkits, for MSP430 in simulator and devkits, and compiles for 
 for CP/M, MSX, SordM5, Tandy100/Olivetti M10 (8085), Ondra, PMD-85 ...
 After several initial unsuccessfull attempts to build this using WDCTools for 65816, now it compiles without errors too.
 And it seems that WDCTools C compiler is FASTEST available, so may be further development will be done using WDC65c256sxb board.
+As latest Commander X16 emulator v43 is released, its tested here as working too.
 
 Simple windows build scripts will be provided here too soon.
 
