@@ -1260,7 +1260,7 @@ int test(TU8 opcode, const char* testname)
         {
             const TU8 tpOPSBD_BGTU[] = {
                 0x11,0xAA,0x11,0x11, //addi r10 r10 0x1111  //  r10    += $1111
-                0x11,0xB0,0x90,0x00, //addi r11 r0 0x2000   //  r11     = $9000
+                0x11,0xB0,0x90,0x00, //addi r11 r0 0x9000   //  r11     = $9000
                 0x11,0xC0,0x10,0x00, //addi r12 r0 0x1000   //  r12     = $1000
                 0xBD,0xBC,0x00,0x01, //bgtu r11 r12 1        //  if (r11 U> r12) then +1 //!!!!!!!!!!!!!!!!!!!!!!!!
                 0x11,0xA0,0x11,0x11, //addi r10 r0 0x1111   //  r10     = $1111

@@ -3,7 +3,7 @@
 // !!! CHECK tests.h for list of errors !!!
 
 #define RUN_TESTS     //compile and run tests in engine (/test arg or monitor t command)
-//#define EMB_TESTS   //launch tests (selectivelly enabled by TEST_ #defines) immediatelly in main
+#define EMB_TESTS   //launch tests (selectivelly enabled by TEST_ #defines) immediatelly in main
 //#define EMB_MAIN    //launch as vmexmain() from main.c/main() with MCU init - it is OK, no issues!!
 #define DESKTOP       //instead od auto-detection, we explicitly define here compilation for desktops (QL)
 #define PAGE_SIZE (4*32) //16 at least for tests (16 instructions test scripts)
@@ -695,7 +695,9 @@ int vmex(const TU8 testprog[], int progsize)
                 break;
 
             case OPSBD_BGTU: //pseudo
-                if ((REGU_TYPE) *_rs1_ > (REGU_TYPE) *_rs2_) { core.pc += imm << LSHIFT; }
+                //HACK for Z88DK Z80 compiler - "unsigned >" FAILS !!!
+                //HACK - we use reversed registers and "<" here !!!
+                if ((REGU_TYPE) *_rs2_ < (REGU_TYPE) *_rs1_) { core.pc += imm << LSHIFT; }
                 break;
 
 

@@ -48,6 +48,9 @@ Differences in old/new C compiler is also primary motivation to build "HL ASM" o
 instead of instruction mnemonics - result is more lines than C, but almost C-like readability of code;
 differences in C compilers are real evil :-)
 
+!!! Z88DK compiler for Z80 fails with "unsigned >" comparison (BGTU) - was solved by hacking this case to use "unsigned <" instead.
+(this hack will apply everywhere but its okay - will try to report bad behavior to Z88DK team !!!)
+
 Yes, it is experimental, not trying to push new ISA/language into the current existing wild at all cost.
 Its proof of concept of further simplification of things, which are often too complex enough these days.
 And it is intended for unified portable debuggable application code accros the MCUs,
