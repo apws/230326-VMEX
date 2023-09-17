@@ -13,12 +13,15 @@
 //          (particulary R2 will be used for "M" extension, others are RESERVED)
 //          possible also regrouping ABI registers to have "upper" 8 gp regs as 0-7 and "lower" as 8-F (8=zero,9=ra,A=sp,B=gp) ??? SPIS NE
 //230403  - current state of ASLIX is defined mostly be VMEX engine written it itself, we will follow this syntax
-//          most important: 
+//          most important:
 //          1) single instruciton per line 2)
-//          2) C-like operators 
+//          2) C-like operators
 //          3) C-like control (having loop(if)/again(if) instead of while/do)
 //          4) Python-like space-defined structure, no semicolons
 
+//hints ???
+//https://fmash16.github.io/content/posts/riscv-emulator-in-c.html####
+//https://yamin.cis.k.hosei.ac.jp/rivasm/###
 
 //vmex
 #define PC_TYPE       TU32  // RV32=TU32
@@ -141,7 +144,7 @@ int vmex(const TU8 testprog[], int progsize);
 typedef enum {
     R3_TYPE = 0x30,
     R2_TYPE = 0x20,
-    
+
     I1_TYPE = 0x10,
     IC_TYPE = 0xC0, //?? only 16 or more registers to encode ?? R-TYPE ??
     ID_TYPE = 0xD0, //?? only 16 or more registers to encode ?? R-TYPE ??
@@ -217,10 +220,10 @@ typedef enum {
 //OP ID-TYPE
 #define OPIDD_MOV     0xDD //pseudo //MV                                   // -- moves, inits, unary
 #define OPID0_INI     0xD0 //pseudo //MV (optimized 0)
-#define OPIDE_NEG     0xDE //pseudo    
-#define OPIDF_NOT     0xDF //pseudo    
+#define OPIDE_NEG     0xDE //pseudo
+#define OPIDF_NOT     0xDF //pseudo
 
-//#define OPRD1_MV1     0cD1 //pseudo //aslix    //DB  //D1 //move byte 
+//#define OPRD1_MV1     0cD1 //pseudo //aslix    //DB  //D1 //move byte
 //#define OPRD2_MV2     0cD2 //pseudo //aslix    //DD  //D2 //move dual byte (H)
 //#define OPRD3_MV3     0cD3 //pseudo //aslix //move third byte ??? aslix??
 //#define OPRD4_MV4     0cD4 //pseudo //aslix //move fourth byte ??? aslix??
@@ -248,7 +251,7 @@ typedef enum {
 #define OPIEA_LA      0xEA //TODO pseudo 16 bit (defacto dtto k LI 16bit)
 #define OPIEF_LA      0xEF //TODO pseudo //auipc combined (fusion)???
 
-#define OPIE1_LB      0xE1 //TODO pseudo //auipc combined (fusion)???  
+#define OPIE1_LB      0xE1 //TODO pseudo //auipc combined (fusion)???
 #define OPIE2_LH      0xE2 //TODO pseudo //auipc combined (fusion)???
 #define OPIE4_LW      0xE4 //TODO pseudo //auipc combined (fusion)???
 
@@ -297,9 +300,53 @@ typedef enum {
 #define OPU6C_CALL    0x6C //pseudo //JAL
 
 
+//------------------------------------------------------------------------------------------------------
+// assembly instructions usage stats
+// https://www.reddit.com/r/asm/comments/dddn4g/assembly_instruction_use_statistics/
+//
+// simplified BIT-manipulation extensions !!!
+// https://github.com/riscv/riscv-bitmanip/blob/main-history/bitmanip-draft.pdf
+//
+// ALL THIS MUST BE IMPLEMENTABLE BY MACROS IN RISC-V !!!
 
 // MORE PRACTICAL PSEUDO/FUSIONS (=optimized)
+// https://www.strchr.com/x86_machine_code_statistics
 
 // PHB PHH PHW //stack //pseudo fusions? = addi sp, sp, -N; wN rx, 0(sp);
 // PLB PLH PLW //stack //pseudo fusions? = lN rx, 0(sp); addi sp, sp, N;
 // or support arbitrary PH/PL of number of bytes !!!
+
+// PUSH reg
+// PULL reg
+// PUSH reg, cnt - push reg + cnt others
+// PULL reg, cnt
+
+// COPY size, from, to - block move ??? // MOVB, MOVM ???
+// COPY to, from, size - ???
+
+// SWAP to, reg - ??? swap 16bit words in reg
+
+
+//********************************************************************************************
+// HLA (ASLIX) support for EASIER DISASSEMBLY OF BINARIES !!!
+// - this is only WILD DRAFT HERE ...
+// - HLA opcodes may be used ONLY/MAINLY as NOP MARKERS for assiseted dissassembly while debugging
+
+// REM lenght, "comment" (for quick code written in monitor into RAM memory WITH COMMENTS !!)
+//
+
+// IF<level>
+// ELSE<level>
+// ( ELSIF<level> )
+// ENDIF<level>
+
+// LOOP[IF]<level>
+// AGAIN[IF]<level>
+// BREAK
+// CONTINUE ?? isnt this AGAIN ??
+
+// PROC or FUNC
+// ENDPROC or ENDFUNC
+
+
+
