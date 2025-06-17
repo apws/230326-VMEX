@@ -1,0 +1,91 @@
+
+Unifying keyboard shortcuts for debugging
+==========================================
+
+				Atmel Studio (C-HW)	VisualStudio (C#)	VSCode (REFACTOR)	DevCpp (C-DEBUG)
+				===================	=================	=================	================
+
+Tools.Options			= !! Ctrl+Alt+K		!! Ctrl+Alt+K		Keyoard Shortcuts	Ctrl+Alt+K
+Project.Properties		= !! Ctrl+Alt+Enter	!! Ctrl+Alt+Enter	!! Ctrl+Alt+Enter	Ctrl+Alt+Enter
+Window.OpenView			= ???			???			!! Shift+Alt+Enter	---
+Full Screen			= F11			= F11			= F11			= F11
+Command Pallete			=			=			= F1			=
+
+
+Edit.Redo			= !! Shift+Ctrl+Y	!! Shift+Ctrl+Y		!! Shift+Ctrl+Y		Shift+Ctrl+Y
+Edit.Undo		´	= !! Shift+Ctrl+\	!! Shift+Ctrl+\		!! Shift+Ctrl+\		Shift+Ctrl+\
+Window.CloseDocumentWindow	= !! Ctrl+W		?? Ctrl+W		!! Ctrl+W		Ctrl+W
+Edit.ToggleLineComment		= !! (Shift+)Ctrl+Q	!! Ctrl+Q		!! Ctrl+Q		Ctrl+Q
+Edit.BlockLineComment		= ?? ---		!! Shift+Ctrl+Q		!! Shift+Ctrl+Q		Ctrl+Q
+Edit.SelectCurrentWord		= !! Ctrl+Shift+W	?? Ctrl+Shift+W		---			---
+Edit.Find			= Ctrl+F		Ctrl+F			Ctrl+F			Ctrl+F
+Edit.FindInFiles		= Ctrl+Shift+F		Ctrl+Shift+F		Ctrl+Shift+F		Ctrl+Shift+F
+Edit.Replace		ł	= !! Ctrl+R		!! Ctrl+R		!! Ctrl+R		Ctrl+R
+Edit.ReplaceInFiles		= !! Ctrl+Shift+R	!! Ctrl+Shift+R		!! Ctrl+Shift+R		Ctrl+Shift+R
+Edit.FindNext			= F3			F3			F3			F3
+Edit.FindPrevious		= Shift+F3		Shift+F3		Shift+F3		Shift+F3
+Edit.GotoDeclaration		= !! Ctrl+F6		!! Ctrl+F6		!! Ctrl+F6		Ctrl+F6
+Edit.GotoDefinition		= !! Ctrl+F7		!! Ctrl+F7		!! Ctrl+F6		Ctrl+F7
+
+Edit.VAssistX.FindSymbolDialog  = !! Ctrl+G		!! Ctrl+G		!! Ctrl+G		Ctrl+G
+Edit.Goto			= !! Shift+Ctrl+G	?? ---			!! Shift+Ctrl+G		Shift+Ctrl+G
+Edit.IncrementalSearch		= Ctrl+I		Ctrl+I			?? ---			Ctrl+I
+
+Edit.CompleteWord		= !! Ctrl+Alt+Right	?? Ctrl+Alt+Right	?? ---			!! Ctrl+Alt+Right
+Edit.ToggleBookmark		= !! Ctrl+Alt+B		!! Ctrl+Alt+B
+Edit.NextBookmark		= !! Ctrl+B		!! Ctrl+B
+Edit.Show(In)Bookmarks          = !! Ctrl+Alt+Shift+B
+Edit.CollapseAllOutlining	= !! Ctrl+/		!! Ctrl+/
+Edit.ExpandAllOutlining		= !! Ctrl+*		!! Ctrl+*
+
+
+
+
+Build.BuildSolution		= !! F9			!! F9			Arduino:Verify		F9
+Build.Compile			= !! Ctrl+F9		!! Ctrl+F9					Ctrl+F9 (syntax check)
+Build.RebuildSolution		= !! Ctrl+Alt+F9	!! Ctrl+Alt+F9		Arduino:Intellisense	Ctrl+Alt+F9
+Build.CleanSolution		= !! Ctrl+Alt+C		!! Ctrl+Alt+C					Ctrl+Alt+C
+
+Debug.StartWithoutDebugging	= !! F10		!! F10			Arduino:Upload		F10
+
+Debug.AttachTarget		= Ctrl+Alt+F5		Ctrl+Alt+F5					Ctrl+Alt+F5
+Debug.StartDebuggingAndBreak	= Alt+F5
+Debug.ToggleBreakpoint		= !! F4			!! F4						F4
+
+Debug.Start			= F5			F5						F5
+Debug.StepOver			= !! F6			!! F6						F6
+Debug.StepInto			= !! F7			!! F7						F7
+Debug.StepOut			= !! F8			!! F8						F8
+Debug.StopDebugging		= !! Ctrl+F5		!! Ctrl+F5					Ctrl+F5
+Debug.RunToCursor/Continue	= !! Shift+F5		!! Shift+F5					Shift+F5 (continue)
+
+Debug.BreakAll 			= Ctrl+Alt+Break	Ctrl+Alt+Break					
+				  Shift+Ctrl+Alt+F5
+
+Debug.QuickWatch		= !! Ctrl+Shift+F4	!! Ctrl+Shift+F4				Ctrl+Shift+F4 (modify)
+Debug.AddWatch			= !! Shift+F2		!! Shift+F2					Shift+F2
+Debug.DeleteWatch		= ?? Ctrl+F2		?? Ctrl+F2					Ctrl+F2
+Debug.ClearAllWatches		= ?? Ctrl+Alt+F2	?? Ctrl+Alt+F2					Ctrl+Alt+F2
+
+Debug.Disassembly		= !! Ctrl+F11		!! Ctrl+F11					Ctrl+F11
+
+
+Debug.Breakpoints = Alt+F9
+Debug.EnableBreakpoint = Ctrl+F9
+Debug.DeleteAllBreakpoints = Ctrl+Shift+F9
+Debug.FunctionBreakpoint = Ctrl+B
+Debug.Reset = Shift+F5, Ctrl+Alt+F5
+Debug.Restart = 
+Debug.RunToCursor = Ctrl+F10
+Debug.SetNextStatement = Ctrl+Shift+F10
+
+
+
+
+File.Rename			= F2
+Tools.DeviceProgramming		= Ctrl+Shift+P
+VAssistX.RefactorRename		= Shift+Alt+R
+View.NextError			= Ctrl+Shift+F12
+
+
+

@@ -1,0 +1,30 @@
+
+As we will probably design sidecar extension to the Z80Retro! pure Z80 bus
+for retro-fusion 3V3 operation to allow running system with predefined set of peripherals
+by many different processors (only memory mapped IO defined by peripheral MCU with
+switchable MMU memory mappiongs for different processors, OR even switchable for memory
+or IO instrucitons? 256 ports max defined, identically mapped to memory ??)
+
+here are BEST CPM22 links (nice semantical description of BIOS and BDOS functions + apps)
+http://www.shaels.net/index.php/cpm80-22-documents
+http://www.shaels.net/index.php/cpm80-22-documents/cpm-general-information/2-cpm-history
+
+here is also one of BEST CPM22 emulators
+http://www.shaels.net/index.php/z80emu
+
+here is probably BEST Z80 mini system (using 3V3 parallax propeller as peripheral chip)
+http://www.shaels.net/index.php/mini80
+
+here is probably BEST and FASTEST possible CPM22 system uzin EZ80 processors (50MHz)
+http://www.shaels.net/index.php/mic80
+(using extended EBIOS and remote networked disks by RDISK protocol)
+
+
+here is ANSI terminal project, we will also use terminal in VMEX, probably simplified !!!
+http://www.shaels.net/index.php/propterm
+
+
+
+Sergej Kiselev Easy Z80 - very similar layout !!!
+==================================================
+https://github.com/skiselev/easy_z80###

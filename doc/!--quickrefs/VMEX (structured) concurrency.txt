@@ -1,0 +1,45 @@
+
+
+Java Loom - SUPER INFO - psudocode at 15:15 -- continuation, yield
+https://www.youtube.com/watch?v=9P9DZCZTq4E##x
+
+viz take Cay Horstmann -- Concurrency -- https://www.youtube.com/watch?v=Zm3OgyQfDTU
+viz take Cay Horstmann -- Future ???  -- https://www.youtube.com/watch?v=Q4TKQ4lnevQ
+
+???? https://www.youtube.com/watch?v=plwjMqIcH64
+
+!!!!!!!! NET Loom !!!!!!!!!!!!
+Implementing async with coroutines and fibers - project Loom in C# - Adam Furmanek - NDC Porto 2022
+https://www.youtube.com/watch?v=4JrrRaWMzQI
+https://blog.adamfurmanek.pl/
+https://twitter.com/furmanekadam
+
+VMEX !!!!!!!!!
+
+core bezi (spusteni pres "start")
+ - provede 1 instrukci a prepne kontext na dalsi aktivni core
+   (existuje staticky core pool, kam se prirazuji tasky)
+
+ - pokud core narazi na instrukcni blok "alone", pak prestane prepinat kontext a atomicky cely blok !!!
+   alone (sync)
+      ...
+      ...
+   endalone (endsync)
+
+ - pokud core narazi na instrukci "pause [time]" pak se vyradi z aktivnich bloku a nebude zpracovavano, dokud
+   nedostane opet od (nadrizeneho?) procesu povel "resume" a NEBO pokud nevyprsi "pause time",
+   kdy pokracuje dal od "pause" samo
+   (to vyzaduje mit v runtime systemovy timer !!!, budeme pocitat s presnosti asi na 1ms ... config?)
+   (park, unpark ????)
+
+ - core muze predat "result" (cela sada registru?) kdykoliv (zejmena pred instrukci "pause" => defacto yield)
+   ("yield return" + "move next" (call to cororutine ??? as C# (viz NET Loom video) )
+
+ - core "cancel" => vraceni -1 v a0 -(x10) ???? pripdne dalsi detaily v dalsich registrech ....
+   (=> instrukce "stop" zrusi stav aktivniho jadra ve statickem poolu navzdy. resp. to "dalsiho "start")
+
+ - core interrupt ==> defacto pouze docasne ziskani vyssi priority jinym jadrem/taskem, ktery obslouzi co    potrebuje a provede "stop" (je spousten bud periodickym casovacem "delay nnn" a nebo asynchronne
+   vnejsiho prostredi (tim muze byt i jine jadro, vyhrazene pro obsluhu hardware, tj. defacto preruseni)
+
+
+

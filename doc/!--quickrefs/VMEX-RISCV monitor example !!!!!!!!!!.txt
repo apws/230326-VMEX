@@ -1,0 +1,128 @@
+
+Johns Basement
+=====================
+https://faculty.cs.niu.edu/~winans/CS463/2022-fa/
+
+
+HOW VMEX WAS BORN
+==================
+Introduction to RISC-V and the RV32I Instructions
+https://www.youtube.com/watch?v=LKB5I12LctU
+
+VMEX maps all RV32EM opcodes and pseudos/fusions for single hart operation only.
+There is NO CSR for controlling multiple harts or so.
+BUT VMEX implements cores its way and introduces OWN instructions to support STRUCTURED CONCURRENCY.
+Its experimental and search still, but our goal is to have ISLOATED MEMORY for cores.
+STRUCTURED CONCURRENCY primitiveses will support also MAILBOXES/QUEUES communication of cores.
+
+(johns multicore support in his simulator/RVDDT is insufficient as he counts with shared mem harts !!!)
+(AND has not all the atomics and sync instrucitons as fence etc... !!!)
+
+
+!!!!!!!!! RISC-V simulator/monitor example on FREESTANDING programs !!!!!!!!!
+Freestanding RISC-V Programs
+------------------------------------------------------------------------------
+https://www.youtube.com/watch?v=iml0DBo5yqo
+
+      RISC-V Assembly language programming
+      https://github.com/johnwinans/rvalp
+
+      !!!!!!!!!! RISC-V Dynamic Debugging Tool !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      https://github.com/johnwinans/rvddt
+      https://github.com/johnwinans/rvalp
+
+
+RISCV - specs introduction and assembly
+https://www.youtube.com/watch?v=LKB5I12LctU###
+
+RISC-V RV32I Instruction Encoding
+https://www.youtube.com/watch?v=VNy-J0u7-jY
+
+RISC-V la & li Pseudo Operations
+https://www.youtube.com/watch?v=jmj7X5ha_KE
+
+!!!!!!! Compiling Freestanding RISC-V Programs
+------------------------------------------------------------
+https://www.youtube.com/watch?v=ODn7vnWOptM
+
+        !!!!!!!! RV32I Simulator Multi-Hart/Core Modifications! !!!!!!!!!!!!!!!!!!!!
+        ------------------------------------------------------------------------------
+        https://www.youtube.com/watch?v=4NdBUJ-IkPo
+
+        !!!!!!! RV32I Freestanding Multithreaded Program !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        -------------------------------------------------------------------------------------------
+        https://www.youtube.com/watch?v=4GcbkFdH518
+
+
+Introduction to the RISC-V ABI
+https://www.youtube.com/watch?v=ovpG0R-4F8k
+
+       RISC-V Pseudoinstructions (li, la, call, lb, sb,...) !!!! VMEX fusions optimized as lui+ori !!!!
+       (!!!!!!!!!!! THIS IS SUPERIMPORTNAT TO WELL IMPLEMENT MEM ACCESS FUSIONS, LA, ETC !!!!!!!!!!!!!)
+       https://www.youtube.com/watch?v=ROkjMXuR2u8
+
+
+!!!!!!!! Fixing signedness errors in C/C++ !!!!!!!!!!!!!!!
+--------------------------------------------------------------
+https://www.youtube.com/watch?v=6vyJJ9myuAY
+
+
+!!!!!! Z80 BANKED MEMORY CONCEPT -- VMEX MMU HOWTO !!!!!!!!!!!!!!!
+-------------------------------------------------------------------
+https://www.youtube.com/watch?v=zrnZkAMAh6A&list=PL3by7evD3F51Cf9QnsAEdgSQ4cz7HQZX5&index=9
+
+
+??????? CHINA - (VMEX) BOOTLOADING for several MCUs ????????????????
+http://mcu.cz/news.php?extend.5072
+
+
+!!!!!!! MAACHDYNE RIEGEL/KOLIBRI - similar minimal concept ???? PORTING VMEX ?????????????
+https://github.com/machdyne/riegel
+
+
+QEMU RV32I Installation & Setup
+https://www.youtube.com/watch?v=iWQRV-KJ7tQ
+
+
+Signed Binary Integers - jasný
+https://www.youtube.com/watch?v=XcwU15v0wm4
+https://www.youtube.com/watch?v=8C4tGkG5EaE
+
+
+general multicore operation
+https://www.youtube.com/watch?v=ckzSUPP9Doo
+
+The Organization of the BSD, System V, and Linux Manual Pages
+https://www.youtube.com/watch?v=Ff7EVJqiPRI
+
+
+!!!!!!! SOFTWARE UART FOR ALL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+https://dannyelectronics.wordpress.com/2018/03/01/uart-for-all/
+https://dannyelectronics.wordpress.com/2017/08/06/software-uarts-for-those-lowly-mcus/
+https://www.st.com/en/embedded-software/stsw-stm32156.html
+https://github.com/wingspinner/SoftwareSerialSTM32
+https://github.com/stas2z/SoftSerial_STM32
+https://community.st.com/s/question/0D50X00009XkX1uSAF/software-serial-in-stm32
+https://github.com/liyanboy74/soft-uart
+https://community.st.com/s/question/0D50X00009XkX23SAF/software-serial-in-stm32
+https://www.st.com/content/ccc/resource/technical/document/application_note/3d/80/91/f9/4c/25/4a/26/DM00160482.pdf/files/DM00160482.pdf/jcr:content/translations/en.DM00160482.pdf
+!!!!!!
+bitbanging - VMEX UART over GPIO
+https://twitter.com/matseng/status/1650150424232468481
+
+Z80 Retro #65 - Alternate FLASH and SRAM chip options for the Retro!
+https://www.youtube.com/watch?v=V7FokYS09ag
+
+Building the most controversial Z80 Computer ever
+https://www.youtube.com/watch?v=iamr3gj8vU8
+
+Z80 Retro #68 - PCB V4.4.0
+https://www.youtube.com/watch?v=GZx-gbTi3EM
+
+ASLIX - how to write a compiler (too difficult, we are in HL assembler with symbol table !!!!!!!)
+https://compilers.iecc.com/crenshaw/
+
+Z80 Retro #35 - CP/M .COM Files And How To Create Them
+https://www.youtube.com/watch?v=WfamEXvkXQg
+
+

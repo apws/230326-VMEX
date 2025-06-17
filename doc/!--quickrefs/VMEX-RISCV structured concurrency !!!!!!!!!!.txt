@@ -1,0 +1,64 @@
+
+STRUCTURED CONCURRENCY LINKS
+============================================
+
+
+Implementing async with coroutines and fibers - project Loom in C# - Adam Furmanek - NDC Porto 2022
+(Adam Furmanek)
+https://www.youtube.com/watch?v=4JrrRaWMzQI
+
+Project Loom: Revolution in Java Concurrency or Obscure Implementation Detail?
+https://www.youtube.com/watch?v=9P9DZCZTq4E##x
+
+Cay Horstmann — Concurrency For Humans
+https://www.youtube.com/watch?v=Zm3OgyQfDTU
+
+Java - What Were They Thinking? / Cay Horstmann / 17. SFI
+https://www.youtube.com/watch?v=Q4TKQ4lnevQ
+
+Raymond Hettinger, Keynote on Concurrency, PyBay 2017
+https://www.youtube.com/watch?v=9zinZmE3Ogk&t=1s
+
+Erlang Master Class 2: Video 1 - Turning sequential code into concurrent code
+https://www.youtube.com/watch?v=nYgEny1goCY
+
+Comparing Erlang and Go Concurrency
+https://www.youtube.com/watch?v=2yiKUIDFc2I
+
+Parallel Erlang - Speed beyond Concurrency - Stavros Aronis
+https://www.youtube.com/watch?v=fnmWfOFvIMk
+
+PONY LANG FAQ
+https://www.ponylang.io/faq/
+https://www.ponylang.io/discover/
+
+Procedural Programming: It’s Back? It Never Went Away - Kevlin Henney [ACCU 2018]
+https://www.youtube.com/watch?v=mrY6xrWp3Gs
+
+
+    C++ in the World of Embedded Systems - Vladimir Vishnevskii - ACCU 2022
+    https://www.youtube.com/watch?v=ZLlGO102tVw
+    
+    Modern C and What We Can Learn From It - Luca Sas [ ACCU 2021 ]
+    https://www.youtube.com/watch?v=QpAhX-gsHMs
+
+    Modern CMake for modular design - Mathieu Ropert - Meeting C++ 2017
+    https://www.youtube.com/watch?v=ztrnb-bVVPo
+
+
+
+Structured Concurrency - Lucian Radu Teodorescu - ACCU 2022
+https://www.youtube.com/watch?v=Xq2IMOPjPs0
+
+Threads Considered Harmful - Lucian Radu Teodorescu [ ACCU 2021 ]
+https://www.youtube.com/watch?v=_T1XjxXNSCs
+
+NO LOCKS MANIFESTO
+https://nolocks.org/
+
+
+TTl vs CMOS An Overview of Digital Logic Families (best LVCH ???)
+https://www.youtube.com/watch?v=TICSYYKFhys
+
+
+

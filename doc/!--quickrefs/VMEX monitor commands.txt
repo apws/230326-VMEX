@@ -1,0 +1,104 @@
+
+FPGA Machdyne KOLIBRI ZBL bootloader firmware.c
+https://github.com/machdyne/zucker/blob/main/firmware/firmware.c
+ - similar code to my VMEX monitor, in fact !!! similar simple C approch !!!
+
+
+simple interactive monitor commands for VMEX runtime:
+=====================================================
+locked prompt:    9# (expects <password> <ENTER> - number indicates # of tries to unlock)
+unlocked prompt:  > (clears screen)
+<p> oldpass newpass <ENTER> - enters password and LOCKS (9# prompt then, clears screen)
+<p> (yn) - LOCKS with current password (9# prompt then, clears screen)
+
+
+?????????
+(labels are persisted at the end of flash dictionary ??)
+(commands history can be handled in terminal app, restored by arrow up/down keys)
+(terminal has 1 entering line below N lines window above)
+(it is pure text ascii/petscii console implementable everywhere (minimum 40*24) ??)
+
+<#|l> label aaaaaa - set label to current PC
+<#|l> - list labels
+ld - delete labels (yn)
+ld label - delete label (yn)
+(dynamic labels list is dictionary in terminal application)
+???????????
+
+
+c - list of all cores
+c nnnn - core switch
+cc nnnn - core create
+ck - core kill
+cp - core prog
+cd - core data
+
+
+
+r - list all 16 registers
+r[ rr] bb hhhh wwwwwwww - set register (yn)
+
+
+<*|.|,><label> - set virtual PC to label
+
+
+m[ nn|nnnn label] - list (nn) bytes of (default) memory from PC, PC++ (line ends with |checksum byte)
+(lists already prefixed by "w" command for copy/paste memory write, incl. checksum)
+(flashing is transparent, each kind of memory is handled the same ?)
+
+w bb bb bb bb ... [|cc]
+w hhhh hhhh ... [|cc]  
+w wwwwwwww ... [|cc]
+w "ascii" [|cc]
+w rr - write memory (bytes, halfs, words, reg content, ascii text) from PC, PC++ (yn)
+(flashing is transparent, each kind of memory (flash, ram) is handled the same ?)
+(if line ends with |checksum byte, then its checked - this format is output of "m" command)
+
+
+d[ nn|nnnn label] - disassemble (nn) instructions of memory from PC, PC++
+(dissassembly ready for full desktop assembler or asm-back "a" command, we are storing/decoding even pseudos/fusions)
+
+a[ label] - enter assemblly mode and show asm ">>" prompt
+(aaaaaa > <opcode> <params>, PC++)
+x - exit assembly mode
+
+
+r label - RUN code at PC/label (RET returns)
+r - RUN
+n - NEXT
+
+t label - trace code one instruction at a time at PC/label
+t - trace next (adds breakpoint to next instruction, calls, breaks, restore/repeat...)
+
+b [bpoint] - add breakpoint to explicit breakpoint list (remembers underlying instructions)
+b - list breakpoints
+bd - delete bpoints (yn)
+bd bpoint - delete bpoint (yn)
+(fixed breakpoint list is stored in each virtual core memory area
+ after the registers and message queue buffer)
+
+
+
+
+MESSAAGE QUEUE: (SYS ECALL)
+============================
+SYS instruction ECALL by default places following ascii zero terminated string in queue
+and calls serial uart print with it, so it basically LOGS something to terminal while
+app is running
+
+more advanced usage of MSG QUEUE will be notifying the VMEX scheduler this way,
+so passing command to other VMEX cores too...
+
+INTERRUPTS:
+===========
+default interrupts from HW will be handled by dedicated interrupt VMEX core, passing
+message notifications to scheduler/other cores
+
+
+
+!!! "MORE" tests on fast machines are too fast to be watched, we need some "MORE" feature,
+    - one posibility is time/pause after several lines (configurable) but its harder ???
+    - other possibility is lines counter, resetable by blocking fgets/getch key read (configurable)
+      (this looks better !!! - we need "printm" command which will handle this not only for test,
+      but also for all listings - any key to continue, ESC to exit, ... Ctrl+C can ALWAYS quit !!!)
+

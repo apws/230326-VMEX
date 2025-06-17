@@ -1,0 +1,13 @@
+
+https://www.youtube.com/watch?v=L9jvLsvkmdM
+
+BOBBYCORE 
+https://www.youtube.com/watch?v=T1PZ2LiSyQI
+
+
+peceed
+1 month ago (edited)
+RISC-V has screwed instruction compression in a very spectacular way, wasting opcodes on nonorthogonal floating point instructions - absolutely obsolete in the most chips where it really matters (embedded), and non-critical in the other (serious code uses vector extensions anyway).
+It doesn't have critical (for code density and performance on low-spec cores) address modes: post/pre-incrementation.
+Even adhering to strict 2r1w instruction design it could have stores with them.
+

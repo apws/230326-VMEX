@@ -1,0 +1,49 @@
+
+pseudoinstructions (fusions, optimizations) mapping to vmex opcodes
+======================================================================
+
+// (psudo/fusions T=5689CDE)
+
+
+la     = EA (symbol, far effective address)
+ 
+lb     = E1 (far load byte)
+lh     = E2 (far load half)
+lw     = E4 (far load word)
+
+nop    = 00 (default forced no operation ??, not  as addi !!)
+
+li     = 3F (full immediate word load)
+
+mv     = DD (move/duplicate registers)
+
+not    = 1F
+neg    = 1E
+
+cltz   = C1 (compare to zero)
+cnez   = C3
+ceqz   = C4 
+cgtz   = C6
+
+ble    = B2 (branches)
+bgt    = B6 
+bleu   = BB
+bgtu   = BD
+
+bltz   = 81 (branches by zero)
+blez   = 82
+bnez   = 83
+beqz   = 84 
+bgez   = 85
+bgtz   = 86 
+
+j/goto     = 66 (near goto)
+jal/call   = 6C (near call)
+
+jr/xgoto   = 46 (indirect far goto)
+jalr/xcall = 4C (indirect far call)
+
+ret    = 44 (return)
+
+fcall  = EC (far call)
+ftail  = E4 (far tail return)

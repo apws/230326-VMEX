@@ -1,0 +1,148 @@
+==============
+  RV32E/VMEX - YES we will implement RV32E 32bit instructions
+==============
+
+// (pseudo/fusions T=5689CDE)
+
+
+// R1-TYPE (16)
+// R2-TYPE (16)
+// RC-TYPE (16)
+// RD-TYPE (16)
+//   = ADD=11, SUB=12, XOR=13, OR=14, AND=15, SLL=16, SRL=17, SRA=18,
+//   ( = MUL=21, MULH=22, MULHU=23, DIV=24, DIVU=25, REM=26, REMU=27, - is "M" extension)
+//   = CLT=1A, CLTU=1B
+// 31                              0
+//  -------+-------+-------+-------+
+//  rs2|000|rs1|000|-rd|000|0010cccc
+//  -------+-------+-------+-------+
+
+// I3-TYPE (16)
+// IA-TYPE (16)
+// I4-TYPE (16)
+// IE-TYPE (16)
+//   = ADDI=31, XORI=32, ORI=33, ANDI=34, SLLI=35, SRLI=36, SRAI=37
+//   = CLTI=3A, CLTIU=3B
+//   = LB=A1, LH=A2, LW=A4, LBU=AB, LHU=AD
+//   = JALR=4F (imm < 1) ???
+//   = ESYS=42 (ECALL, EBREAK)  //42 48
+//   = FENCE=40 (NOP, ignored)
+// 31                              0
+//  -------+-------+-------+-------+
+//  -sx|--immediate|-rd|rs1|0011cccc
+//  -------+-------+-------+-------+
+
+// SF-TYPE (16)
+// SB-TYPE (16)
+// S8-TYPE (16)
+//   = SB=F1, SH=F2, SW=F4
+//   = BEQ=B1, BNE=B2, BLT=B3, BGE=B4, BLTU=B5, BGEU=B6 (13 bits encoded as SRRed 12 bits !!!) ... +/- 4kB
+// 31                              0
+//  -------+-------+-------+-------+
+//  -sx|--immediate|rs1|rs2|0101cccc
+//  -------+-------+-------+-------+
+
+// U7-TYPE (16)
+// U6-TYPE (16)
+//   = LUI=71, AUIPC=7A, JAL=7F (both wraps around 24bit, JAL x0 +/-2kB)
+// 31                              0
+//  -------+-------+-------+-------+
+//  -sx|--immediate|-rd|___|0111cccc
+//  -------+-------+-------+-------+
+
+
+
+
+
+==============
+  RV32C/VMEX  - NO we will NOT implement RV32C 16bit instructions !!!!!!!!!!!!!!!!!!!
+==============
+  -- there is TOO COMPLEX DECODER AND IT WILL BE ALL TOGETHER SLOW AND BIG !!!!!!!!!!
+  -- BY OMITTING RV32C, WE WILL SAVE HALF OF FLASH OF INTERPRETER !!!!!!!!!!!!!!!!!!!
+  -- RV32C IS IMPLEMENTATION DETAIL, NOT EVEN EXPOSED BY ASSEMBLER INTERFACE !!!!!!!!
+  -- WE CAN PROVIDE !COMPLEX! HLA ON TOP OF RV32E WITH LOTS OF PSEUDOINSTRUCTIONS !!!
+  -- THIS WILL NOT BE PART OF MINIMAL RUNTIME = VMEX, WHICH WILL BE COMPACT !!!!!!!!!
+
+
+
+CI-TYPE (8)
+  = C.LWSP,C.LI,C.LUI,C.ADDI,C.ADDI16SP,C.SLLI,C.NOP
+16             0
+-------+-------+
+rc--imm|000ccr8|
+-------+-------+
+
+
+
+CA-TYPE (32)
+  = C.AND,C.OR,C.XOR,C.SUB
+  = (Zc) C.LBU,C.SB,C.LHU,C.LH,C.SH,C.EXT,C.SZEXT,C.NOT
+16             0
+-------+-------+
+cr8|crs|00100ccc
+-------+-------+
+https://github.com/riscv/riscv-code-size-reduction/blob/main/Zc-specification/Zc.adoc
+
+
+
+CR-TYPE (8)
+  = C.JR,C.JALR,C.MV,C.ADD,C.EBREAK
+16             0
+-------+-------+
+rds|rs2|00101ccc
+-------+-------+
+
+
+
+CB-TYPE (8)
+  = C.BEQZ,C.BNEZ,C.SRLI,C.SRAI,C.ANDI
+16             0
+-------+-------+
+-offset|01cccr8|
+-------+-------+
+
+
+
+CSS-TYPE (4)
+  = C.SWSP
+16             0
+-------+-------+
+r_--imm|00110rs|
+-------+-------+
+
+
+
+CIW-TYPE
+  = C.ADDI4SPN
+16             0
+-------+-------+
+----imm|00111rd|
+-------+-------+
+
+
+
+CL-TYPE
+  = C.LW
+16             0
+-------+-------+
+rs|-imm|rd|cccc0 (cc:10)
+-------+-------+
+
+
+
+CS-TYPE
+  = C.SW
+16             0
+-------+-------+
+rs|-imm|rs|cccc0 (cc:10)
+-------+-------+
+
+
+
+CJ-TYPE
+  = C.J,C.JAL
+16             0
+-------+-------+
+---jump|jj|cccc0 (cc:10)
+-------+-------+
+

@@ -1,0 +1,22 @@
+
+
+Z80 Assembly Language (only 8080/8085 !!!)
+https://www.youtube.com/watch?v=CO5VMuyVzMI
+
+Z80-Retro / 2063-Z80
+https://github.com/Z80-Retro/2063-Z80
+
+
+
+Z80-Retro / manuals
+https://github.com/Z80-Retro/manuals
+
+
+
+
+6502 
+
+AVR
+
+PIC16
+

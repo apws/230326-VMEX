@@ -1,0 +1,11 @@
+
+Silicon Labs - 8051
+
+EFM8UB20F64G
+C8051F965-B-GMR
+
+
+test() - vraci nejake hausnumero ktere se nacita do fails !!!
+
+ale seru na ne, jsou drahy jako prase, k nicemu ...... !!!!!!!!!!!!!!!!!
+

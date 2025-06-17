@@ -1,0 +1,45 @@
+
+1.2 Legal
+vbcc is copyright in 1995-2022 by Volker Barthelmann.
+This archive may be redistributed without modifications and used for non-commercial purposes.
+An exception for commercial usage is granted, provided that the target CPU is M68k and
+the target OS is AmigaOS. Resulting binaries may be distributed commercially without
+further licensing.
+2 vbcc manual
+An exception for commercial usage is granted, provided that the target CPU is 6502 with
+MEGA65 extensions and the target HW is MEGA65. Resulting binaries may be distributed
+commercially without further licensing.
+In all other cases you need my written consent.
+This copyright applies to vc, vbcc, vsc and vcpr.
+This archive may contain other tools (e.g. assemblers or linkers) which do not fall under
+this license. Please consult the corresponding documentation of these tools.
+vbcc contains the preprocessor ucpp by Thomas Pornin. Included is the copyright notice of
+ucpp (note that this license does not apply to vbcc or any other part of this distribution):
+/*
+* (c) Thomas Pornin 1999, 2000
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
+* are met:
+* 1. Redistributions of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+* 2. Redistributions in binary form must reproduce the above copyright
+* notice, this list of conditions and the following disclaimer in the
+* documentation and/or other materials provided with the distribution.
+* 4. The name of the authors may not be used to endorse or promote
+* products derived from this software without specific prior written
+* permission.
+*
+* THIS SOFTWARE IS PROVIDED ‘‘AS IS’’ AND WITHOUT ANY EXPRESS OR
+* IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+* ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE
+* LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+*/
