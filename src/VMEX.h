@@ -169,8 +169,8 @@ typedef enum {
 //!!! in total 80 ( incl. "M") instructions IMPLEMENTED in optimized VMEX/RV32E runitme, incl. optimized "pseudos" !!!
 
 //OP 00-NOP
-#define OP00_NOP      0x00
-
+#define OPX00_NOP     0x00
+//others 0x for vmex extensions ??
 
 //OP R3-TYPE
 #define OPR31_ADD     0x31                                                 // -- registers
@@ -185,7 +185,7 @@ typedef enum {
 #define OPR3B_CLTU    0x3B //SLTU
 
 //OP R2-TYPE // "M" extension = multiply/divide
-#define OPR21_MUL     0x21                                                 // -- "M" multiply / divide
+#define OPR21_MUL                       0x21                                                 // -- "M" multiply / divide
 #define OPR22_MULH    0x22
 #define OPR23_MULHU   0x23
 #define OPR24_MULHSU  0x24
@@ -218,10 +218,13 @@ typedef enum {
 #define OPIC6_CGTZ    0xC6 //pseudo
 
 //OP ID-TYPE
-#define OPIDD_MOV     0xDD //pseudo //MV                                   // -- moves, inits, unary
-#define OPID0_INI     0xD0 //pseudo //MV (optimized 0)
+#define OPID0_INI     0xD0 //pseudo //MV (optimized 0)                     // -- moves, inits, unary
+#define OPIDA_REV     0xDA //vmex //reverse bits order
+#define OPIDD_MOV     0xDD //pseudo //MV
 #define OPIDE_NEG     0xDE //pseudo
 #define OPIDF_NOT     0xDF //pseudo
+
+//others Dx for vmex extensions ??
 
 //#define OPRD1_MV1     0cD1 //pseudo //aslix    //DB  //D1 //move byte
 //#define OPRD2_MV2     0cD2 //pseudo //aslix    //DD  //D2 //move dual byte (H)
@@ -229,44 +232,63 @@ typedef enum {
 //#define OPRD4_MV4     0cD4 //pseudo //aslix //move fourth byte ??? aslix??
 
 //OP IA-TYPE
-#define OPIA1_LB      0xA1                                                 // -- MEM loads/access
-#define OPIA2_LH      0xA2
-#define OPIA4_LW      0xA4
-#define OPIAB_LBU     0xAB
-#define OPIAD_LHU     0xAD
+#define OPIA1_LB      0xA1 //byte                                                // -- MEM loads/access
+#define OPIA2_LH      0xA2 //LC card?
+#define OPIA4_LW      0xA4 //LW word //LD dual?
+//#define OPIA8_LL      0xA8 //LL long?
+//#define OPIA9_LF      0xA9 //LF font/full? (actually long long, 2 duals, 16byte)
+#define OPIAB_LBU     0xAB // LBU byte unsigned
+#define OPIAD_LHU     0xAD // LHU/LCU half/card unsigned?
+//#define OPIAD_LDU      0xAD // LDU dual      unisgned?  ??? these can overcome register size? will we have 7byte/56bit or even 15byte/120bit registers??
+//#define OPIAE_LLU      0xAE // LLU long      unisgned?  ??? plus dual/long/full types may be UNUSABLE IN ARITHMETIC ??? so NO HANDLING OF SIGN AT ALL ??
+//#define OPIAF_LFU      0xAF // LFU font/full unisgned?  ??? plus dual/long/full types may be UNUSABLE IN ARITHMETIC ??? so NO HANDLING OF SIGN AT ALL ??
+//others Ax for vmex extensions ?? STACK PULL ?? !!!!!!!!!!!!!
 
 //OP I4-TYPE
-#define OPI4F_JALR    0x4F                                                 // -- indirects, system
+#define OPI4F_JALR    0x4F //generic ??                                           // -- indirects, system
 #define OPI42_ECALL   0x42
 #define OPI48_EBREAK  0x48
 #define OPI40_FENCE   0x40 //NOP=ignored //0
 #define OPI46_IGOTO   0x46 //pseudo //JALR //JR      //96 ???
 #define OPI4C_ICALL   0x4C //pseudo //JALR           //9C ???
 #define OPI44_RET     0x44 //pseudo
+//others 4x for vmex extensions ??
 
 //OP IE-TYPE
-#define OPIEC_FCALL   0xEC //pseudo //CALL //AUIPC+JALR                    // -- FAR MEM loads, symbols, calls
-#define OPIEE_FTAIL   0xEE //pseudo //TAIL //AUIPC+JALR  //E6 ??
+#define OPIEC_FCALL   0xEC //pseudo //CALL? FCALL? //AUIPC+JALR                    // -- FAR MEM loads, symbols, calls
+#define OPIEE_FTAIL   0xEE //pseudo //TAIL? FRET??? //AUIPC+JALR  //E6 ??
 
-#define OPIEA_LA      0xEA //TODO pseudo 16 bit (defacto dtto k LI 16bit)
-#define OPIEF_LA      0xEF //TODO pseudo //auipc combined (fusion)???
+#define OPIEA_LA      0xEA // FLA? //TODO pseudo 16 bit (defacto dtto k LI 16bit)
+#define OPIEF_LA      0xEF // FLA? //TODO pseudo //auipc combined (fusion)???
 
-#define OPIE1_LB      0xE1 //TODO pseudo //auipc combined (fusion)???
-#define OPIE2_LH      0xE2 //TODO pseudo //auipc combined (fusion)???
-#define OPIE4_LW      0xE4 //TODO pseudo //auipc combined (fusion)???
-
+//why not this in F grounp in mnemo, so Fx ?? but F is for saves !!!
+#define OPIE1_LB      0xE1 // FLB byte? //TODO pseudo //auipc combined (fusion)???
+#define OPIE2_LH      0xE2 // FLC card? //TODO pseudo //auipc combined (fusion)???
+#define OPIE4_LW      0xE4 // FLD dual? //TODO pseudo //auipc combined (fusion)???
+//#define OPIE8_LL      0xE8 // FLL long? //TODO pseudo //auipc combined (fusion)???
+//#define OPIE9_LF      0xE9 // FLF font/full? //TODO pseudo //auipc combined (fusion)???
+//??? where are FAR LHU/FLHU/FLCU, LWU/FLWU/FLDU ???
 
 
 //OP S5-TYPE
-#define OPS51_WB      0x51 //SB                                            // -- MEM writes/saves
-#define OPS52_WH      0x52 //SH
-#define OPS54_WW      0x54 //SW
+#define OPS51_WB      0x51 //SB byte                                       // -- MEM writes/saves
+#define OPS52_WH      0x52 //SH half // SC card?
+#define OPS54_WW      0x54 //SW word // SD dual?
+//#define OPS58_WL      0x58 //SL long?
+//#define OPS59_WF      0x59 //SF font/full? (actually long long, 2 duals, 16byte)
+//others 5x for vmex extensions ?? STACK PUSH ?? !!!!!!!!!!
 
 //OP SF-TYPE
-#define OPSF1_WB      0xF1 //TODO pseudo //auipc combined (fusion)???      // -- FAR MEM writes/flushes
-#define OPSF2_WH      0xF2 //TODO pseudo //auipc combined (fusion)???
-#define OPSF4_WW      0xF4 //TODO pseudo //auipc combined (fusion)???
-#define OPSFF_INVALID 0xFF //TODO invalid instruction in empty flash ??? or NOP ???
+#define OPSF1_WB      0xF1 // FSB         //TODO pseudo //auipc combined (fusion)???      // -- FAR MEM writes/flushes
+#define OPSF2_WH      0xF2 // FSH/FSC?    //TODO pseudo //auipc combined (fusion)???
+#define OPSF4_WW      0xF4 // FSW/FSD     //TODO pseudo //auipc combined (fusion)???
+//#define OPSF8_WL      0xF8 // FSL long?
+//#define OPSF9_WF      0xF9 // FSF font/full? (actually long long, 2 duals, 16byte)
+
+// X=ERR / FF = INVALID IN FLASH, UNDEFINED
+#define OPSFF_X       0xFF //TODO invalid instruction in empty flash ??? or NOP ???
+
+
 
 //OP SB-TYPE
 #define OPSB1_BLT     0xB1                                                 // -- branches
@@ -320,17 +342,21 @@ typedef enum {
 // PULL reg
 // PUSH reg, cnt - push reg + cnt others
 // PULL reg, cnt
+// ?? interesting is behavior of M68K for psuh/pull handling ????????
 
 // COPY size, from, to - block move ??? // MOVB, MOVM ???
 // COPY to, from, size - ???
 
 // SWAP to, reg - ??? swap 16bit words in reg
 
+// RBIT, REV - reverse bits order ?? interesting, expensive, fun
+//https://codegolf.stackexchange.com/questions/36213/reverse-bit-order-of-32-bit-integers?page=2&tab=scoredesc#tab-top
+//http://netghost.narod.ru/gff/graphics/book/ch06_04.htm
 
 //********************************************************************************************
 // HLA (ASLIX) support for EASIER DISASSEMBLY OF BINARIES !!!
 // - this is only WILD DRAFT HERE ...
-// - HLA opcodes may be used ONLY/MAINLY as NOP MARKERS for assiseted dissassembly while debugging
+// - HLA opcodes may be used ONLY/MAINLY as NOP MARKERS/HINTS for assiseted dissassembly while debugging
 
 // REM lenght, "comment" (for quick code written in monitor into RAM memory WITH COMMENTS !!)
 //
@@ -347,6 +373,16 @@ typedef enum {
 
 // PROC or FUNC
 // ENDPROC or ENDFUNC
+
+// ??? we can use here also MULTIWORD sequences for ASLIX to handle arguments/literals passing etc
+// ??? also, nesting level markers for if/else/endif and loop/again
+// ??? procs/funcs are FLAT, no nesting at all
+// ??? local vars ONLY as TYPED REGS? stack push/pull of ENTIRE "USED/LOCAL" REGFILE?? so MAYBE, REGFILE ON STACK for CHEAP PULL and  PUSH (copy) ????????
+// ??? btw, in spirit of QL *SBASIC, possible to handle PROCS/FUNCS at higher level and eliminate need of GOTO instruction almost entirelly ???
+// ??? - this is impossible without ASLIX SYMBOLS TABLE SPECIFICATION, though ... and this need "2-pass compiler/assembly", not easy for INTERACTIVE ASM/ASLIX
+
+
+
 
 
 

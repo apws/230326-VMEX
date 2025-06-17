@@ -2,15 +2,17 @@
 
 // !!! CHECK tests.h for list of errors !!!
 
-#define RUN_TESTS     //compile and run tests in engine (/test arg or monitor t command)
-#define EMB_TESTS   //launch tests (selectivelly enabled by TEST_ #defines) immediatelly in main
+//README - till now, we dont have <target> subfolder and this is here to compile with Embarcadero DEVCPP (win)
+//         (DEVCPP is btw probably fastest/easiest way to play/debug with C on windows)
+
+//#define EMB_TESTS   //launch tests (selectivelly enabled by TEST_ #defines) immediatelly in main
 //#define EMB_MAIN    //launch as vmexmain() from main.c/main() with MCU init - it is OK, no issues!!
-#define DESKTOP       //instead od auto-detection, we explicitly define here compilation for desktops (QL)
+//#define DESKTOP       //instead od auto-detection, we explicitly define here compilation for desktops (QL)
 #define PAGE_SIZE (4*32) //16 at least for tests (16 instructions test scripts)
 
 //old compilers (maybe types will be completelly placed in target.h !!!! ASAP !!!!)
-//#define TYPES_STDINT
-#define TYPES_8
+#define TYPES_STDINT
+//#define TYPES_8
 //#define TYPES_32
 
 //#define HOTFIX_QL_WEIRD_BEHAVIOR //totally weird behavior in MULDIV on QL - needs println !!!
@@ -22,7 +24,7 @@
 #define TEST_COMPARE_MOV_UNARY
 #define TEST_MEMORY_16
 #define TEST_BRANCHES         //z88dk/sdcc fails on all six signed branches, weird as hell; also msp430 issues
-//#define TEST_BRANCHES_ZERO
+#define TEST_BRANCHES_ZERO
 #define TEST_SYS_JR_JALR
 #define TEST_MEMORY_32
 
@@ -34,6 +36,7 @@
 //#define LOADER      // absolute minimal loader part of monitor (load hex, flash, run, break, debug)
 #define MONITOR       // complete monitor including diassebly, assembly
 //#define ASLIX       // high level C-like/Python-like ASLIX assembler (symbols, C-operators, loop/again, comments)
+
 
 #define CONSOLE       //not yet supported but will be part of the small/classic/aslix monitor
                       //goal is to support tiniest serial terminal but also allow larger ANSI/VT100-like
@@ -342,7 +345,7 @@ int vmex(const TU8 testprog[], int progsize)
         switch (opcode)
         {
 
-            case OP00_NOP:
+            case OPX00_NOP:
                 break;
 
 
@@ -590,7 +593,7 @@ int vmex(const TU8 testprog[], int progsize)
 
             //9C ???
             case OPI4C_ICALL: //pseudo //JALR
-                *_rd_ = pc + 4; core.pc = *_rs1_ - 4;      //absolute register call
+                _reg_[1] = pc + 4; core.pc = *_rs1_ - 4;      //absolute register call //fixed here _reg[1] instead of *_rd_ = write directly to link register !!!  argument is only address !!!
                 break;
 
 

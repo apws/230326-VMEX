@@ -38,7 +38,7 @@ int runtests()
 
     int fails = 0;
 
-    fails+= test(OP00_NOP,     "nop");
+    fails+= test(OPX00_NOP,     "nop");
 
 #ifdef TEST_IMMEDIATE
     fails+= test(OPI11_ADDI,   "addi 16");
@@ -178,7 +178,7 @@ int test(TU8 opcode, const char* testname)
     switch(opcode)
     {
 
-        case OP00_NOP:
+        case OPX00_NOP:
         {
             const TU8 tpOP00_NOP[] =
             {

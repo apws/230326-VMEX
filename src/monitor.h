@@ -1,5 +1,6 @@
 /* Copyright (C) 2022, 2023 Petr Antos, AP-ware servis (mixworx.net) antos.petr@gmail.com - ALL RIGHTS RESERVED */
 
+
 void cmd_version(Core *core)
 {
     println("  VMEX 0.30-230408a");
@@ -35,7 +36,7 @@ void cmd_help(Core *core)
     println("  .D - ASLIX disassembly");
     println("  .a - assembly");
     println("  .A - ASLIX assembly");
-    
+
     println("");
 }
 
@@ -47,7 +48,7 @@ void cmd_registers(Core *core)
     print(itoh(core->regs[1], 8)); print(" ");
     print(itoh(core->regs[2], 8)); print(" ");
     print(itoh(core->regs[3], 8)); println(" ");
-    
+
     println("  4-tp     5-t0     6-t1     7-t2");
     print("  ");
     print(itoh(core->regs[4], 8)); print(" ");
@@ -61,7 +62,7 @@ void cmd_registers(Core *core)
     print(itoh(core->regs[9], 8)); print(" ");
     print(itoh(core->regs[10], 8)); print(" ");
     print(itoh(core->regs[11], 8)); println(" ");
-    
+
     println("  C-a2     D-a3     E-a4     F-a5");
     print("  ");
     print(itoh(core->regs[12], 8)); print(" ");
@@ -89,23 +90,23 @@ void cmd_memory(Core *core, int from, int words)
 
 void cmd_go(Core *core)
 {
-    
+
     TU8 testprog[] =
     {
         0x11, 0xAA, 0x00, 0x01, // addi r10 r0 5
         0x11, 0xBB, 0x00, 0x0B, // addi r11 r0 5
         0x11, 0xCC, 0x00, 0x0C, // addi r12 r0 5
         0x11, 0xDD, 0x00, 0x0D, // addi r13 r0 5
-        
+
         0x51, 0xD0, 0x00, 0x00, // wb r13 r0 0
         0x11, 0xDD, 0x00, 0x01, // addi r13 r13 1
         0x51, 0xD0, 0x00, 0x01, // wb r13 r0 1
         0x42, 0x00, 0x00, 0x00, // ecall
-        0x48, 0x00, 0x00, 0x00, // ebreak                
+        0x48, 0x00, 0x00, 0x00, // ebreak
     };
 
     int result = vmex(testprog, sizeof(testprog));
-    
+
     println("");
     print("  exit code: "); println(itoh(result,2));
 }
