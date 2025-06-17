@@ -1,0 +1,10 @@
+100 DEFine PROCedure BIN2EXE
+110   LOCal length,start,datasp
+120   length=FLEN(\dos1_VMEX)
+125   datasp=FDAT(\dos1_VMEX)
+130   start=RESPR(length)
+140   LBYTES dos1_VMEX, start
+150   POKE start + 1024, 100
+160   SEXEC dos1_VMEX_EXE, start, length, 65536
+170   print "EXE is saved."
+200 END DEFine BIN2EXE

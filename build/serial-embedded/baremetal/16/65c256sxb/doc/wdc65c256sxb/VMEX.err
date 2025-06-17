@@ -1,0 +1,8 @@
+Undefined symbol: __unlink
+Undefined symbol: __close
+Undefined symbol: __write
+Undefined symbol: __lseek
+Undefined symbol: __heap_end
+Undefined symbol: __heap_start
+Undefined symbol: __isatty
+Undefined symbol: __read

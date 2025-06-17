@@ -1,0 +1,7 @@
+{
+    "sketch": "VMEX-arduino.ino",
+    "board": "megaTinyCore:megaavr:atxy7",
+    "port": "COM4",
+    "configuration": "chip=1627,clock=20internal,bodvoltage=1v8,bodmode=disabled,eesave=enable,millis=enabled,resetpin=UPDI,startuptime=8,wiremode=mors,printf=default,attach=allenabled",
+    "programmer": "nedbg"
+}

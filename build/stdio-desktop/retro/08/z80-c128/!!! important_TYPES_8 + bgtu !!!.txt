@@ -1,0 +1,7 @@
+
+all CP/M issues vs ZX was because of misconfigured TYPES_32  !!!
+
+and "bgtu" instruction
+ - test fails only hen compiled by SCCZ80 !!!!
+ - when compiled by SDCC, its okay
+

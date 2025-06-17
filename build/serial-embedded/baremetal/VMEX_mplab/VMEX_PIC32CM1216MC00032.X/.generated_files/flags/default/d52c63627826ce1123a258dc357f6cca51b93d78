@@ -1,0 +1,1 @@
+ $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -Os -fno-common   -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -mdfp="${DFP_DIR}/PIC32CM1216MC00032" ${PACK_COMMON_OPTIONS} W:\~prj\230326-GPT-assisted-VMEX-ISA-interpreter --------------------- START GPT  _VMEX _ASLIX\src\VMEX.c

@@ -1,0 +1,17 @@
+100 DEFine PROCedure E
+110   LOCal length,start,datasp
+120   length=FLEN(\dos1_VMEX_bin)
+125   datasp=FDAT(\dos1_VMEX_bin)
+130   start=RESPR(length)
+140   LBYTES dos1_VMEX_bin, start
+150   POKE start + 1024, 100
+160   DELETE dos1_VMEX_EXE
+170   SEXEC dos1_VMEX_EXE, start, length, 4096
+180   PRINT "EXE is saved."
+190 END DEFine E
+200 DEFine PROCedure V
+205   OPEN_OVER #10, dos1_vmex_prn
+210   EXEC dos1_VMEX_EXE, #0, #10
+215   CLOSE #10
+217   PRINT "VMEX.PRN is saved"
+220 END DEFine V

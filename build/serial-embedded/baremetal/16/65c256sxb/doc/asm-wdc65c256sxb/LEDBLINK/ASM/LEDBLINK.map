@@ -1,0 +1,44 @@
+Section rtc:
+	000001c0 _BEG_RTC
+	000001c3 _END_RTC
+
+Section app:
+	00002000 _BEG_APP
+	000020b7 _END_APP
+
+Section rtc_tod:
+	00002300 _BEG_RTC_TOD
+	00002323 _END_RTC_TOD
+
+Section flash_ce:
+	00002330 _BEG_FLASH_CE
+	00002358 _END_FLASH_CE
+
+Section flash_se:
+	00002360 _BEG_FLASH_SE
+	00002374 _END_FLASH_SE
+
+Section flash_pb:
+	000023a0 _BEG_FLASH_PB
+	000023da _END_FLASH_PB
+
+Section test:
+	00002500 _BEG_TEST
+	00002517 _END_TEST
+
+Section vec:
+	00003000 _BEG_VEC
+	0000300a _END_VEC
+
+Section shadow:
+	00007ee0 _BEG_SHADOW
+	00007f00 _END_SHADOW
+
+Section lowpwr:
+	0000dfb3 _BEG_LOWPWR
+	0000dfb5 _END_LOWPWR
+
+Section vectors:
+	0000ffe0 _BEG_VECTORS
+	00010000 _END_VECTORS
+

@@ -1,0 +1,607 @@
+  Mon Nov  7 2022 20:55                                                                                                Page 1
+
+    "W65C816S Simulator Program V 1.00 for W65C816 - W65C816S_Demo.asm"
+    
+
+                                             ***************************************
+                                             **      WDC 65C816 Macro Assembler   **
+                                             **                                   **
+                                             **     Version 3.49.1- Feb  6 2006    **
+                                             ***************************************
+
+     1                        ; File: LEDBLINK.asm
+     2                        ; 2022-10-24
+     3                        
+     4                            PW 128         ;Page Width (# of char/line)
+     5                            PL 60          ;Page Length for HP Laser
+     6                            INCLIST ON     ;Add Include files in Listing
+     7                        
+     8                            ;Test for Valid Processor defined in -D option
+     9                            IF USING_816
+    10                            ELSE
+    11                              EXIT         "Not Valid Processor: Use -DUSING_02, etc. ! ! ! ! ! ! ! ! ! ! ! !"
+    12                            ENDIF
+    13                        
+    14                            title  "W65C816S Simulator Program V 1.00 for W65C816 - W65C816S_Demo.asm"
+    15                            sttl
+    16                        
+    17                        
+    18                        ;***************************************************************************
+    19                        ;                               Local Constants
+    20                        ;***************************************************************************
+    21                        
+    22                        ;	VIA_BASE:	equ	$f0
+    23                        ;	VIA_BASE:	equ	$7FC0		;; base address of VIA port on SXB
+    24                        
+    25                        ;; IO Ports
+    26             0000DF27   PCS7: 			equ $DF27 ;; Port 7 Chip Select
+    27             0000DF26   PDD6: 			equ $DF26 ;; Port 6 Data Direction Register
+    28             0000DF25   PDD5: 			equ $DF25 ;; Port 5 Data Direction Register
+    29             0000DF24   PDD4: 			equ $DF24 ;; Port 4 Data Direction Register
+    30             0000DF07   PDD3:				equ $DF07	;; Port 3 Data Direction Register
+    31             0000DF06   PDD2:				equ $DF06	;; Port 2 Data Direction Register
+    32             0000DF05   PDD1:				equ $DF05	;; Port 1 Data Direction Register
+    33             0000DF04   PDD0:				equ $DF04	;; Port 0 Data Direction Register
+    34             0000DF23   PD7:  			equ $DF23 ;; Port 7 Data Register
+    35             0000DF22   PD6:  			equ $DF22 ;; Port 6 Data Register
+    36             0000DF21   PD5:  			equ $DF21 ;; Port 5 Data Register
+    37             0000DF20   PD4:  			equ $DF20 ;; Port 4 Data Register
+    38             0000DF03   PD3:				equ $DF03 ;; Port 3 Data Register
+    39             0000DF02   PD2:				equ $DF02 ;; Port 2 Data Register
+    40             0000DF01   PD1:				equ $DF01 ;; Port 1 Data Register
+    41             0000DF00   PD0:				equ $DF00 ;; Port 0 Data Register
+    42                        
+    43                        ;; Control and Status Register Memory Map
+    44             0000DF49   UIER:  			equ $DF49 ;; UART Interrupt Enable Register
+    45             0000DF48   UIFR:  			equ $DF48 ;; UART Interrupt Flag Register
+    46             0000DF47   EIER:  			equ $DF47 ;; Edge Interrupt Enable Register
+    47             0000DF46   TIER:  			equ $DF46 ;; Timer Interrupt Enable Register
+    48             0000DF45   EIFR:  			equ $DF45 ;; Edge Interrupt Flag Register
+    49             0000DF44   TIFR:  			equ $DF44 ;; Timer Interrupt Flag Register
+  Mon Nov  7 2022 20:55                                                                                                Page 2
+
+    "W65C816S Simulator Program V 1.00 for W65C816 - W65C816S_Demo.asm"
+    
+
+    50             0000DF43   TER:  			equ $DF43 ;; Timer Enable Register
+    51             0000DF42   TCR:  			equ $DF42 ;; Timer Control Register
+    52             0000DF41   SSCR:  			equ $DF41 ;; System Speed Control Register
+    53             0000DF40   BCR:  			equ $DF40 ;; Bus Control Register
+    54                        
+    55                        ;; Timer Register Memory Map
+    56             0000DF6F   T7CH:				equ $DF6F ;; Timer 7 Counter High
+    57             0000DF6E   T7CL:				equ $DF6E ;; Timer 7 Counter Low
+    58             0000DF6D   T6CH:				equ $DF6D ;; Timer 6 Counter High
+    59             0000DF6C   T6CL:				equ $DF6C ;; Timer 6 Counter Low
+    60             0000DF6B   T5CH:				equ $DF6B ;; Timer 5 Counter High
+    61             0000DF6A   T5CL:				equ $DF6A ;; Timer 5 Counter Low
+    62             0000DF69   T4CH:				equ $DF69 ;; Timer 4 Counter High
+    63             0000DF68   T4CL:				equ $DF68 ;; Timer 4 Counter Low
+    64             0000DF67   T3CH:				equ $DF67 ;; Timer 3 Counter High
+    65             0000DF66   T3CL:				equ $DF66 ;; Timer 3 Counter Low
+    66             0000DF65   T2CH:				equ $DF65 ;; Timer 2 Counter High
+    67             0000DF64   T2CL:				equ $DF64 ;; Timer 2 Counter Low
+    68             0000DF63   T1CH:				equ $DF63 ;; Timer 1 Counter High
+    69             0000DF62   T1CL:				equ $DF62 ;; Timer 1 Counter Low
+    70             0000DF61   T0CH:				equ $DF61 ;; Timer 0 Counter High
+    71             0000DF60   T0CL:				equ $DF60 ;; Timer 0 Counter Low
+    72                        
+    73                        ;;  Latches
+    74             0000DF5F   T7LH:				equ $DF5F ;; Timer 7 Latch High
+    75             0000DF5E   T7LL:				equ $DF5E ;; Timer 7 Latch Low
+    76             0000DF5F   T6LH:				equ $DF5F ;; Timer 6 Latch High
+    77             0000DF5E   T6LL:				equ $DF5E ;; Timer 6 Latch Low
+    78             0000DF5F   T5LH:				equ $DF5F ;; Timer 5 Latch High
+    79             0000DF5E   T5LL:				equ $DF5E ;; Timer 5 Latch Low
+    80             0000DF5F   T4LH:				equ $DF5F ;; Timer 4 Latch High
+    81             0000DF5E   T4LL:				equ $DF5E ;; Timer 4 Latch Low
+    82             0000DF5F   T3LH:				equ $DF5F ;; Timer 3 Latch High
+    83             0000DF5E   T3LL:				equ $DF5E ;; Timer 3 Latch Low
+    84             0000DF5F   T2LH:				equ $DF5F ;; Timer 2 Latch High
+    85             0000DF5E   T2LL:				equ $DF5E ;; Timer 2 Latch Low
+    86             0000DF5F   T1LH:				equ $DF5F ;; Timer 1 Latch High
+    87             0000DF5E   T1LL:				equ $DF5E ;; Timer 1 Latch Low
+    88             0000DF5F   T0LH:				equ $DF5F ;; Timer 0 Latch High
+    89             0000DF5E   T0LL:				equ $DF5E ;; Timer 0 Latch Low
+    90                        
+    91                        ;; On Chip RAM
+    92             0000DF80   OCRAM_BASE: equ $DF80 ;; RAM Registers
+    93                        
+    94                        ;; Emulation Mode Vector Table
+    95             0000FFFE   IRQBRK:			equ $FFFE ;; BRK - Software Interrupt
+    96             0000FFFC   IRQRES:			equ $FFFC ;; RES - "REStart" Interrupt
+    97             0000FFFA   IRQNMI:			equ $FFFA ;; Non-Maskable Interrupt
+    98             0000FFF8   IABORT:			equ $FFF8 ;; ABORT Interrupt
+    99                        ;  IRQRVD:			equ $FFF6 ;; Reserved
+   100             0000FFF4   IRQCOP:			equ $FFF4 ;; COP Software Interrupt
+   101                        ;  IRQRVD:			equ $FFF2 ;; Reserved
+   102                        ;  IRQRVD:			equ $FFF0 ;; Reserved
+   103             0000FFDE   IRQ:  			equ $FFDE  ;; IRQ Level Interrupt
+   104             0000FFDC   IRQPIB:			equ $FFDC  ;; PIB Interrupt
+  Mon Nov  7 2022 20:55                                                                                                Page 3
+
+    "W65C816S Simulator Program V 1.00 for W65C816 - W65C816S_Demo.asm"
+    
+
+   105             0000FFDA   IRNE66:			equ $FFDA  ;; Negative Edge Interrupt on P66
+   106             0000FFD8   IRNE64:			equ $FFD8	 ;; Negative Edge Interrupt on P64
+   107             0000FFD6   IRPE62:			equ $FFD6	 ;; Positive Edge Interrupt on P62 for PWM
+   108             0000FFD4   IRPE60:			equ $FFD4	 ;; Positive Edge Interrupt on P60
+   109             0000FFD2   IRNE57:			equ $FFD2  ;; Negative Edge Interrupt on P57
+   110             0000FFD0   IRPE56:			equ $FFD0	 ;; Positive Edge Interrupt on P56
+   111             0000FFCE   IRQT7:  		equ $FFCE	 ;; Timer 7 Interrupt
+   112             0000FFCC   IRQT6:  		equ $FFCC	 ;; Timer 6 Interrupt
+   113             0000FFCA   IRQT5:  		equ $FFCA	 ;; Timer 5 Interrupt
+   114             0000FFC8   IRQT4:  		equ $FFC8	 ;; Timer 4 Interrupt
+   115             0000FFC6   IRQT3:  		equ $FFC6	 ;; Timer 3 Interrupt
+   116             0000FFC4   IRQT2:  		equ $FFC4	 ;; Timer 2 Interrupt
+   117             0000FFC2   IRQT1:  		equ $FFC2	 ;; Timer 1 Interrupt
+   118             0000FFC0   IRQT0:  		equ $FFC0	 ;; Timer 0 Interrupt
+   119                        
+   120                        
+   121                        ;******************************************************************************
+   122                        ;monitor-debug
+   123             0000E08B   DEC:        .equ $00:E08B
+   124             0000E063   SEND_ASC:   .equ $00:E063
+   125             0000E069   SEND_SPC:   .equ $00:E069
+   126             0000E06C   SEND_HEX:   .equ $00:E06C
+   127                        
+   128                        
+   129                        		.CHIP 65816
+   130                            .LONGI	OFF
+   131                            .LONGA	OFF
+   132                        
+   133                            .sttl "W65C265S Demo Code"
+   134                            .page
+   135                        
+  Mon Nov  7 2022 20:55                                                                                                Page 4
+
+    "W65C816S Simulator Program V 1.00 for W65C816 - W65C816S_Demo.asm"
+    "W65C265S Demo Code"
+
+   136                        
+   137                        
+   138                        ;***********************************************************************
+   139                        ;RTC TOD routine VECTOR in SP RAM - blink LED every second
+   140                        ;THIS IS PERSISTENT DURING RESET !!!
+   141                        
+   142                        ;HERE it is WEIRD that SOMETIMES, uploading BIN doesnot update such area?
+   143                        ;isnt internal/external SRAM ZP+SP switching by mismatch sometimes ???
+   144                        rtc
+   145                            .section offset $01c0
+   146                            .org $01c0
+   147 00:01C0: 4C A1 20         jmp rtc_tod ;NO, its not possible to skip from RTC TOD routine to external SRAM !!!
+   148 00:01C3:                  .ends
+   149                        
+   150                        
+   151                        ;***************************************************************************
+   152                        ;                    W65C265S_BLINK Code Section
+   153                        ;***************************************************************************
+   154                        
+   155             000000C0   delay_counter:  .equ $C0     ; chip internal ZERO PAGE registers + stack
+   156             000000D0   blink_counter:  .equ $D0
+   157                        
+   158             000000D4   p1_16:          .equ $D4
+   159             000000D6   p2_16:          .equ $D6
+   160             000000D8   p3_16:          .equ $D8
+   161                        
+   162                        
+   163                        
+   164                        app
+   165                            .section offset $2000
+   166                        
+   167                        START:
+   168                            ;Initialize the stack
+   169 00:2000: 78               sei
+   170 00:2001: D8               cld
+   171                            ; ldx	#$ff ;isnt this weird ??? as it is called by alread initialized monitor with running IRQ
+                    s ???
+   172                            ; txs
+   173                        
+   174                            ; ?? force 8-bit AXY (65c02 code compatibility)
+   175                            ; lda #%00110010
+   176                            ; pha
+   177                            ; plp
+   178                        
+   179                            ; WDT (Timer0) enable (BCR4)
+   180                            ; lda BCR
+   181                            ; ora #%00000000    ;ora #%00010000
+   182                            ; sta BCR
+   183                        
+   184                            ; set Timer0 = WDT
+   185                            ; lda #$80
+   186                            ; sta T0LH
+   187                        
+   188                            ; enable Timer0 = WDT
+   189                            ; lda TER
+  Mon Nov  7 2022 20:55                                                                                                Page 5
+
+    "W65C816S Simulator Program V 1.00 for W65C816 - W65C816S_Demo.asm"
+    "W65C265S Demo Code"
+
+   190                            ; ora #%00000000    ;ora #%00000001
+   191                            ; sta TER
+   192                        
+   193                            ;enable interrupt Timer0 (needed? isnt enough to refresh Timer Latch regulary to prevent Timer
+                    0 = 0 ??)
+   194                            ; lda TIER
+   195                            ; ora #%00000001
+   196                            ; sta TIER
+   197                        
+   198                            ;interrupt flag Timer0 for ISR (needed? isnt enough to refresh Timer Latch regulary to prevent
+                     Timer0 = 0 ??)
+   199                            ; lda TIFR
+   200                            ; and #%00000001
+   201                        
+   202                        
+   203                            ; This is the code for the demo
+   204                            ; This part is just checking the registers that are effected
+   205                            ; lda PCS7				; Load value of P7x Data Direction Register.
+   206                            ; sta $3000				; Store for Debug - Should be 0xFBh
+   207                            ; lda PD7					; Load value of P7x Data Register
+   208                            ; sta $3001				; Store for Debug - should be 0x04h
+   209                        
+   210 00:2002: A9 00            lda #0
+   211 00:2004: 8D D0 00         sta blink_counter
+   212 00:2007: 8D D1 00         sta blink_counter+1
+   213 00:200A: 8D D2 00         sta blink_counter+2
+   214 00:200D: 8D D3 00         sta blink_counter+3
+   215                        
+   216 00:2010: A9 FB            lda #$FB
+   217 00:2012: 8D 27 DF         sta PCS7 ;P72 data direction as OUT
+   218                        
+   219                        blink:
+   220                        
+   221                            ;output decimal seconds (ok up to 99)
+   222 00:2015: AD D1 00         lda blink_counter+1
+   223                            ; jsl DEC
+   224                              ; jsl SEND_HEX
+   225                              ; lda blink_counter
+   226                              ; jsl SEND_HEX
+   227                              ; jsl SEND_SPC
+   228                        
+   229                            ;This part is what actually turns the LED ON
+   230 00:2018: A9 00            lda #$00 				; Set Bit 2 low to make LED turn ON
+   231 00:201A: 8D 23 DF         sta PD7					; Sets P72 HIGH.
+   232                        
+   233 00:201D: 20 67 20         jsr delay
+   234 00:2020: 20 67 20         jsr delay
+   235 00:2023: 20 67 20         jsr delay
+   236 00:2026: 20 67 20         jsr delay
+   237 00:2029: 20 67 20         jsr delay
+   238 00:202C: 20 67 20         jsr delay
+   239 00:202F: 20 67 20         jsr delay
+   240 00:2032: 20 67 20         jsr delay
+   241                        
+   242 00:2035: A9 04            lda #$04
+  Mon Nov  7 2022 20:55                                                                                                Page 6
+
+    "W65C816S Simulator Program V 1.00 for W65C816 - W65C816S_Demo.asm"
+    "W65C265S Demo Code"
+
+   243 00:2037: 8D 23 DF         sta PD7
+   244                        
+   245 00:203A: 20 67 20         jsr delay
+   246 00:203D: 20 67 20         jsr delay
+   247 00:2040: 20 67 20         jsr delay
+   248 00:2043: 20 67 20         jsr delay
+   249 00:2046: 20 67 20         jsr delay
+   250 00:2049: 20 67 20         jsr delay
+   251 00:204C: 20 67 20         jsr delay
+   252 00:204F: 20 67 20         jsr delay
+   253                        
+   254 00:2052: EE D0 00         inc blink_counter
+   255 00:2055: D0 BE            bne blink
+   256 00:2057: EE D1 00         inc blink_counter+1
+   257 00:205A: D0 B9            bne blink
+   258 00:205C: EE D2 00         inc blink_counter+2
+   259 00:205F: D0 B4            bne blink
+   260 00:2061: EE D3 00         inc blink_counter+3
+   261                        
+   262 00:2064: 4C 15 20         jmp blink
+   263                        
+   264                            ;rtl							; ReTurn from subroutine Long - We are d
+                    one
+   265                        
+   266                        
+   267                        
+   268                        delay:
+   269 00:2067: A9 40            lda #$40
+   270 00:2069: 8D C0 00         sta delay_counter
+   271 00:206C: A9 63            lda #$63
+   272 00:206E: 8D C1 00         sta delay_counter+1
+   273                        decb:
+   274 00:2071: CE C0 00         dec delay_counter
+   275 00:2074: D0 FB            bne decb
+   276 00:2076: AD C1 00         lda delay_counter+1
+   277 00:2079: F0 0D            beq exit
+   278 00:207B: CE C1 00         dec delay_counter+1
+   279 00:207E: D0 F1            bne decb
+   280 00:2080: AD C0 00         lda delay_counter
+   281 00:2083: D0 03            bne exit
+   282 00:2085: 4C 71 20         jmp decb ;beq decb
+   283                        exit:
+   284 00:2088: 60               rts
+   285                        
+   286                        
+   287                        delayXY:
+   288 00:2089: A2 10            ldx #$10
+   289 00:208B: A0 00            ldy #$00
+   290                        decbXY:
+   291 00:208D: CA               dex
+   292 00:208E: D0 FD            bne decbXY
+   293 00:2090: 98               tya
+   294 00:2091: F0 09            beq exitXY
+   295 00:2093: 88               dey
+   296 00:2094: D0 F7            bne decbXY
+  Mon Nov  7 2022 20:55                                                                                                Page 7
+
+    "W65C816S Simulator Program V 1.00 for W65C816 - W65C816S_Demo.asm"
+    "W65C265S Demo Code"
+
+   297 00:2096: 8A               txa
+   298 00:2097: D0 03            bne exitXY
+   299 00:2099: 4C 8D 20         jmp decbXY ;beq decbXY
+   300                        exitXY:
+   301 00:209C: 60               rts
+   302                        
+   303 00:209D: FF FF            .dw $FFFF
+   304 00:209F: FF FF            .dw $FFFF
+   305                        
+   306                        ;!! NOT POSSIBLE to place RTC TOD routine here, this is external SRAM !!!
+   307                        rtc_tod:
+   308 00:20A1: A9 FB            lda #$FB
+   309 00:20A3: 8D 27 DF         sta PCS7 ;P72 data direction as OUT
+   310 00:20A6: 20 67 20         jsr delay
+   311 00:20A9: A9 00            lda #$00
+   312 00:20AB: 8D 23 DF         sta PD7					;ON
+   313 00:20AE: 20 67 20         jsr delay
+   314 00:20B1: A9 04            lda #$04        ;OFF
+   315 00:20B3: 8D 23 DF         sta PD7
+   316 00:20B6: 6B               rtl ;in fact JSR here required by monitor ROM low power routine, but we try to call it by JSL f
+                    rom console
+   317                        
+   318 00:20B7:                  .ends
+   319                        
+   320                        
+   321                            .section offset $2300
+   322                        flash_ce: ;flash chip erase
+   323 00:2300: 78               sei
+   324 00:2301: D8               cld
+   325 00:2302: 48               pha
+   326 00:2303: A9 AA            lda #$aa
+   327 00:2305: 8D 55 D5         sta $d555
+   328 00:2308: A9 55            lda #$55
+   329 00:230A: 8D AA AA         sta $aaaa
+   330 00:230D: A9 80            lda #$80
+   331 00:230F: 8D 55 D5         sta $d555
+   332 00:2312: A9 AA            lda #$aa
+   333 00:2314: 8D 55 D5         sta $d555
+   334 00:2317: A9 55            lda #$55
+   335 00:2319: 8D AA AA         sta $aaaa
+   336 00:231C: A9 10            lda #$10
+   337 00:231E: 8D 55 D5         sta $d555
+   338 00:2321: 68               pla
+   339 00:2322: 6B               rtl
+   340 00:2323:                  .ends
+   341                        
+   342                        
+   343                            .section offset $2330
+   344                        flash_se: ;flash sector erase
+   345                            ; sei
+   346                            ; cld
+   347 00:2330: 48               pha
+   348 00:2331: 8D D5 00         sta p1_16+1
+   349 00:2334: A9 00            lda #0
+   350 00:2336: 8D D4 00         sta p1_16
+  Mon Nov  7 2022 20:55                                                                                                Page 8
+
+    "W65C816S Simulator Program V 1.00 for W65C816 - W65C816S_Demo.asm"
+    "W65C265S Demo Code"
+
+   351 00:2339: A9 AA            lda #$aa
+   352 00:233B: 8D 55 D5         sta $d555
+   353 00:233E: A9 55            lda #$55
+   354 00:2340: 8D AA AA         sta $aaaa
+   355 00:2343: A9 80            lda #$80
+   356 00:2345: 8D 55 D5         sta $d555
+   357 00:2348: A9 AA            lda #$aa
+   358 00:234A: 8D 55 D5         sta $d555
+   359 00:234D: A9 55            lda #$55
+   360 00:234F: 8D AA AA         sta $aaaa
+   361 00:2352: A9 30            lda #$30
+   362 00:2354: 92 D4            sta (p1_16)   ; sector address
+   363 00:2356: 68               pla
+   364 00:2357: 6B               rtl
+   365 00:2358:                  .ends
+   366                        
+   367                        
+   368                            .section offset $2360
+   369                        flash_pb: ;flash program byte
+   370                            ;sei
+   371                            ;cld
+   372 00:2360: 48               pha
+   373 00:2361: A9 AA            lda #$aa
+   374 00:2363: 8D 55 D5         sta $d555
+   375 00:2366: A9 55            lda #$55
+   376 00:2368: 8D AA AA         sta $aaaa
+   377 00:236B: A9 A0            lda #$a0
+   378 00:236D: 8D 55 D5         sta $d555
+   379 00:2370: 68               pla         ; data
+   380 00:2371: 92 D4            sta (p1_16) ; byte address
+   381 00:2373: 6B               rtl
+   382 00:2374:                  .ends
+   383                        
+   384                        
+   385                            .section offset $23a0
+   386                        flash_copy_page:
+   387                            ;sei
+   388                            ;cld
+   389 00:23A0: 48               pha
+   390 00:23A1: A9 80            lda #$80
+   391 00:23A3: 8D D5 00         sta p1_16+1
+   392 00:23A6: A9 00            lda #$00
+   393 00:23A8: 8D D4 00         sta p1_16
+   394 00:23AB: A9 20            lda #$20
+   395 00:23AD: 8D D7 00         sta p2_16+1
+   396 00:23B0: A9 00            lda #$00
+   397 00:23B2: 8D D6 00         sta p2_16
+   398                            ;rtl;debug
+   399                        
+   400 00:23B5: A9 80            lda #$80
+   401 00:23B7: 22 30 23 00      jsl flash_se
+   402 00:23BB: 20 89 20         jsr delayXY
+   403 00:23BE: 68               pla
+   404                            ;rtl;debug
+   405                        
+  Mon Nov  7 2022 20:55                                                                                                Page 9
+
+    "W65C816S Simulator Program V 1.00 for W65C816 - W65C816S_Demo.asm"
+    "W65C265S Demo Code"
+
+   406                        page:
+   407 00:23BF: B2 D6            lda (p2_16)
+   408 00:23C1: 22 60 23 00      jsl flash_pb
+   409 00:23C5: 20 89 20         jsr delayXY
+   410 00:23C8: EE D6 00         inc p2_16
+   411 00:23CB: EE D4 00         inc p1_16
+   412 00:23CE: D0 EF            bne page
+   413 00:23D0: 6B               rtl
+   414                        
+   415                        wait:
+   416 00:23D1: 48               pha
+   417 00:23D2: A9 FF            lda #$FF
+   418                        waitl:
+   419 00:23D4: E9 01            sbc #1
+   420 00:23D6: D0 FC            bne waitl
+   421 00:23D8: 68               pla
+   422 00:23D9: 60               rts
+   423 00:23DA:                  .ends
+   424                        
+   425                        
+   426                        test: ;test code only
+   427                            .section offset $2500
+   428                            .org $2500
+   429 00:2500: 78               sei
+   430 00:2501: D8               cld
+   431 00:2502: 48               pha
+   432 00:2503: A9 EE            lda #$ee
+   433 00:2505: 8D D4 00         sta $d4
+   434 00:2508: A9 DD            lda #$dd
+   435 00:250A: 8D D5 00         sta $d5
+   436 00:250D: A9 44            lda #$44
+   437 00:250F: 8D D6 00         sta $d6
+   438 00:2512: 8D D7 00         sta $d7
+   439 00:2515: 68               pla
+   440 00:2516: 6B               rtl
+   441 00:2517:                  .ends
+   442                        
+   443                        
+   444                        vec
+   445                            .section offset $3000
+   446                        
+   447                        ;;-------------------------------------------------------------------------
+   448                        ;; FUNCTION NAME	: Event Hander re-vectors
+   449                        ;;------------------:------------------------------------------------------
+   450                        IRQHandler:
+   451 00:3000: 48               pha
+   452 00:3001: 68               pla
+   453 00:3002: 40               rti
+   454                        
+   455                        badVec:		; $FFE0 - IRQRVD2(134)
+   456 00:3003: 08               php
+   457 00:3004: 48               pha
+   458 00:3005: A9 FF            lda #$FF
+   459                                ;clear Irq
+   460 00:3007: 68               pla
+  Mon Nov  7 2022 20:55                                                                                                Page 10
+
+    "W65C816S Simulator Program V 1.00 for W65C816 - W65C816S_Demo.asm"
+    "W65C265S Demo Code"
+
+   461 00:3008: 28               plp
+   462 00:3009: 40               rti
+   463                        
+   464 00:300A:                  .ends ;app
+   465                        
+   466                        
+   467                        
+   468                        
+   469                        ;;-----------------------------
+   470                        ;;		Reset and Interrupt Vectors (define for 265, 816/02 are subsets)
+   471                        ;;-----------------------------
+   472                        
+   473                        
+   474                        ;***********************************************************************
+   475                        ;SHADOW RAM VECTORS
+   476                        
+   477                        shadow  .SECTION OFFSET $7EE0
+   478                        					;65C816 Interrupt Vectors
+   479                        					;Status bit E = 0 (Native mode, 16 bit mode)
+   480 00:7EE0: 03 30            dw	badVec		; $FFE0 - IRQRVD4(816)
+   481 00:7EE2: 03 30            dw	badVec		; $FFE2 - IRQRVD5(816)
+   482 00:7EE4: 03 30            dw	badVec		; $FFE4 - COP(816)
+   483 00:7EE6: 03 30            dw	badVec		; $FFE6 - BRK(816)
+   484 00:7EE8: 03 30            dw	badVec		; $FFE8 - ABORT(816)
+   485 00:7EEA: 03 30            dw	badVec		; $FFEA - NMI(816)
+   486 00:7EEC: 03 30            dw	badVec		; $FFEC - IRQRVD(816)
+   487 00:7EEE: 03 30            dw	badVec		; $FFEE - IRQ(816)
+   488                                  ;Status bit E = 1 (Emulation mode, 8 bit mode)
+   489 00:7EF0: 03 30            dw	badVec		; $FFF0 - IRQRVD2(8 bit Emulation)(IRQRVD(265))
+   490 00:7EF2: 03 30            dw	badVec		; $FFF2 - IRQRVD1(8 bit Emulation)(IRQRVD(265))
+   491 00:7EF4: 03 30            dw	badVec		; $FFF4 - COP(8 bit Emulation)
+   492 00:7EF6: 03 30            dw	badVec		; $FFF6 - IRQRVD0(8 bit Emulation)(IRQRVD(265))
+   493 00:7EF8: 03 30            dw	badVec		; $FFF8 - ABORT(8 bit Emulation)
+   494                                  ; Common 8 bit Vectors for all CPUs
+   495 00:7EFA: 03 30            dw	badVec		  ; $FFFA -  NMIRQ (ALL)
+   496 00:7EFC: 00 20            dw	START		    ; $FFFC -  RESET (ALL)
+   497 00:7EFE: 00 30            dw	IRQHandler	; $FFFE -  IRQBRK (ALL)
+   498 00:7F00:                  .ends ;shadow
+   499                        
+   500                        
+   501                        ;***********************************************************************
+   502                        ; LOW POWER RTC TOD SIGNATURE - CLEARED AFTER RESET !!!
+   503                        lowpwr  .section offset $dfb3
+   504 00:DFB3: 55               .db $55 ;RTC TOD interrupt at low power
+   505 00:DFB4: AA               .db $AA ;RTC TOD interrupt at low power
+   506 00:DFB5:                  .ends ;lowpwr
+   507                        
+   508                        ;DFC0 - interesting !!! writing byte to this address defines entire DFC0-DFFF !!!
+   509                        ;                       after RESET, value is returned to 10 !!!
+   510                        
+   511                        ;***********************************************************************
+   512                        ;MONITOR ROM VECTORS
+   513                        
+   514                        vectors	.SECTION OFFSET $FFE0
+   515                        					;65C816 Interrupt Vectors
+  Mon Nov  7 2022 20:55                                                                                                Page 11
+
+    "W65C816S Simulator Program V 1.00 for W65C816 - W65C816S_Demo.asm"
+    "W65C265S Demo Code"
+
+   516                        					;Status bit E = 0 (Native mode, 16 bit mode)
+   517 00:FFE0: 03 30            dw	badVec		; $FFE0 - IRQRVD4(816)
+   518 00:FFE2: 03 30            dw	badVec		; $FFE2 - IRQRVD5(816)
+   519 00:FFE4: 03 30            dw	badVec		; $FFE4 - COP(816)
+   520 00:FFE6: 03 30            dw	badVec		; $FFE6 - BRK(816)
+   521 00:FFE8: 03 30            dw	badVec		; $FFE8 - ABORT(816)
+   522 00:FFEA: 03 30            dw	badVec		; $FFEA - NMI(816)
+   523 00:FFEC: 03 30            dw	badVec		; $FFEC - IRQRVD(816)
+   524 00:FFEE: 03 30            dw	badVec		; $FFEE - IRQ(816)
+   525                                  ;Status bit E = 1 (Emulation mode, 8 bit mode)
+   526 00:FFF0: 03 30            dw	badVec		; $FFF0 - IRQRVD2(8 bit Emulation)(IRQRVD(265))
+   527 00:FFF2: 03 30            dw	badVec		; $FFF2 - IRQRVD1(8 bit Emulation)(IRQRVD(265))
+   528 00:FFF4: 03 30            dw	badVec		; $FFF4 - COP(8 bit Emulation)
+   529 00:FFF6: 03 30            dw	badVec		; $FFF6 - IRQRVD0(8 bit Emulation)(IRQRVD(265))
+   530 00:FFF8: 03 30            dw	badVec		; $FFF8 - ABORT(8 bit Emulation)
+   531                                  ; Common 8 bit Vectors for all CPUs
+   532 00:FFFA: 03 30            dw	badVec		  ; $FFFA -  NMIRQ (ALL)
+   533 00:FFFC: 00 20            dw	START		    ; $FFFC -  RESET (ALL)
+   534 00:FFFE: 00 30            dw	IRQHandler	; $FFFE -  IRQBRK (ALL)
+   535 01:0000:                  .ends ;vectors
+   536                        
+   537                            .end
+
+
+      Lines assembled: 537
+      Errors: 0

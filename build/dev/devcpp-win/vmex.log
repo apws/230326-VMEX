@@ -1,0 +1,69 @@
+addi 16: 0
+subi 16: 0
+xori 16: 0
+andi 16: 0
+ori 16: 0
+slli srli: 0
+srai: 0
+clti 16: 0
+cltiu 16: 0
+li 16: 0
+li 32: 1
+lui 32: 0
+auipc 32: 0
+jal jl jalr (ret): 0
+goto=66 call=6C ret=44: 0
+add 16: 0
+sub 16: 0
+xor 16: 0
+and 16: 0
+or 16: 0
+sll srl: 0
+sra: 0
+clt 16: 0
+cltu 16: 0
+mul mulh: 2004318070
+mulhu: 1
+mulshu: 1
+div: 1
+divu: 1
+rem: 1
+remu: 1
+cltz 16: 0
+cnez 16: 0
+ceqz 16: 0
+cgtz 16: 0
+mov 16: 0
+ini 16: 0
+neg 16: 0
+not 16: 0
+wb lb: 0
+wh lh: 0
+ww lw: 0
+lbu: 0
+lhu: 0
+blt: 0
+ble: 0
+bne: 0
+beq: 0
+bge: 0
+bgt: 0
+bltu: 0
+bleu: 0
+bgeu: 0
+bgtu: 0
+bltz: 0
+blez: 0
+bnez: 0
+beqz: 0
+bgez: 0
+bgtz: 0
+ecall: 1
+ebreak: 1
+fence: 1
+xgoto: 1
+xcall: 1
+fcall 32: 1
+ftail 32: 1
+
+Test fails: 15

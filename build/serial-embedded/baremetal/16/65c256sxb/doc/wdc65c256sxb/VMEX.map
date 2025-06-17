@@ -1,0 +1,48 @@
+Section CODE:
+	00000000 _BEG_CODE
+	00000000 __mul_TU32
+	00000149 __mul_TS32
+	000001cc __mul
+	000001f7 __mulh
+	00000222 __mulhu
+	0000024d __mulhsu
+	00000278 __input
+	0000028c __print
+	000002a0 __println
+	000002b4 __println_num
+	000002c8 __itoh
+	00000372 __cmd_version
+	00000398 __cmd_help
+	00000406 __cmd_registers
+	000005f8 __cmd_memory
+	00000679 __cmd_go
+	000006d0 __main
+	0000082b __vmex
+	000011f3 __memcpy
+	00001214 __strcmp
+	0000123d __strcspn
+	0000126d __~div
+	00001290 __~lasl
+	000012bb __~lasr
+	000012f5 __~ldiv
+	0000133e __~llsr
+	0000136a __~lmod
+	000013b4 __~lmul
+	000013fb __~ludv
+	00001410 __~lumd
+	00001420 __~mov
+	0000143b __~mul
+	0000147c __~swt
+	000014a2 __~udv
+	000014d6 __~comdiv
+	00001516 _END_CODE
+
+Section DATA:
+	00001516 _BEG_DATA
+	00001516 __core
+	00001976 _END_DATA
+
+Section UDATA:
+	00001976 _BEG_UDATA
+	0000199e _END_UDATA
+

@@ -1,0 +1,14 @@
+
+To compile for a minimal C128 without CP/M:
+	zcc +c128 -lndos -lmalloc sgdemo.c
+	bin3000 a.bin z80mc  (then use c1541 to put 'z80mc' in a disk image)
+	The BASIC loader making the Z80 Jump at address $3000:
+		10 BANK0
+		12 BLOAD"Z80MC",B0
+		20 POKE 65518,195:POKE 65519,0:POKE 65520,48
+		30 POKE 4532,88:POKE 4353,96
+		40 SYS 65488:END
+
+To compile for CP/M:
+	zcc +cpm -lc128cpm -lndos sgdemo.c
+

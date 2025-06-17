@@ -1,0 +1,123 @@
+
+Numpad
+======
+
+KEYBOARD
+=========
+
+ESC        D027
+
+;          D059
+1          D049
+2          D050
+3          D051
+4          D052
+5          D053
+6          D054
+7          D055
+8          D056
+9          D057
+0          D048
+=%         D061
+´          D180
+BKSP       D008
+
+TAB        D009
+Q          D113
+W          D119
+E          D101
+R          D114
+T          D116
+Z          D122
+U          D117
+I          D105
+O          D111
+P          D112
+/          D250
+)(         D041
+ENTER      D013
+
+CAPS       ----
+A          D097
+S          D115
+D          D100
+F          D102
+G          D103
+H          D104
+J          D106
+K          D107
+L          D108
+"          D367 000
+!          D167
+'          D168
+
+LSHIFT     D225 304 M1001
+\|         D092
+Y          D121
+X          D120
+C          D099
+V          D118
+B          D098
+N          D110
+M          D109
+,?         D044
+.:         D046
+-_         D045
+RSHIFT     D229 303 M1002
+
+LCTRL      D224 306 M1040
+(LWIN)
+LALT       D226 308 M1100
+SPACE      D032
+RALT       D230 307 M1240
+(RWIN)
+(MENU)     D101 314
+RCTRL      D228 305 M1080
+
+
+
+3-PACK
+=======
+PRTSCR     U070 316
+SCROLL     D071 302
+BREAK      D072 019
+
+6-PACK
+========
+INS        D073 277
+HOME       D074 278
+PGUP       D075 280
+DEL        D127 127
+END        D077 279
+PGDN       D078 281
+
+CURSORS
+=======
+RIGHT      D079 275
+LEFT       D080 276
+DOWN       D081 274
+UP         D082 273
+
+NUMPAD
+======
+NUMLOCK    D083 300
+/          D084 267
+*          D085 268
+-          D086 269
++          D087 270
+ENTER      D088 271
+1          D089 257
+2          D090 258
+3          D091 259
+4          D092 260
+5          D093 261
+6          D094 262
+7          D095 263
+8          D096 264
+9          D097 265
+0          D098 256
+,          D099 266
+
+
+
+
